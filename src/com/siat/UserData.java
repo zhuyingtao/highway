@@ -20,6 +20,25 @@ public class UserData {
 	private int eventid; // 事件类型
 	private int id; // 线路ID
 
+	/**
+	 * @param tmsi
+	 * @param timestamp
+	 * @param lac
+	 * @param cellid
+	 * @param eventid
+	 * @param id
+	 */
+	public UserData(String tmsi, Date timestamp, int lac, int cellid,
+			int eventid, int id) {
+		super();
+		this.tmsi = tmsi;
+		this.timestamp = timestamp;
+		this.lac = lac;
+		this.cellid = cellid;
+		this.eventid = eventid;
+		this.id = id;
+	}
+
 	public String getTmsi() {
 		return tmsi;
 	}
@@ -66,6 +85,19 @@ public class UserData {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return this.tmsi.equals(((UserData) obj).tmsi);
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return this.tmsi + "," + this.timestamp + "," + this.lac + ","
+				+ this.cellid + "," + this.eventid + "," + this.id + "\n";
 	}
 
 }

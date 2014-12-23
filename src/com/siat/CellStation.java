@@ -21,6 +21,10 @@ public class CellStation {
 	private int index;
 	private double length;
 
+	public CellStation(int cellId) {
+		this.cellId = cellId;
+	}
+
 	public int getSerialNumber() {
 		return serialNumber;
 	}
