@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName SpeedAlgorithm
@@ -27,10 +28,11 @@ public class SpeedAlgorithm {
 
 	private CellStation lastCs = null;
 	private ArrayList<RoadSegment> forwardRS;
-
 	private ArrayList<RoadSegment> reverseRS;
 
 	private SimpleDateFormat sdf = null;
+
+	private boolean direction;
 
 	/**
 	 * 
@@ -61,7 +63,7 @@ public class SpeedAlgorithm {
 				continue;
 
 			// 3. 判断车辆行驶方向，并将计算出的车辆速度补足到经过的每一个路段区间中
-			boolean isForward = this.getDirection();
+			boolean isForward = this.direction;
 			if (isForward) {
 				for (int j = lastCs.getCellId(); j <= nowCs.getCellId(); j++) {
 
@@ -71,17 +73,10 @@ public class SpeedAlgorithm {
 			}
 		}
 
-		// 4. 计算每一个路段区间的平均速度
-		for (int i = 0; i < forwardRS.size(); i++) {
-			RoadSegment rs = forwardRS.get(i);
-			double avgSpeed = rs.getAvgSpeed();
-			rs.clear();
-		}
-		for (int i = 0; i < reverseRS.size(); i++) {
-			RoadSegment rs = reverseRS.get(i);
-			double avgSpeed = rs.getAvgSpeed();
-			rs.clear();
-		}
+		// 4. 计算每一个路段区间的平均速度，分双向，并打印输出
+		this.computeRoadSpeed(forwardRS);
+		this.computeRoadSpeed(reverseRS);
+		this.dumpRoadSpeeds();
 
 		// 5. 维护UserDataPool,去除长时间未出现的数据。
 		if (cachedTime >= Configuration.CACHE_TIME) {
@@ -99,9 +94,11 @@ public class SpeedAlgorithm {
 			UserData lastUd = userDataPool.get(index);
 			double time = this.getIntervalTime(nowUd, lastUd);
 			double distance = this.getDistance(nowUd, lastUd);
+			direction = this.getDirection(nowUd, lastUd);
 			speed = distance / time;
-			if (speed < 0 || speed > 150)
-				System.out.println("illegal speed : " + speed);
+			if (speed < 0 || speed > 150) {
+				// System.out.println("illegal speed : " + speed);
+			}
 			userDataPool.set(index, nowUd);
 
 			nowCs = new CellStation(nowUd.getCellid());
@@ -113,8 +110,32 @@ public class SpeedAlgorithm {
 		return speed;
 	}
 
-	public void dumpRoadSpeeds() {
+	public void computeRoadSpeed(List<RoadSegment> list) {
+		for (int i = 0; i < list.size(); i++) {
+			RoadSegment rs = list.get(i);
+			rs.computeAvgSpeed();
+			rs.computeFilterAvgSpeed();
+			// 清空speed表，以便下次使用
+			rs.clear();
+		}
+	}
 
+	public void dumpRoadSpeeds() {
+		this.dumpRoadSpeeds(forwardRS, true);
+		this.dumpRoadSpeeds(reverseRS, false);
+	}
+
+	public void dumpRoadSpeeds(List<RoadSegment> list, boolean forward) {
+		if (forward)
+			System.out.println("========= Forward ========>>>>>");
+		else
+			System.out.println("<<<<<==== Reverse ============");
+
+		for (int i = 0; i < list.size(); i++) {
+			RoadSegment rs = list.get(i);
+			System.out.println("@ " + rs.id + " --- " + rs.getAvgSpeed()
+					+ " & " + rs.getFilterAvgSpeed());
+		}
 	}
 
 	public void filterUserDataPool() {
@@ -137,14 +158,20 @@ public class SpeedAlgorithm {
 		}
 	}
 
-	public boolean getDirection() {
+	public boolean getDirection(UserData nowUd, UserData lastUd) {
 		boolean forward = true;
-
+		if (nowUd.getCellid() == lastUd.getCellid()) {
+			System.out.println("~~~~~~~ Can't determined the direction @ "
+					+ nowUd.getCellid() + " " + nowUd.getTimestamp() + " & "
+					+ lastUd.getCellid() + " " + lastUd.getTimestamp());
+		}
+		if (nowUd.getCellid() < lastUd.getCellid())
+			forward = false;
 		return forward;
 	}
 
 	public double getDistance(UserData nowUd, UserData lastUd) {
-		double distance = 0;
+		double distance = 10;
 
 		return distance;
 	}
@@ -171,9 +198,9 @@ public class SpeedAlgorithm {
 		}
 		String startStr = sdf.format(start);
 		String endStr = sdf.format(end);
-		ArrayList<UserData> userDatas = db.executeSQL(startStr, endStr);
-		System.out.println(userDatas);
-		System.out.println(userDatas.size());
+		ArrayList<UserData> userDatas = db.selectUserData(startStr, endStr);
+		// System.out.println(userDatas);
+		// System.out.println(userDatas.size());
 
 		this.startTimeStr = endStr;
 		return userDatas;

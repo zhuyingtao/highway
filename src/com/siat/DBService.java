@@ -104,7 +104,7 @@ public class DBService {
 	 * @Title: executeSQL
 	 * @Description: TODO
 	 */
-	public ArrayList<UserData> executeSQL(String start, String end) {
+	public ArrayList<UserData> selectUserData(String start, String end) {
 		// TODO Auto-generated method stub
 		ArrayList<UserData> userDatas = new ArrayList<>();
 		String sql = "select * from user_data where timestamp >= ? and timestamp < ?";
