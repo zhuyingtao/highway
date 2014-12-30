@@ -11,16 +11,18 @@ import java.util.List;
  */
 public class RoadSegment {
 
-	int id;
+	int id; // 自定义编号
 	int startStation;
 	int endStation;
+	double length; // 路段的长度
 
-	CellStation start;
-	CellStation end;
+	// 存在相同经纬度，不同cellid的基站
+	ArrayList<CellStation> starts;
+	ArrayList<CellStation> ends;
 
 	private double avgSpeed;
 	private double filterAvgSpeed;
-	ArrayList<Double> speeds;
+	ArrayList<Double> speeds = new ArrayList<Double>();
 
 	/**
 	 * 
@@ -29,17 +31,23 @@ public class RoadSegment {
 		// TODO Auto-generated constructor stub
 	}
 
+	public RoadSegment(int id, ArrayList<CellStation> starts, double length) {
+		this.id = id;
+		this.starts = starts;
+		this.length = length;
+	}
+
 	/**
 	 * @param id
 	 * @param startStation
 	 * @param endStation
 	 * @param direction
 	 */
-	public RoadSegment(int id, int startStation, int endStation) {
+	public RoadSegment(int id, ArrayList<CellStation> starts,
+			ArrayList<CellStation> ends) {
 		this.id = id;
-		this.startStation = startStation;
-		this.endStation = endStation;
-		this.speeds = new ArrayList<>();
+		this.starts = starts;
+		this.ends = ends;
 	}
 
 	public void addSpeed(double speed) {
@@ -47,12 +55,26 @@ public class RoadSegment {
 	}
 
 	public void clear() {
-		this.avgSpeed = 0;
 		this.speeds.clear();
 	}
 
+	public boolean contains(int cellid) {
+		boolean contains = false;
+		for (int i = 0; i < starts.size(); i++) {
+			if (starts.get(i).getCellId() == cellid) {
+				contains = true;
+				break;
+			}
+		}
+		return contains;
+	}
+
 	public void computeAvgSpeed() {
+		if (speeds.size() == 0) {
+			return;
+		}
 		double sum = 0;
+
 		for (int i = 0; i < speeds.size(); i++) {
 			sum += speeds.get(i);
 		}
@@ -60,14 +82,15 @@ public class RoadSegment {
 	}
 
 	public void computeFilterAvgSpeed() {
-		if (this.avgSpeed == 0)
-			this.computeAvgSpeed();
+		if (speeds.size() == 0)
+			return;
 		List<Double> qualifiedSpeeds = this.getQualifiedData();
 		double sum = 0;
 		for (int i = 0; i < qualifiedSpeeds.size(); i++) {
 			sum += qualifiedSpeeds.get(i);
 		}
-		this.filterAvgSpeed = sum / qualifiedSpeeds.size();
+		if (qualifiedSpeeds.size() > 0)
+			this.filterAvgSpeed = sum / qualifiedSpeeds.size();
 	}
 
 	public double getAvgSpeed() {
@@ -89,10 +112,13 @@ public class RoadSegment {
 		List<Double> qualifiedSpeeds = new ArrayList<Double>();
 		double variance = variance(speeds, avgSpeed);
 		for (int i = 0; i < speeds.size(); i++) {
-			if (Math.abs(speeds.get(i) - avgSpeed) < 3 * variance) {
+			if (Math.abs(speeds.get(i) - avgSpeed) <= 3 * variance) {
 				qualifiedSpeeds.add(speeds.get(i));
 			} else {
-				System.out.println("===> Filter one speed : " + speeds.get(i));
+				DataLogger.getLogger().info(
+						"===> Filter one speed : avg = " + this.avgSpeed
+								+ " , speed = " + speeds.get(i)
+								+ " , variance = " + variance);
 			}
 		}
 		return qualifiedSpeeds;
@@ -108,9 +134,8 @@ public class RoadSegment {
 	public double variance(List<Double> speed, double aveSpeed) {
 		double sum = 0;
 		for (int i = 0; i < speed.size(); i++)
-			sum += (speed.get(i) - aveSpeed) * (speed.get(i) - aveSpeed);
-		sum /= speed.size();
-		System.out.println(sum);
+			sum += Math.pow((speed.get(i) - aveSpeed), 2);
+		sum = sum / speed.size();
 		return sum;
 	}
 }

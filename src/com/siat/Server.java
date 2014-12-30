@@ -3,6 +3,8 @@
  */
 package com.siat;
 
+import java.util.logging.Logger;
+
 /**
  * @ClassName Server
  * @Description TODO
@@ -12,18 +14,20 @@ package com.siat;
 public class Server {
 
 	public void work() {
+		Logger logger = DataLogger.getLogger();
 		SpeedAlgorithm sa = new SpeedAlgorithm(Configuration.START_TIME);
 		int i = 0;
 		while (true) {
-			System.out.println("======= Number : " + i);
+			logger.info("==================== Number : " + i + " start");
 			sa.computeAvgSpeed(Configuration.INTERVAL_TIME);
+			// try {
+			// Thread.sleep(10000);
+			// } catch (InterruptedException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			logger.info("=================== Number : " + i + " end \n\n");
 			i++;
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 

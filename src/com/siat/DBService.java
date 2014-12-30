@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -114,24 +115,46 @@ public class DBService {
 			pstm.setString(2, end);
 
 			ResultSet rs = pstm.executeQuery();
+			int allNum = 0;
+			int filterNum = 0;
+			int unusedNum = 0;
+
 			while (rs.next()) {
+				allNum++;
 				String tmsi = rs.getString(1);
 				Date timestamp = rs.getTimestamp(2);
 				int lac = rs.getInt(3);
 				int cellid = rs.getInt(4);
 				int eventid = rs.getInt(5);
 				int id = rs.getInt(6);
+				// 过滤掉某些有问题数据：cellid= unusedId;
+				boolean unused = false;
+				for (int i = 0; i < Configuration.unusedId.length; i++) {
+					if (cellid == Configuration.unusedId[i]) {
+						unused = true;
+						break;
+					}
+				}
+				if (unused) {
+					unusedNum++;
+					continue;
+				}
+				// 过滤掉重复的数据
 				UserData ud = new UserData(tmsi, timestamp, lac, cellid,
 						eventid, id);
 				int index = userDatas.indexOf(ud);
 				if (index >= 0) {
-					System.out.println("contains same car in one batch --> "
-							+ tmsi + " @ " + timestamp + " @ " + cellid);
+					filterNum++;
 					if (userDatas.get(index).getTimestamp().before(timestamp))
 						userDatas.set(index, ud);
-				} else
+				} else {
 					userDatas.add(ud);
+				}
 			}
+			Logger logger = DataLogger.getLogger();
+			logger.info("in one batch : all-> " + allNum + ", same-> "
+					+ filterNum + " , unused->" + unusedNum
+					+ " , remaining -> " + (allNum - filterNum - unusedNum));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
