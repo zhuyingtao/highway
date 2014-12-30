@@ -111,8 +111,9 @@ public class RoadSegment {
 	public List<Double> getQualifiedData() {
 		List<Double> qualifiedSpeeds = new ArrayList<Double>();
 		double variance = variance(speeds, avgSpeed);
+		double svar = Math.sqrt(variance);
 		for (int i = 0; i < speeds.size(); i++) {
-			if (Math.abs(speeds.get(i) - avgSpeed) <= 3 * variance) {
+			if (Math.abs(speeds.get(i) - avgSpeed) <= 2 * svar) {
 				qualifiedSpeeds.add(speeds.get(i));
 			} else {
 				DataLogger.getLogger().info(

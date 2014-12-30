@@ -152,7 +152,7 @@ public class DBService {
 				}
 			}
 			Logger logger = DataLogger.getLogger();
-			logger.info("in one batch : all-> " + allNum + ", same-> "
+			logger.info("select from database : all-> " + allNum + ", same-> "
 					+ filterNum + " , unused->" + unusedNum
 					+ " , remaining -> " + (allNum - filterNum - unusedNum));
 		} catch (SQLException e) {
