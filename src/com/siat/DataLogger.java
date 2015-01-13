@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 /**
  * @ClassName Logger
- * @Description TODO
+ * @Description 日志记录
  * @author Zhu Yingtao
  * @date 2014年12月29日 下午2:39:10
  */

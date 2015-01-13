@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * @ClassName Section
- * @Description TODO
+ * @Description 服务区与服务区之间的区间 (NodeStation and NodeStation)
  * @author Zhu Yingtao
  * @date 2014年12月30日 上午10:59:21
  */
@@ -19,7 +19,11 @@ public class RoadSection {
 	NodeStation endNode;
 	int direction;
 	double length;
-	double speed;
+
+	int avgSpeed;
+	int speedNum;
+	int maxSpeed;
+	int minSpeed;
 
 	/**
 	 * @param id
@@ -40,7 +44,8 @@ public class RoadSection {
 		ArrayList<NodeStation> nodes = new ArrayList<>();
 		ArrayList<RoadSection> sections = new ArrayList<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("data/服务区2.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(
+					"data/服务区2.txt"));
 			br.readLine();
 			String line = br.readLine();
 			while (line != null) {
@@ -82,5 +87,63 @@ public class RoadSection {
 
 	public static void main(String[] args) {
 		System.out.println(RoadSection.initial().size());
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getSectionName() {
+		this.sectionName = this.startNode.roadNodeName + " -- "
+				+ this.endNode.roadNodeName;
+		return sectionName;
+	}
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+
+	public int getAvgSpeed() {
+		return avgSpeed;
+	}
+
+	public void setAvgSpeed(int avgSpeed) {
+		this.avgSpeed = avgSpeed;
+	}
+
+	public int getSpeedNum() {
+		return speedNum;
+	}
+
+	public void setSpeedNum(int speedNum) {
+		this.speedNum = speedNum;
+	}
+
+	public int getMaxSpeed() {
+		return maxSpeed;
+	}
+
+	public void setMaxSpeed(int maxSpeed) {
+		this.maxSpeed = maxSpeed;
+	}
+
+	public int getMinSpeed() {
+		return minSpeed;
+	}
+
+	public void setMinSpeed(int minSpeed) {
+		this.minSpeed = minSpeed;
 	}
 }

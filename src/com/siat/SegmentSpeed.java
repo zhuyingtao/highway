@@ -3,7 +3,6 @@ package com.siat;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,13 +10,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.siat.db.DBService;
+
 /**
  * @ClassName SpeedAlgorithm
  * @Description TODO
  * @author Zhu Yingtao
  * @date 2014年12月16日 下午3:12:33
  */
-public class SpeedAlgorithm {
+public class SegmentSpeed {
 
 	private DBService db = null;
 	private String startTimeStr = null;
@@ -29,43 +30,50 @@ public class SpeedAlgorithm {
 	private int lastRSid = 0;
 	private ArrayList<RoadSegment> forwardRS;
 	private ArrayList<RoadSegment> reverseRS;
+
 	private ArrayList<RoadSection> forwardRSe;
 	private ArrayList<RoadSection> reverseRSe;
 
 	private SimpleDateFormat sdf = null;
-	private DecimalFormat df = null;
 
-	private boolean direction;
+	private boolean isForward; // 正向或者逆向行驶
 
 	private Logger logger = null;
 
-	private int matchesNum = 0;
-	private int newNum = 0;
-	private int sameNum = 0;
+	private int newNum = 0; // 新添加进数据池的数目
+	private int matchesNum = 0; // 与数据池中数据匹配的数目
+	private int sameNum = 0; // 与数据池中数据处于同一路段数目
+	private int computeNum = 0; // 与数据池中数据不处于同一路段数目
 
-	public SpeedAlgorithm(String startTimeStr) {
+	public SegmentSpeed(String startTimeStr) {
 		// TODO Auto-generated constructor stub
 		this.db = new DBService();
 		this.startTimeStr = startTimeStr;
 		this.sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		this.df = new DecimalFormat("0.0");
 		this.logger = DataLogger.getLogger();
 		this.initialRoadSegments();
 		this.initialRoadSections();
 	}
 
+	// Logger数据重置清零
+	public void clearLogger() {
+		newNum = 0;
+		matchesNum = 0;
+		sameNum = 0;
+		computeNum = 0;
+	}
+
 	public void computeAvgSpeed(int intervalTime) {
 		// 1. 从数据库中根据指定时间间隔批量得到一批数据
 		ArrayList<UserData> nowData = this.getUserData(intervalTime);
+		// 第一批数据，初始化userDataPool，然后返回
 		if (userDataPool == null) {
-			// 第一批数据，初始化userDataPool
 			userDataPool = nowData;
 			return;
 		}
 		logger.info("data size : user_data_pool -> " + userDataPool.size()
 				+ " , now_data -> " + nowData.size());
 
-		int computeNum = 0;
 		for (int i = 0; i < nowData.size(); i++) {
 			// 2. 用userDataPool暂存上一批的数据，将最新一批的数据与上一批数据比较，
 			// 如果车辆id匹配，则得出时间距离差，算出每一辆车的平均速度，然后更新数据；
@@ -76,26 +84,28 @@ public class SpeedAlgorithm {
 				continue;
 
 			// 3. 将计算出的车辆速度补足到经过的每一个路段区间中
-			boolean isForward = this.direction;
+			int large = -1, small = -1;
 			if (isForward) {
-				// ------- < or <=
-				for (int j = lastRSid; j <= nowRSid; j++) {
-					forwardRS.get(j).addSpeed(speed);
-				}
+				small = lastRSid;
+				large = nowRSid;
 			} else {
-				for (int j = nowRSid; j <= lastRSid; j++) {
-					reverseRS.get(j).addSpeed(speed);
-				}
+				small = nowRSid;
+				large = lastRSid;
+			}
+			// < or <= ?
+			for (int j = small; j <= large; j++) {
+				RoadSegment rs = isForward ? (forwardRS.get(j)) : (reverseRS
+						.get(j));
+				rs.addSpeed(speed);
+				if (j == nowRSid)
+					rs.addReal();
 			}
 			computeNum++;
 		}
 		logger.info("========= in one batch : new_add = " + newNum
 				+ " , matches = " + matchesNum + " { in_same_segment = "
 				+ sameNum + " , compute = " + computeNum + " }");
-		// 重置清零
-		newNum = 0;
-		matchesNum = 0;
-		sameNum = 0;
+		this.clearLogger();
 
 		// 4. 计算每一个路段区间的平均速度，分双向，并打印输出
 		this.computeRoadSpeed(forwardRS);
@@ -104,6 +114,7 @@ public class SpeedAlgorithm {
 		this.computeSectionSpeed(forwardRSe);
 		this.computeSectionSpeed(reverseRSe);
 		this.dumpRoadSpeeds();
+		this.storeData();
 
 		// 5. 维护UserDataPool,去除长时间未出现的数据。
 		if (cachedTime >= Configuration.CACHE_TIME) {
@@ -120,8 +131,8 @@ public class SpeedAlgorithm {
 		if (index >= 0) {
 			matchesNum++;
 			UserData lastUd = userDataPool.get(index);
-			direction = this.getDirection(nowUd, lastUd);
-			double distance = this.getDistance(direction);
+			isForward = this.getDirection(nowUd, lastUd);
+			double distance = this.getDistance(isForward);
 			double time = this.getIntervalTime(nowUd, lastUd);
 			// userDataPool更新要提前，否则可能因提前return无法更新
 			userDataPool.set(index, nowUd);
@@ -135,9 +146,8 @@ public class SpeedAlgorithm {
 				logger.warning("illegal speed : d = " + distance + ", t = "
 						+ time + ", s = " + speed);
 			}
-
-		} else {
 			// 没有车辆id匹配
+		} else {
 			newNum++;
 			userDataPool.add(nowUd);
 		}
@@ -149,6 +159,7 @@ public class SpeedAlgorithm {
 			RoadSegment rs = list.get(i);
 			rs.computeAvgSpeed();
 			rs.computeFilterAvgSpeed();
+			rs.genAvgSpeedStr(startTimeStr);
 		}
 	}
 
@@ -158,8 +169,12 @@ public class SpeedAlgorithm {
 			int start = rs.startNode.cellId;
 			int end = rs.endNode.cellId;
 			int direction = rs.direction;
-			double speed = 0;
+
+			int speed = 0;
+			int speedNum = 0;
 			int count = 0;
+			int maxSpeed = 0;
+			int minSpeed = 1000;
 
 			int startIndex = -1;
 			int endIndex = -1;
@@ -175,18 +190,33 @@ public class SpeedAlgorithm {
 					break;
 			}
 			if (direction == 1) {
+				// forward方向
 				for (int j = startIndex; j <= endIndex; j++) {
-					speed += forwardRS.get(j).getAvgSpeed();
+					RoadSegment segment = forwardRS.get(j);
+					speed += segment.getAvgSpeed();
+					speedNum += segment.getRealNum();
+					int max = segment.getMaxSpeed();
+					int min = segment.getMinSpeed();
+					if (maxSpeed < max)
+						maxSpeed = max;
+					if (minSpeed > min)
+						minSpeed = min;
 					count++;
 				}
 			} else {
+				// reverse方向
 				for (int j = startIndex; j <= endIndex; j++) {
 					speed += reverseRS.get(j).getAvgSpeed();
+					speedNum += reverseRS.get(j).getRealNum();
 					count++;
 				}
 			}
+			// 此处只算的平均速度，暂时没有加权
 			speed = speed / count;
-			rs.speed = speed;
+			rs.avgSpeed = speed;
+			rs.speedNum = speedNum;
+			rs.maxSpeed = maxSpeed;
+			rs.minSpeed = minSpeed;
 		}
 	}
 
@@ -194,31 +224,46 @@ public class SpeedAlgorithm {
 		BufferedWriter bw = null;
 		try {
 			bw = new BufferedWriter(new FileWriter("speeds.txt", true));
+
+			// 按时间批次输出所有路段速度信息
 			bw.write("=======Time : " + startTimeStr + " =====\n");
 			for (int i = 0; i < forwardRS.size(); i++) {
 				StringBuffer str = new StringBuffer();
 				RoadSegment rs = forwardRS.get(i);
 				str.append("@" + rs.id + " --- ");
-				str.append(df.format(rs.getAvgSpeed()) + " & "
-						+ df.format(rs.getFilterAvgSpeed()));
+				str.append(Math.round(rs.getAvgSpeed()) + " & "
+						+ Math.round(rs.getFilterAvgSpeed()));
 				// 清空speed表，以便下次使用
 				rs.clear();
 				rs = reverseRS.get(i);
-				str.append("\t||\t" + df.format(rs.getAvgSpeed()) + " & "
-						+ df.format(rs.getFilterAvgSpeed()) + "\n");
+				str.append("\t||\t" + Math.round(rs.getAvgSpeed()) + " & "
+						+ Math.round(rs.getFilterAvgSpeed()) + "\n");
 				bw.write(str.toString());
 				// 清空speed表，以便下次使用
 				rs.clear();
+			}
+
+			// 按路段输出所有批次速度信息
+			for (int i = 0; i < forwardRS.size(); i++) {
+				RoadSegment rs = forwardRS.get(i);
+				String str = rs.dumpAvgSpeedStr();
+				bw.write("============= " + rs.id + " ================\n");
+				bw.write(str + "\n");
+				rs = reverseRS.get(i);
+				str = rs.dumpAvgSpeedStr();
+				bw.write(str + "\n");
 			}
 
 			for (int i = 0; i < forwardRSe.size(); i++) {
 				StringBuffer str = new StringBuffer();
 				RoadSection rs = forwardRSe.get(i);
 				str.append("@" + rs.id + " : " + rs.startNode.roadNodeName
-						+ " --- " + rs.endNode.roadNodeName + " ");
-				str.append(df.format(rs.speed));
+						+ " --- " + rs.endNode.roadNodeName + "\n");
+				str.append("speed = " + Math.round(rs.avgSpeed) + " , num = "
+						+ rs.speedNum);
 				rs = reverseRSe.get(i);
-				str.append("\t||\t" + df.format(rs.speed) + "\n");
+				str.append("\t||\tspeed = " + Math.round(rs.avgSpeed)
+						+ " , num = " + rs.speedNum + "\n");
 				bw.write(str.toString());
 			}
 
@@ -233,6 +278,7 @@ public class SpeedAlgorithm {
 
 	public void filterUserDataPool() {
 		Date nowDate = null;
+		int removedNum = 0;
 		try {
 			nowDate = sdf.parse(startTimeStr);
 		} catch (ParseException e) {
@@ -245,10 +291,13 @@ public class SpeedAlgorithm {
 			double interval = Math.abs(nowDate.getTime() - udDate.getTime()) / 1000;
 			if (interval > Configuration.CACHE_TIME) {
 				userDataPool.remove(i);
+				removedNum++;
 				System.out.println("remove dead data --> " + ud.getTmsi()
 						+ " @ " + nowDate + " - " + udDate);
 			}
 		}
+		logger.info(startTimeStr + "========== removed [" + removedNum
+				+ "] dead car !");
 	}
 
 	public boolean getDirection(UserData nowUd, UserData lastUd) {
@@ -299,9 +348,16 @@ public class SpeedAlgorithm {
 				.getTime()) / (1000.0 * 60 * 60);
 	}
 
+	public ArrayList<RoadSegment> getRoadSegmentList(boolean isForward) {
+		if (isForward)
+			return this.forwardRS;
+		else
+			return this.reverseRS;
+	}
+
 	/**
 	 * @Title: getUserData
-	 * @Description: 从数据库中获取一批数据
+	 * @Description: 从数据库中获取一批次数据
 	 * @param intervalTime
 	 */
 	public ArrayList<UserData> getUserData(int intervalTime) {
@@ -322,12 +378,6 @@ public class SpeedAlgorithm {
 		return userDatas;
 	}
 
-	public void initialRoadSegments() {
-		// now, just read info from file;
-		this.forwardRS = new CellStationInfo().readFromFile("data/路段.txt");
-		this.reverseRS = new CellStationInfo().readFromFile("data/路段.txt");
-	}
-
 	public void initialRoadSections() {
 		ArrayList<RoadSection> rss = RoadSection.initial();
 		this.forwardRSe = new ArrayList<>();
@@ -338,5 +388,16 @@ public class SpeedAlgorithm {
 		for (int i = 24; i < 48; i++) {
 			reverseRSe.add(rss.get(i));
 		}
+	}
+
+	public void initialRoadSegments() {
+		// 暂时处理:正向逆向路段对象完全一样(从0到n);
+		this.forwardRS = RoadSegment.readFromFile("data/路段.txt");
+		this.reverseRS = RoadSegment.readFromFile("data/路段.txt");
+	}
+
+	public void storeData() {
+		db.insertSectionSpeeds(forwardRSe, startTimeStr);
+		db.insertSectionSpeeds(reverseRSe, startTimeStr);
 	}
 }

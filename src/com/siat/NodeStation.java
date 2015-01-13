@@ -2,7 +2,7 @@ package com.siat;
 
 /**
  * @ClassName NodeStation
- * @Description TODO
+ * @Description 服务区节点信息
  * @author Zhu Yingtao
  * @date 2014年12月30日 上午11:09:26
  */

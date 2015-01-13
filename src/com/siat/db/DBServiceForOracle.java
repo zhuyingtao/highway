@@ -1,10 +1,5 @@
-package com.siat;
+package com.siat.db;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,22 +10,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
 
-/**
- * 
- */
+import com.siat.Configuration;
+import com.siat.DataLogger;
+import com.siat.RoadSection;
+import com.siat.UserData;
 
 /**
- * @ClassName DBService
+ * @ClassName DBServiceForOracle
  * @Description TODO
  * @author Zhu Yingtao
- * @date 2014年12月16日 下午2:52:23
+ * @date 2015年1月12日 下午9:05:27
  */
-public class DBService {
+public class DBServiceForOracle {
 
-	String driver = "com.mysql.jdbc.Driver";
-	String url = "jdbc:mysql://localhost:3306/highway";
-	String user = "root";
-	String password = "123456";
+	String driver = "oracle.jdbc.driver.OracleDriver";
+	String url = "jdbc:oracle:thin:@172.21.5.232:1521:orcl";
+	String user = "hw";
+	String password = "hw";
 
 	Connection conn = null;
 	PreparedStatement pstm = null;
@@ -38,17 +34,18 @@ public class DBService {
 	/**
 	 * 
 	 */
-	public DBService() {
+	public DBServiceForOracle() {
 		// TODO Auto-generated constructor stub
-		this.getConnection();
+		conn = this.getConnection();
 	}
 
 	/**
 	 * @Title: getConnect
 	 * @Description: 连接数据库
 	 */
-	private void getConnection() {
+	private Connection getConnection() {
 		// TODO Auto-generated method stub
+		Connection conn = null;
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, user, password);
@@ -59,6 +56,7 @@ public class DBService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return conn;
 	}
 
 	/**
@@ -66,44 +64,31 @@ public class DBService {
 	 * @Description: 执行SQL脚本文件
 	 * @param sqlPath
 	 */
-	public void executeSQL(String sqlPath) {
+	public void executeSQL() {
 		// TODO Auto-generated method stub
 		try {
 			Statement stm = conn.createStatement();
-			// "source" doesn't work here?
-			// stm.execute("source " + sqlPath + ";");
+			String sql = "CREATE TABLE IF NOT EXISTS section_speeds"
+					+ "(id NUMBER,name VARCHAR2(100),time DATE,"
+					+ "direction NUMBER,max_speed NUMBER,min_speed NUMBER,"
+					+ "avg_speed NUMBER,num NUMBER)";
 
-			BufferedReader br = new BufferedReader(new FileReader(new File(
-					sqlPath)));
-			String sql = "";
-			String temp = br.readLine();
-			while (temp != null) {
-				sql += temp;
-				if (sql.endsWith(";")) {
-					System.out.println(sql);
-					if (!sql.startsWith("#"))
-						stm.execute(sql);
-					sql = "";
-				}
-				temp = br.readLine();
+			stm.execute(sql);
+			ResultSet rs = stm.executeQuery("select * from section_speeds");
+			while (rs.next()) {
+				System.out.println(rs.getString(0));
 			}
-			br.close();
-			stm.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * @Title: executeSQL
-	 * @Description: TODO
+	 * @Title: selectUserData
+	 * @Description: 从数据库中获取数据
+	 * @param start
+	 * @param end
+	 * @return
 	 */
 	public ArrayList<UserData> selectUserData(String start, String end) {
 		// TODO Auto-generated method stub
@@ -161,10 +146,10 @@ public class DBService {
 		}
 		return userDatas;
 	}
-
+	
 	public static void main(String[] args) {
 		// new DBService().executeSQL("db/create.sql");
 		// new DBService().executeSQL("db/load.sql");
-		// DBService db = new DBService();
+		new DBServiceForOracle().executeSQL();
 	}
 }

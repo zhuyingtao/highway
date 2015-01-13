@@ -15,7 +15,7 @@ public class Server {
 
 	public void work() {
 		Logger logger = DataLogger.getLogger();
-		SpeedAlgorithm sa = new SpeedAlgorithm(Configuration.START_TIME);
+		SegmentSpeed sa = new SegmentSpeed(Configuration.START_TIME);
 		int i = 0;
 		while (true) {
 			logger.info("==================== Number : " + i + " start");
@@ -40,5 +40,4 @@ public class Server {
 		// TODO Auto-generated method stub
 		new Server().work();
 	}
-
 }

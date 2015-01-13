@@ -1,12 +1,8 @@
 package com.siat;
 
 /**
- * 
- */
-
-/**
  * @ClassName CellStation
- * @Description TODO
+ * @Description 基站信息
  * @author Zhu Yingtao
  * @date 2014年12月16日 下午2:54:05
  */

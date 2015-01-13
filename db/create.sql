@@ -51,4 +51,17 @@ CREATE TABLE IF NOT EXISTS section(
 	length		DOUBLE
 );
 
+CREATE TABLE IF NOT EXISTS section_speeds(
+	id INT,
+	name VARCHAR(100),
+	time DATETIME,
+	direction INT,
+	max_speed INT,
+	min_speed INT,
+	avg_speed INT,
+	num INT
+);
+
+
+
 
