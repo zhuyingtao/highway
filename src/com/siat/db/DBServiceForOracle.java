@@ -68,10 +68,10 @@ public class DBServiceForOracle {
 		// TODO Auto-generated method stub
 		try {
 			Statement stm = conn.createStatement();
-			String sql = "CREATE TABLE IF NOT EXISTS section_speeds"
-					+ "(id NUMBER,name VARCHAR2(100),time DATE,"
-					+ "direction NUMBER,max_speed NUMBER,min_speed NUMBER,"
-					+ "avg_speed NUMBER,num NUMBER)";
+			String sql = "CREATE TABLE section_speeds(id NUMBER(10));";
+//					+ "(id NUMBER,name VARCHAR2(50),time DATE,"
+//					+ "direction NUMBER,max_speed NUMBER,min_speed NUMBER,"
+//					+ "avg_speed NUMBER,num NUMBER);";
 
 			stm.execute(sql);
 			ResultSet rs = stm.executeQuery("select * from section_speeds");
@@ -146,7 +146,7 @@ public class DBServiceForOracle {
 		}
 		return userDatas;
 	}
-	
+
 	public static void main(String[] args) {
 		// new DBService().executeSQL("db/create.sql");
 		// new DBService().executeSQL("db/load.sql");

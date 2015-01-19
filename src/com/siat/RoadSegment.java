@@ -53,6 +53,7 @@ public class RoadSegment {
 		}
 		return rss;
 	}
+
 	int id; // 自定义编号
 	int startStation;
 	int endStation;
@@ -66,7 +67,7 @@ public class RoadSegment {
 	private double filterAvgSpeed;
 	private double maxSpeed;
 
-	private double minSpeed = 1000;
+	private double minSpeed = 100;
 	private int realNum; // 在当前路段上的车辆数
 	// 保存一批次数据中当前路段上每一辆车的速度
 	List<Double> speeds = new ArrayList<Double>();
@@ -99,7 +100,7 @@ public class RoadSegment {
 
 	public void addSpeed(double speed) {
 		speeds.add(speed);
-		if (maxSpeed < speed)
+		if (maxSpeed < speed && maxSpeed < 150)
 			maxSpeed = speed;
 		if (minSpeed > speed)
 			minSpeed = speed;

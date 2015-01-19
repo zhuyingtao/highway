@@ -35,6 +35,7 @@ public class DBService {
 
 	Connection conn = null;
 	PreparedStatement pstm = null;
+	Logger logger = null;
 
 	/**
 	 * 
@@ -42,6 +43,7 @@ public class DBService {
 	public DBService() {
 		// TODO Auto-generated constructor stub
 		this.getConnection();
+		this.logger = DataLogger.getLogger();
 	}
 
 	/**
@@ -115,13 +117,13 @@ public class DBService {
 				pstm.setInt(8, rs.getSpeedNum());
 				pstm.execute();
 			}
-			Logger logger = DataLogger.getLogger();
 			logger.info("insert into databases.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * @Title: selectUserData
 	 * @Description: 从数据库中获取数据
@@ -175,7 +177,6 @@ public class DBService {
 					userDatas.add(ud);
 				}
 			}
-			Logger logger = DataLogger.getLogger();
 			logger.info("select from database : all-> " + allNum + ", same-> "
 					+ filterNum + " , unused->" + unusedNum
 					+ " , remaining -> " + (allNum - filterNum - unusedNum));
