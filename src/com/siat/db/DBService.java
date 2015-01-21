@@ -16,9 +16,9 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import com.siat.Configuration;
-import com.siat.DataLogger;
-import com.siat.RoadSection;
-import com.siat.UserData;
+import com.siat.ds.RoadSection;
+import com.siat.ds.UserData;
+import com.siat.util.DataLogger;
 
 /**
  * @ClassName DBService
