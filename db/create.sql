@@ -62,6 +62,50 @@ CREATE TABLE IF NOT EXISTS section_speeds(
 	num INT
 );
 
+CREATE TABLE IF NOT EXISTS station_speeds(
+	id INT,
+	startStation VARCHAR(100),
+	time DATETIME,
+	direction INT,
+	max_speed INT,
+	min_speed INT,
+	avg_speed INT,
+	fileter_speed INT,
+	num INT
+);
+
+CREATE TABLE IF NOT EXISTS gps_data(
+	altitude INT,
+	gisX DOUBLE,
+	gisY DOUBLE,
+	goAndOut INT,
+	mileage INT,
+	speed INT,
+	iMei VARCHAR(20),
+	locateTime DATETIME,
+	plateNumber VARCHAR(20),
+	recordTime DATETIME,
+	status VARCHAR(5),
+	tranStatus VARCHAR(5)
+);
+
+CREATE TABLE IF NOT EXISTS gps_data2(
+	altitude INT,
+	gisX DOUBLE,
+	gisY DOUBLE,
+	goAndOut INT,
+	mileage INT,
+	speed INT,
+	iMei VARCHAR(20),
+	locateTime DATETIME,
+	plateNumber VARCHAR(20),
+	poeDesc VARCHAR(200),
+	recordTime DATETIME,
+	status VARCHAR(5),
+	tranStatus VARCHAR(5)
+);
+
+
 
 
 

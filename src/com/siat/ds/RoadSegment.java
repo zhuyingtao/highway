@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.siat.util.DataLogger;
+import com.siat.msg.util.DataLogger;
 
 /**
  * @ClassName RoadSegment
@@ -214,6 +214,14 @@ public class RoadSegment {
 
 	public List<Integer> getSpeeds() {
 		return speeds;
+	}
+
+	public String getStarts() {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < starts.size(); i++) {
+			sb.append(starts.get(i).getCellId() + ",");
+		}
+		return sb.deleteCharAt(sb.length() - 1).toString();
 	}
 
 	public void setAvgSpeedStrs(List<String> avgSpeedStrs) {
