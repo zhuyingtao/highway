@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.siat.ds.RoadSection;
-import com.siat.ds.RoadSegment;
+import com.siat.ds.NodeSegment;
+import com.siat.ds.StationSegment;
 import com.siat.msg.Configuration;
 import com.siat.msg.UserData;
 import com.siat.msg.db.DBService;
@@ -27,17 +27,19 @@ public class SegmentSpeed {
 
 	private DBService db = null;
 	private String startTimeStr = null;
-	private ArrayList<UserData> userDataPool = null;
+	private List<UserData> userDataPool = null;
 
 	private int cachedTime = 0;
 
-	private int nowRSid = 0;
-	private int lastRSid = 0;
-	private ArrayList<RoadSegment> forwardRS;
-	private ArrayList<RoadSegment> reverseRS;
+	private int nowStationId = 0;
+	private int lastStationId = 0;
 
-	private ArrayList<RoadSection> forwardRSe;
-	private ArrayList<RoadSection> reverseRSe;
+	// Lists for StationSegment and NodeSegment stored the computed speed and
+	// some other information;
+	private ArrayList<StationSegment> forwardStations;
+	private ArrayList<StationSegment> reverseStations;
+	private ArrayList<NodeSegment> forwardNodes;
+	private ArrayList<NodeSegment> reverseNodes;
 
 	private SimpleDateFormat sdf = null;
 
@@ -50,6 +52,9 @@ public class SegmentSpeed {
 	private int sameNum = 0; // 与数据池中数据处于同一路段数目
 	private int computeNum = 0; // 与数据池中数据不处于同一路段数目
 
+	// used for history speed, marked the index of one batch data;
+	private int endIndex = 0;
+
 	public SegmentSpeed(String startTimeStr) {
 		// TODO Auto-generated constructor stub
 		this.db = new DBService();
@@ -60,17 +65,177 @@ public class SegmentSpeed {
 		this.initialRoadSections();
 	}
 
-	// Logger数据重置清零
-	public void clearLogger() {
+	// clear the flags used for logger;
+	public void clearFlags() {
 		newNum = 0;
 		matchesNum = 0;
 		sameNum = 0;
 		computeNum = 0;
 	}
 
+	public boolean checkUpdate() {
+		boolean updated = false;
+		return updated;
+	}
+
+	/**
+	 * @Title: getOneBatchData
+	 * @Description: get the data of one batch from the all data
+	 * @param allData
+	 * @param startIndex
+	 * @return
+	 */
+	public List<UserData> getOneBatchData(List<UserData> allData, int startIndex) {
+		UserData ud = allData.get(startIndex);
+		List<UserData> batchData = new ArrayList<UserData>();
+		// find the end index of one batch based on interval time;
+		endIndex = startIndex;
+		int count = 0; // count the distinct data num;
+		while (endIndex < allData.size()) {
+			endIndex++;
+			UserData ud1 = allData.get(endIndex);
+			if (ud1.getTimestamp().getTime() - ud.getTimestamp().getTime() > Configuration.INTERVAL_TIME * 1000) {
+				break;
+			}
+			// at here we use the OLDEST DATA of the same user data; so the
+			// speed may be SMALLER than before;
+			int index = batchData.indexOf(ud1);
+			if (index < 0) {
+				batchData.add(ud1);
+				count++;
+			}
+		}
+		logger.info("all data size : " + allData.size() + ", one batch : "
+				+ startIndex + ", " + endIndex + ", count = " + count);
+		return batchData;
+	}
+
+	/**
+	 * @Title: computeHistorySpeed
+	 * @Description: TODO
+	 * @param startTime
+	 * @param endTime
+	 * @param rate
+	 */
+	public void computeHistorySpeed(String startTime, String endTime, int rate) {
+		// 1. get all the history data from databases into memory according to
+		// the startTime and endTime;
+
+		List<UserData> allData = this.getHistoryUserData(startTime, endTime);
+		this.userDataPool = null;
+		int startIndex = 0;
+		int batchNum = 0;
+		// 2. compute the average speed of every batch;
+		logger.info("**** All batches begin to compute ... ");
+		while (startIndex < allData.size()) {
+			// before every computing, check whether the request has been
+			// updated;
+			boolean updated = this.checkUpdate();
+			if (updated) {
+				logger.info("New request has coming ... now return ");
+				return;
+			}
+			// if not updated, then begin to compute;
+			List<UserData> batchData = this
+					.getOneBatchData(allData, startIndex);
+			this.computeAvgSpeed(batchData);
+			startIndex = endIndex;
+			batchNum++;
+		}
+		logger.info("**** All batches have finished ... count : " + batchNum);
+	}
+
+	/**
+	 * @Title: computeAvgSpeed
+	 * @Description: compute the average speed of every batch;
+	 * @param batchData
+	 */
+	public void computeAvgSpeed(List<UserData> batchData) {
+		// if it is the first batch : initial the userDataPool, then return.
+		// useDataPool is a list that contains the UserData of last batchData or
+		// unused; it will be refreshed in a specific time to keep size.
+		if (userDataPool == null) {
+			userDataPool = batchData;
+			return;
+		}
+
+		logger.info("data size : user_data_pool -> " + userDataPool.size()
+				+ " , batch_data -> " + batchData.size());
+
+		// compute every UserData in the batchData with UserDataPool;
+		for (int i = 0; i < batchData.size(); i++) {
+			// if the car data matches, then compute the interval time and
+			// distance, then compute the speed of this car, and update the data
+			// of this car in the UserDataPool;
+			// if not, then just insert the car data into the UserDataPool;
+			int speed = -1;
+			UserData nowUd = batchData.get(i);
+			int index = userDataPool.indexOf(nowUd);
+			if (index >= 0) {
+				matchesNum++;
+				UserData lastUd = userDataPool.get(index);
+				speed = (int) this.computeOneSpeed(nowUd, lastUd);
+				userDataPool.set(index, nowUd);
+			} else {
+				newNum++;
+				userDataPool.add(nowUd);
+			}
+			// if not matches or the speed is illegal,then next data;
+			if (speed == -1)
+				continue;
+
+			// add the speed into every Station Segment that related;
+			this.addSpeed(speed);
+
+		}
+		logger.info("========= in one batch : new_add = " + newNum
+				+ " , matches = " + matchesNum + " { in_same_segment = "
+				+ sameNum + " , compute = " + computeNum + " }");
+		this.clearFlags();
+
+		// compute every Station Segment's speed;
+		this.computeStationSpeed(forwardStations);
+		this.computeStationSpeed(reverseStations);
+		// compute every Node Segment's speed;
+		this.computeSectionSpeed(forwardNodes);
+		this.computeSectionSpeed(reverseNodes);
+		// dump result into text;
+		this.dumpRoadSpeeds();
+		// store result into database;
+		// this.storeData();
+
+		// 5. 维护UserDataPool,去除长时间未出现的数据。
+		if (cachedTime >= Configuration.CACHE_TIME) {
+			filterUserDataPool();
+			cachedTime = 0;
+		}
+		cachedTime += Configuration.INTERVAL_TIME;
+	}
+
+	public void addSpeed(int speed) {
+		// determine the start and the end;
+		int large = -1, small = -1;
+		if (isForward) {
+			small = lastStationId;
+			large = nowStationId;
+		} else {
+			small = nowStationId;
+			large = lastStationId;
+		}
+		// < or <= ?
+		for (int j = small; j <= large; j++) {
+			StationSegment rs = isForward ? (forwardStations.get(j))
+					: (reverseStations.get(j));
+			rs.addSpeed(speed);
+			if (j == nowStationId)
+				rs.addReal();
+		}
+		computeNum++;
+	}
+
 	public void computeAvgSpeed(int intervalTime) {
 		// 1. 从数据库中根据指定时间间隔批量得到一批数据
-		ArrayList<UserData> nowData = this.getUserData(intervalTime);
+		List<UserData> nowData = this.getUserData(intervalTime);
 		// 第一批数据，初始化userDataPool，然后返回
 		if (userDataPool == null) {
 			userDataPool = nowData;
@@ -83,26 +248,37 @@ public class SegmentSpeed {
 		for (int i = 0; i < nowData.size(); i++) {
 			// 如果车辆id匹配，则得出时间距离差，算出每一辆车的平均速度，然后更新userDataPool中的数据;
 			// 如果没有匹配车辆，则将新车辆直接插入userDataPool中。
+			int speed = -1;
 			UserData nowUd = nowData.get(i);
-			int speed = (int) this.computeOneSpeed(nowUd);
+			int index = userDataPool.indexOf(nowUd);
+			if (index >= 0) {
+				matchesNum++;
+				UserData lastUd = userDataPool.get(index);
+				speed = (int) this.computeOneSpeed(nowUd, lastUd);
+				userDataPool.set(index, nowUd);
+			} else {
+				newNum++;
+				userDataPool.add(nowUd);
+			}
+			// if not matches or the speed is illegal,then next data;
 			if (speed == -1)
 				continue;
 
 			// 3. 将计算出的车辆速度补足到经过的每一个路段区间中
 			int large = -1, small = -1;
 			if (isForward) {
-				small = lastRSid;
-				large = nowRSid;
+				small = lastStationId;
+				large = nowStationId;
 			} else {
-				small = nowRSid;
-				large = lastRSid;
+				small = nowStationId;
+				large = lastStationId;
 			}
 			// < or <= ?
 			for (int j = small; j <= large; j++) {
-				RoadSegment rs = isForward ? (forwardRS.get(j)) : (reverseRS
-						.get(j));
+				StationSegment rs = isForward ? (forwardStations.get(j))
+						: (reverseStations.get(j));
 				rs.addSpeed(speed);
-				if (j == nowRSid)
+				if (j == nowStationId)
 					rs.addReal();
 			}
 			computeNum++;
@@ -110,14 +286,14 @@ public class SegmentSpeed {
 		logger.info("========= in one batch : new_add = " + newNum
 				+ " , matches = " + matchesNum + " { in_same_segment = "
 				+ sameNum + " , compute = " + computeNum + " }");
-		this.clearLogger();
+		this.clearFlags();
 
 		// 4. 计算每一个路段区间的平均速度，分双向，并打印输出
-		this.computeRoadSpeed(forwardRS);
-		this.computeRoadSpeed(reverseRS);
+		this.computeStationSpeed(forwardStations);
+		this.computeStationSpeed(reverseStations);
 		// 另：计算每一个服务区间的平均速度，分双向，并打印输出
-		this.computeSectionSpeed(forwardRSe);
-		this.computeSectionSpeed(reverseRSe);
+		this.computeSectionSpeed(forwardNodes);
+		this.computeSectionSpeed(reverseNodes);
 		this.dumpRoadSpeeds();
 		this.storeData();
 
@@ -129,42 +305,30 @@ public class SegmentSpeed {
 		cachedTime += intervalTime;
 	}
 
-	public double computeOneSpeed(UserData nowUd) {
-		double speed = -1;
-		int index = userDataPool.indexOf(nowUd);
-		// 有车辆id匹配
-		if (index >= 0) {
-			matchesNum++;
-			UserData lastUd = userDataPool.get(index);
-			isForward = this.getDirection(nowUd, lastUd);
-			double distance = this.getDistance(isForward);
-			double time = this.getIntervalTime(nowUd, lastUd);
-			// userDataPool更新要提前，否则可能因提前return无法更新
-			userDataPool.set(index, nowUd);
-			if (distance == -1) {
-				sameNum++;
-				return -1;
-			}
+	public int computeOneSpeed(UserData nowUd, UserData lastUd) {
+		int speed = -1;
+		isForward = this.getDirection(nowUd, lastUd);
+		double time = this.getIntervalTime(nowUd, lastUd);
+		double distance = this.getDistance(isForward);
 
-			speed = distance / time;
+		if (distance == -1) {
+			sameNum++;
+		} else {
+			speed = (int) (distance / time);
 			// 速度超出正常范围，则丢弃，返回-1
-			if (speed < 0 || speed > 150) {
-//				logger.warning("illegal speed : d = " + distance + ", t = "
-//						+ time + ", s = " + speed + "\t , " + nowUd.getCellid()
-//						+ "\t" + lastUd.getCellid());
+			if (speed < 0 || speed > 250) {
+				logger.warning("illegal speed : d = " + distance + ", t = "
+						+ time + ", s = " + speed + "\t , " + nowUd.getCellid()
+						+ "\t" + lastUd.getCellid());
 				speed = -1;
 			}
-			// 没有车辆id匹配
-		} else {
-			newNum++;
-			userDataPool.add(nowUd);
 		}
 		return speed;
 	}
 
-	public void computeRoadSpeed(List<RoadSegment> list) {
+	public void computeStationSpeed(List<StationSegment> list) {
 		for (int i = 0; i < list.size(); i++) {
-			RoadSegment rs = list.get(i);
+			StationSegment rs = list.get(i);
 			rs.computeAvgSpeed();
 			rs.computeFilterAvgSpeed();
 			logger.info(" ***** " + rs.id + "\t speeds : "
@@ -175,9 +339,9 @@ public class SegmentSpeed {
 		}
 	}
 
-	public void computeSectionSpeed(List<RoadSection> list) {
+	public void computeSectionSpeed(List<NodeSegment> list) {
 		for (int i = 0; i < list.size(); i++) {
-			RoadSection rs = list.get(i);
+			NodeSegment rs = list.get(i);
 			int start = rs.startNode.cellId;
 			int end = rs.endNode.cellId;
 			int direction = rs.direction;
@@ -190,8 +354,8 @@ public class SegmentSpeed {
 
 			int startIndex = -1;
 			int endIndex = -1;
-			for (int j = 0; j < forwardRS.size(); j++) {
-				RoadSegment rse = forwardRS.get(j);
+			for (int j = 0; j < forwardStations.size(); j++) {
+				StationSegment rse = forwardStations.get(j);
 				// 一个路段可能包含多个（位置相同）的基站
 				if (rse.contains(start))
 					startIndex = j;
@@ -204,7 +368,7 @@ public class SegmentSpeed {
 			if (direction == 1) {
 				// forward方向
 				for (int j = startIndex; j <= endIndex; j++) {
-					RoadSegment segment = forwardRS.get(j);
+					StationSegment segment = forwardStations.get(j);
 					speed += segment.getAvgSpeed();
 					speedNum += segment.getRealNum();
 					int max = segment.getMaxSpeed();
@@ -218,8 +382,8 @@ public class SegmentSpeed {
 			} else {
 				// reverse方向
 				for (int j = startIndex; j <= endIndex; j++) {
-					speed += reverseRS.get(j).getAvgSpeed();
-					speedNum += reverseRS.get(j).getRealNum();
+					speed += reverseStations.get(j).getAvgSpeed();
+					speedNum += reverseStations.get(j).getRealNum();
 					count++;
 				}
 			}
@@ -241,15 +405,15 @@ public class SegmentSpeed {
 
 			// 按时间批次输出所有路段速度信息
 			bw.write("=======Time : " + startTimeStr + " =====\n");
-			for (int i = 0; i < forwardRS.size(); i++) {
+			for (int i = 0; i < forwardStations.size(); i++) {
 				StringBuffer str = new StringBuffer();
-				RoadSegment rs = forwardRS.get(i);
+				StationSegment rs = forwardStations.get(i);
 				str.append("@" + rs.id + " --- ");
 				str.append(Math.round(rs.getAvgSpeed()) + " & "
 						+ Math.round(rs.getFilterAvgSpeed()));
 				// 清空speed表，以便下次使用
 				rs.clear();
-				rs = reverseRS.get(i);
+				rs = reverseStations.get(i);
 				str.append("\t||\t" + Math.round(rs.getAvgSpeed()) + " & "
 						+ Math.round(rs.getFilterAvgSpeed()) + "\n");
 				bw.write(str.toString());
@@ -270,14 +434,14 @@ public class SegmentSpeed {
 
 			// 输出区间速度信息
 			bw2.write("=======Time : " + startTimeStr + " =====\n");
-			for (int i = 0; i < forwardRSe.size(); i++) {
+			for (int i = 0; i < forwardNodes.size(); i++) {
 				StringBuffer str = new StringBuffer();
-				RoadSection rs = forwardRSe.get(i);
+				NodeSegment rs = forwardNodes.get(i);
 				str.append("@" + rs.id + " : " + rs.startNode.roadNodeName
 						+ " --- " + rs.endNode.roadNodeName + "\n");
 				str.append("speed = " + Math.round(rs.avgSpeed) + " , num = "
 						+ rs.speedNum);
-				rs = reverseRSe.get(i);
+				rs = reverseNodes.get(i);
 				str.append("\t||\tspeed = " + Math.round(rs.avgSpeed)
 						+ " , num = " + rs.speedNum + "\n");
 				bw2.write(str.toString());
@@ -323,23 +487,23 @@ public class SegmentSpeed {
 	public boolean getDirection(UserData nowUd, UserData lastUd) {
 		int nowCellid = nowUd.getCellid();
 		int lastCellid = lastUd.getCellid();
-		nowRSid = -1;
-		lastRSid = -1;
-		for (int i = 0; i < forwardRS.size(); i++) {
-			RoadSegment rs = forwardRS.get(i);
+		nowStationId = -1;
+		lastStationId = -1;
+		for (int i = 0; i < forwardStations.size(); i++) {
+			StationSegment rs = forwardStations.get(i);
 			// 一个路段可能包含多个（位置相同）的基站
 			if (rs.contains(nowCellid))
-				nowRSid = i;
+				nowStationId = i;
 			if (rs.contains(lastCellid))
-				lastRSid = i;
+				lastStationId = i;
 			// 两个位置都已找到，直接跳出
-			if (nowRSid != -1 && lastRSid != -1)
+			if (nowStationId != -1 && lastStationId != -1)
 				break;
 		}
-		if (nowRSid == -1 || lastRSid == -1)
-			logger.severe("===== road segment fault ! " + nowRSid + "\t"
-					+ lastRSid + "\t" + nowCellid + "\t" + lastCellid);
-		if (nowRSid > lastRSid)
+		if (nowStationId == -1 || lastStationId == -1)
+			logger.severe("===== road segment fault ! " + nowStationId + "\t"
+					+ lastStationId + "\t" + nowCellid + "\t" + lastCellid);
+		if (nowStationId > lastStationId)
 			return true;
 		else
 			return false;
@@ -348,16 +512,16 @@ public class SegmentSpeed {
 	public double getDistance(boolean direction) {
 		double distance = 0;
 		// 两次数据处于同一路段，无法计算距离，返回-1
-		if (nowRSid == lastRSid)
+		if (nowStationId == lastStationId)
 			return -1;
 		// 只算基站与基站之间的距离，偏小
 		if (direction == true) {
-			for (int i = lastRSid; i < nowRSid; i++) {
-				distance += forwardRS.get(i).length;
+			for (int i = lastStationId; i < nowStationId; i++) {
+				distance += forwardStations.get(i).length;
 			}
 		} else {
-			for (int i = nowRSid; i < lastRSid; i++) {
-				distance += reverseRS.get(i).length;
+			for (int i = nowStationId; i < lastStationId; i++) {
+				distance += reverseStations.get(i).length;
 			}
 		}
 		return distance;
@@ -368,59 +532,70 @@ public class SegmentSpeed {
 				.getTime()) / (1000.0 * 60 * 60);
 	}
 
-	public ArrayList<RoadSegment> getRoadSegmentList(boolean isForward) {
+	public ArrayList<StationSegment> getRoadSegmentList(boolean isForward) {
 		if (isForward)
-			return this.forwardRS;
+			return this.forwardStations;
 		else
-			return this.reverseRS;
+			return this.reverseStations;
 	}
 
 	/**
 	 * @Title: getUserData
-	 * @Description: 从数据库中获取一批次数据
+	 * @Description: get HISTORY data from databases;
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	public List<UserData> getHistoryUserData(String startTime, String endTime) {
+		List<UserData> userDatas = db.selectHistoryUserData(startTime, endTime);
+		return userDatas;
+	}
+
+	/**
+	 * @Title: getUserData
+	 * @Description: get REAL TIME data from databases;
 	 * @param intervalTime
 	 */
-	public ArrayList<UserData> getUserData(int intervalTime) {
+	public List<UserData> getUserData(int intervalTime) {
 		Date start = null;
 		Date end = null;
 		try {
 			start = sdf.parse(startTimeStr);
-			end = new Date(start.getTime() + 1000 * intervalTime);// 间隔1分钟
+			end = new Date(start.getTime() + 1000 * intervalTime);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String startStr = sdf.format(start);
 		String endStr = sdf.format(end);
-		ArrayList<UserData> userDatas = db.selectUserData(startStr, endStr);
+		List<UserData> userDatas = db.selectUserData(startStr, endStr);
 
 		this.startTimeStr = endStr;
 		return userDatas;
 	}
 
 	public void initialRoadSections() {
-		ArrayList<RoadSection> rss = RoadSection.initial();
-		this.forwardRSe = new ArrayList<>();
-		this.reverseRSe = new ArrayList<>();
+		ArrayList<NodeSegment> rss = NodeSegment.initial();
+		this.forwardNodes = new ArrayList<>();
+		this.reverseNodes = new ArrayList<>();
 		for (int i = 0; i < 24; i++) {
-			forwardRSe.add(rss.get(i));
+			forwardNodes.add(rss.get(i));
 		}
 		for (int i = 24; i < 48; i++) {
-			reverseRSe.add(rss.get(i));
+			reverseNodes.add(rss.get(i));
 		}
 	}
 
 	public void initialRoadSegments() {
 		// 暂时处理:正向逆向路段对象完全一样(从0到n);
-		this.forwardRS = RoadSegment.readFromFile("data/路段.txt");
-		this.reverseRS = RoadSegment.readFromFile("data/路段.txt");
+		this.forwardStations = StationSegment.readFromFile("data/路段.txt");
+		this.reverseStations = StationSegment.readFromFile("data/路段.txt");
 	}
 
 	public void storeData() {
-		db.insertStationSpeeds(forwardRS, startTimeStr, 1);
-		db.insertStationSpeeds(reverseRS, startTimeStr, 2);
-		db.insertSectionSpeeds(forwardRSe, startTimeStr);
-		db.insertSectionSpeeds(reverseRSe, startTimeStr);
-
+		db.insertStationSpeeds(forwardStations, startTimeStr, 1);
+		db.insertStationSpeeds(reverseStations, startTimeStr, 2);
+		db.insertNodeSpeeds(forwardNodes, startTimeStr);
+		db.insertNodeSpeeds(reverseNodes, startTimeStr);
 	}
 }

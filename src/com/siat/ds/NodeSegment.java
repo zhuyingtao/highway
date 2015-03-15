@@ -8,15 +8,15 @@ import java.util.ArrayList;
 
 /**
  * @ClassName Section
- * @Description 服务区与服务区之间的区间 (NodeStation and NodeStation)
+ * @Description 服务区与服务区之间的区间 (Node and Node)
  * @author Zhu Yingtao
  * @date 2014年12月30日 上午10:59:21
  */
-public class RoadSection {
+public class NodeSegment {
 	public int id;
 	String sectionName;
-	public NodeStation startNode;
-	public NodeStation endNode;
+	public Node startNode;
+	public Node endNode;
 	public int direction;
 	double length;
 
@@ -31,7 +31,7 @@ public class RoadSection {
 	 * @param endNode
 	 * @param direction
 	 */
-	public RoadSection(int id, NodeStation startNode, NodeStation endNode,
+	public NodeSegment(int id, Node startNode, Node endNode,
 			int direction) {
 		super();
 		this.id = id;
@@ -40,9 +40,9 @@ public class RoadSection {
 		this.direction = direction;
 	}
 
-	public static ArrayList<RoadSection> initial() {
-		ArrayList<NodeStation> nodes = new ArrayList<>();
-		ArrayList<RoadSection> sections = new ArrayList<>();
+	public static ArrayList<NodeSegment> initial() {
+		ArrayList<Node> nodes = new ArrayList<>();
+		ArrayList<NodeSegment> sections = new ArrayList<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(
 					"data/服务区2.txt"));
@@ -58,7 +58,7 @@ public class RoadSection {
 				double length = Double.parseDouble(parts[9]);
 
 				// 现在只用一个节点测试
-				NodeStation ns = new NodeStation(nodeId, nodeName, cellId,
+				Node ns = new Node(nodeId, nodeName, cellId,
 						length, direction);
 				nodes.add(ns);
 				br.readLine();
@@ -75,10 +75,10 @@ public class RoadSection {
 
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 24; i++) {
-				NodeStation start = nodes.get(i);
-				NodeStation end = nodes.get(i + 1);
+				Node start = nodes.get(i);
+				Node end = nodes.get(i + 1);
 				int direction = (j == 0 ? 1 : 2);
-				RoadSection rs = new RoadSection(i, start, end, direction);
+				NodeSegment rs = new NodeSegment(i, start, end, direction);
 				sections.add(rs);
 			}
 		}
@@ -86,7 +86,7 @@ public class RoadSection {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(RoadSection.initial().size());
+		System.out.println(NodeSegment.initial().size());
 	}
 
 	public int getId() {

@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import com.siat.msg.Configuration;
+
 /**
  * @ClassName Logger
  * @Description ÈÕÖ¾¼ÇÂ¼
@@ -31,7 +33,7 @@ public class DataLogger {
 								+ "\n";
 					}
 				});
-				logger.setLevel(Level.SEVERE);
+				logger.setLevel(Configuration.logLevel);
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

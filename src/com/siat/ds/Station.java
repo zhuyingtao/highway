@@ -1,12 +1,12 @@
 package com.siat.ds;
 
 /**
- * @ClassName CellStation
+ * @ClassName Station
  * @Description 基站信息
  * @author Zhu Yingtao
  * @date 2014年12月16日 下午2:54:05
  */
-public class CellStation {
+public class Station {
 
 	private int serialNumber;
 	private int cellId;
@@ -15,7 +15,7 @@ public class CellStation {
 	private double longitude;
 	private double latitude;
 
-	public CellStation(int cellId) {
+	public Station(int cellId) {
 		this.cellId = cellId;
 	}
 

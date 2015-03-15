@@ -11,16 +11,16 @@ import com.siat.msg.util.DataLogger;
 
 /**
  * @ClassName RoadSegment
- * @Description 基站与基站之间的路段 (CellStation and CellStation)
+ * @Description 基站与基站之间的路段 (Station and Station)
  * @author Zhu Yingtao
  * @date 2014年12月16日 下午2:54:15
  */
-public class RoadSegment {
+public class StationSegment {
 
 	// 从文件里读取基站与基站之间的路段信息
 	@SuppressWarnings("unused")
-	public static ArrayList<RoadSegment> readFromFile(String filePath) {
-		ArrayList<RoadSegment> rss = new ArrayList<>();
+	public static ArrayList<StationSegment> readFromFile(String filePath) {
+		ArrayList<StationSegment> rss = new ArrayList<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
 			br.readLine();
@@ -36,13 +36,13 @@ public class RoadSegment {
 				String cellidStr = parts[5];
 				String lacidStr = parts[6];
 				String[] cellids = cellidStr.split(",");
-				ArrayList<CellStation> starts = new ArrayList<>();
+				ArrayList<Station> starts = new ArrayList<>();
 				for (int i = 0; i < cellids.length; i++) {
-					CellStation cs = new CellStation(
+					Station cs = new Station(
 							Integer.parseInt(cellids[i]));
 					starts.add(cs);
 				}
-				RoadSegment rs = new RoadSegment(id++, starts, length);
+				StationSegment rs = new StationSegment(id++, starts, length);
 				rss.add(rs);
 				line = br.readLine();
 			}
@@ -63,9 +63,9 @@ public class RoadSegment {
 
 	public double length; // 路段的长度
 	// 存在相同经纬度，不同cellid的基站
-	ArrayList<CellStation> starts;
+	ArrayList<Station> starts;
 
-	ArrayList<CellStation> ends;
+	ArrayList<Station> ends;
 	private int avgSpeed;
 	private int filterAvgSpeed;
 	private int maxSpeed;
@@ -84,14 +84,14 @@ public class RoadSegment {
 	 * @param endStation
 	 * @param direction
 	 */
-	public RoadSegment(int id, ArrayList<CellStation> starts,
-			ArrayList<CellStation> ends) {
+	public StationSegment(int id, ArrayList<Station> starts,
+			ArrayList<Station> ends) {
 		this.id = id;
 		this.starts = starts;
 		this.ends = ends;
 	}
 
-	public RoadSegment(int id, ArrayList<CellStation> starts, double length) {
+	public StationSegment(int id, ArrayList<Station> starts, double length) {
 		this.id = id;
 		this.starts = starts;
 		this.length = length;

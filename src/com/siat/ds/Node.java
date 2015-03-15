@@ -1,12 +1,12 @@
 package com.siat.ds;
 
 /**
- * @ClassName NodeStation
+ * @ClassName Node
  * @Description 服务区节点信息
  * @author Zhu Yingtao
  * @date 2014年12月30日 上午11:09:26
  */
-public class NodeStation {
+public class Node {
 	int id;
 	public String roadNodeName;
 	public int cellId;
@@ -19,7 +19,7 @@ public class NodeStation {
 	 * @param cellId
 	 * @param length
 	 */
-	public NodeStation(int id, String roadNodeName, int cellId, double length,
+	public Node(int id, String roadNodeName, int cellId, double length,
 			int direction) {
 		this.id = id;
 		this.roadNodeName = roadNodeName;

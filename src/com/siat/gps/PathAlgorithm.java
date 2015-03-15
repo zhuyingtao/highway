@@ -11,8 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.siat.ds.RoadSection;
-import com.siat.ds.RoadSegment;
+import com.siat.ds.NodeSegment;
+import com.siat.ds.StationSegment;
 import com.siat.msg.UserData;
 
 /**
@@ -27,11 +27,11 @@ public class PathAlgorithm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String startTimeStr = null;
-	private ArrayList<RoadSegment> forwardRS;
-	private ArrayList<RoadSegment> reverseRS;
+	private ArrayList<StationSegment> forwardRS;
+	private ArrayList<StationSegment> reverseRS;
 
-	private ArrayList<RoadSection> forwardRSe;
-	private ArrayList<RoadSection> reverseRSe;
+	private ArrayList<NodeSegment> forwardRSe;
+	private ArrayList<NodeSegment> reverseRSe;
 
 	private ArrayList<GpsData> gpsDataPool = null;
 
@@ -110,7 +110,7 @@ public class PathAlgorithm implements Serializable {
 			}
 			// < or <= ?
 			for (int j = small; j <= large; j++) {
-				RoadSegment rs = isForward ? (forwardRS.get(j)) : (reverseRS
+				StationSegment rs = isForward ? (forwardRS.get(j)) : (reverseRS
 						.get(j));
 				rs.addSpeed(speed);
 				if (j == nowRSid)
@@ -530,12 +530,12 @@ public class PathAlgorithm implements Serializable {
 
 	public void initialRoadSegments() {
 		// 暂时处理:正向逆向路段对象完全一样(从0到n);
-		this.forwardRS = RoadSegment.readFromFile("data/路段.txt");
-		this.reverseRS = RoadSegment.readFromFile("data/路段.txt");
+		this.forwardRS = StationSegment.readFromFile("data/路段.txt");
+		this.reverseRS = StationSegment.readFromFile("data/路段.txt");
 	}
 
 	public void initialRoadSections() {
-		ArrayList<RoadSection> rss = RoadSection.initial();
+		ArrayList<NodeSegment> rss = NodeSegment.initial();
 		this.forwardRSe = new ArrayList<>();
 		this.reverseRSe = new ArrayList<>();
 		for (int i = 0; i < 24; i++) {

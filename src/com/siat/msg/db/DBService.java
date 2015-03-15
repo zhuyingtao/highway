@@ -13,10 +13,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
-import com.siat.ds.RoadSection;
-import com.siat.ds.RoadSegment;
+import com.siat.ds.NodeSegment;
+import com.siat.ds.StationSegment;
 import com.siat.msg.Configuration;
 import com.siat.msg.UserData;
 import com.siat.msg.util.DataLogger;
@@ -102,12 +103,12 @@ public class DBService {
 		}
 	}
 
-	public void insertSectionSpeeds(ArrayList<RoadSection> rss, String timeStamp) {
+	public void insertNodeSpeeds(ArrayList<NodeSegment> rss, String timeStamp) {
 		String sql = "insert into section_speeds values (?,?,?,?,?,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			for (int i = 0; i < rss.size(); i++) {
-				RoadSection rs = rss.get(i);
+				NodeSegment rs = rss.get(i);
 				pstm.setInt(1, rs.getId());
 				pstm.setString(2, rs.getSectionName());
 				pstm.setString(3, timeStamp);
@@ -125,12 +126,13 @@ public class DBService {
 		}
 	}
 
-	public void insertStationSpeeds(ArrayList<RoadSegment> rss, String timeStamp,int direction) {
+	public void insertStationSpeeds(ArrayList<StationSegment> rss,
+			String timeStamp, int direction) {
 		String sql = "insert into station_speeds values (?,?,?,?,?,?,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			for (int i = 0; i < rss.size(); i++) {
-				RoadSegment rs = rss.get(i);
+				StationSegment rs = rss.get(i);
 				pstm.setInt(1, rs.id);
 				pstm.setString(2, rs.getStarts());
 				pstm.setString(3, timeStamp);
@@ -150,27 +152,97 @@ public class DBService {
 	}
 
 	/**
+	 * @Title: selectHistoryUserData
+	 * @Description: select history user data from database,because history data
+	 *               usually very large, so we can't do the duplicate checking
+	 *               here;
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public List<UserData> selectHistoryUserData(String start, String end) {
+		// TODO Auto-generated method stub
+		Date date1 = new Date();
+		logger.info("==== begin to select history data : from " + start
+				+ ", to " + end);
+		List<UserData> userDatas = new ArrayList<>();
+		String sql = "select * from user_data where timestamp >= ? and timestamp < ?";
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, start);
+			pstm.setString(2, end);
+			ResultSet rs = pstm.executeQuery();
+			int allNum = 0;
+			int unusedNum = 0;
+			Date date3 = new Date();
+			logger.info("==== select has over, using time = "
+					+ (date3.getTime() - date1.getTime()) / 1000);
+			while (rs.next()) {
+				allNum++;
+				String tmsi = rs.getString(1);
+				Date timestamp = rs.getTimestamp(2);
+				int lac = rs.getInt(3);
+				int cellid = rs.getInt(4);
+				int eventid = rs.getInt(5);
+				int id = rs.getInt(6);
+				// filter some unused data ：cellid = unusedId;
+				boolean unused = false;
+				for (int i = 0; i < Configuration.unusedId.length; i++) {
+					if (cellid == Configuration.unusedId[i]) {
+						unused = true;
+						break;
+					}
+				}
+				if (unused) {
+					unusedNum++;
+					continue;
+				}
+				// can't do the duplicate checking, just add directly;
+				UserData ud = new UserData(tmsi, timestamp, lac, cellid,
+						eventid, id);
+				userDatas.add(ud);
+
+			}
+			Date date2 = new Date();
+
+			logger.info("==== bulid data structure has over : all-> " + allNum
+					+ " , unused->" + unusedNum + " , remaining -> "
+					+ (allNum - unusedNum) + ", time -> "
+					+ ((date2.getTime() - date1.getTime())) / 1000);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return userDatas;
+	}
+
+	/**
 	 * @Title: selectUserData
 	 * @Description: 从数据库中获取数据
 	 * @param start
 	 * @param end
 	 * @return
 	 */
-	public ArrayList<UserData> selectUserData(String start, String end) {
+	public List<UserData> selectUserData(String start, String end) {
 		// TODO Auto-generated method stub
-		ArrayList<UserData> userDatas = new ArrayList<>();
+		Date date1 = new Date();
+		logger.info("begin to select data : from " + start + ", to " + end);
+		List<UserData> userDatas = new ArrayList<>();
 		String sql = "select * from user_data where timestamp >= ? and timestamp < ?";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, start);
 			pstm.setString(2, end);
-
 			ResultSet rs = pstm.executeQuery();
 			int allNum = 0;
 			int filterNum = 0;
 			int unusedNum = 0;
-
+			Date date3 = new Date();
+			logger.info("select has over, using time = "
+					+ (date3.getTime() - date1.getTime()) / 1000);
 			while (rs.next()) {
+				if (allNum % 100000 == 0)
+					logger.info("..." + allNum);
 				allNum++;
 				String tmsi = rs.getString(1);
 				Date timestamp = rs.getTimestamp(2);
@@ -202,9 +274,13 @@ public class DBService {
 					userDatas.add(ud);
 				}
 			}
+			Date date2 = new Date();
+
 			logger.info("select from database : all-> " + allNum + ", same-> "
 					+ filterNum + " , unused->" + unusedNum
-					+ " , remaining -> " + (allNum - filterNum - unusedNum));
+					+ " , remaining -> " + (allNum - filterNum - unusedNum)
+					+ ", time -> " + ((date2.getTime() - date1.getTime()))
+					/ 1000);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
