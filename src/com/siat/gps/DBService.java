@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import com.siat.msg.UserData;
 
 /**
- * @ClassName DBService
+ * @ClassName DBServiceForMySQL
  * @Description TODO
  * @author Zhu Yingtao
  * @date 2015年1月29日 下午3:17:49
@@ -203,8 +203,8 @@ public class DBService {
 	}
 
 	public static void main(String[] args) {
-		// new DBService().executeSQL("db/create.sql");
-		// new DBService().executeSQL("db/load.sql");
+		// new DBServiceForMySQL().executeSQL("db/create.sql");
+		// new DBServiceForMySQL().executeSQL("db/load.sql");
 		DBService db = new DBService();
 		System.out.println(db.selectGpsData("2015-01-22 23:55:23",
 				"2015-01-23 00:00:00"));

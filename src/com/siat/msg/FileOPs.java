@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.siat.msg.db.DBService;
+import com.siat.msg.db.DBServiceForMySQL;
 
 /**
  * @ClassName FileOPs
@@ -18,7 +18,7 @@ import com.siat.msg.db.DBService;
  */
 public class FileOPs {
 
-	DBService db = new DBService();
+	DBServiceForMySQL db = new DBServiceForMySQL();
 
 	public ArrayList<UserData> readFromFile(String filePath) {
 		ArrayList<UserData> arrays = new ArrayList<>();

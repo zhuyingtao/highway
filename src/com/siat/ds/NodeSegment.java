@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * @ClassName Section
+ * @ClassName NodeSegment
  * @Description 服务区与服务区之间的区间 (Node and Node)
  * @author Zhu Yingtao
  * @date 2014年12月30日 上午10:59:21
@@ -17,7 +17,7 @@ public class NodeSegment {
 	String sectionName;
 	public Node startNode;
 	public Node endNode;
-	public int direction;
+	public int direction; // 1 is forward; 2 is reverse;
 	double length;
 
 	public int avgSpeed;
@@ -31,8 +31,7 @@ public class NodeSegment {
 	 * @param endNode
 	 * @param direction
 	 */
-	public NodeSegment(int id, Node startNode, Node endNode,
-			int direction) {
+	public NodeSegment(int id, Node startNode, Node endNode, int direction) {
 		super();
 		this.id = id;
 		this.startNode = startNode;
@@ -58,8 +57,7 @@ public class NodeSegment {
 				double length = Double.parseDouble(parts[9]);
 
 				// 现在只用一个节点测试
-				Node ns = new Node(nodeId, nodeName, cellId,
-						length, direction);
+				Node ns = new Node(nodeId, nodeName, cellId, length, direction);
 				nodes.add(ns);
 				br.readLine();
 				line = br.readLine();

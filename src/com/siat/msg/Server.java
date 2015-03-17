@@ -4,10 +4,10 @@
 package com.siat.msg;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 import com.siat.msg.alg.SegmentSpeed;
+import com.siat.msg.db.DBServiceForOracle;
 import com.siat.msg.util.DataLogger;
 
 /**
@@ -16,16 +16,15 @@ import com.siat.msg.util.DataLogger;
  * @author Zhu Yingtao
  * @date 2014年12月23日 上午9:57:03
  */
-public class Server extends Object {
+public class Server {
+
+	DBServiceForOracle db = new DBServiceForOracle();
 
 	public void work() {
 		this.clearLog(); // delete the previous log;
 		Logger logger = DataLogger.getLogger();
-		SegmentSpeed sa = new SegmentSpeed(Configuration.START_TIME);
 		int i = 0;
-		String startTime = Configuration.startTime;
-		String endTime = Configuration.endTime;
-		int rate = 1;
+		SegmentSpeed sa = new SegmentSpeed(Configuration.START_TIME);
 		while (true) {
 			int request = this.checkRequest();
 			if (request == 0) {
@@ -37,7 +36,8 @@ public class Server extends Object {
 				}
 			} else if (request == 1) {
 				logger.info("=============== History speed ================");
-				sa.computeHistorySpeed(startTime, endTime, rate);
+				sa.computeHistorySpeed(Configuration.startTime,
+						Configuration.endTime, Configuration.rate);
 			} else if (request == 2) {
 				logger.severe("==================== Number : " + i + " start");
 				sa.computeAvgSpeed(Configuration.INTERVAL_TIME);
@@ -47,15 +47,15 @@ public class Server extends Object {
 		}
 	}
 
-	// check whether there is a new request according to the flag selected from
+	// check whether there is a new request based on the flag selected from
 	// the database;
 	// the flag has 3 values:
 	// 0, means no new request;
 	// 1, means history_speed request;
 	// 2, means real_time_speed request;
 	public int checkRequest() {
-		int flag = 1;
-
+		int flag = 0;
+		flag = db.checkRequest();
 		return flag;
 	}
 
@@ -64,7 +64,7 @@ public class Server extends Object {
 		String[] files = f.list();
 		int count = 0;
 		for (int i = 0; i < files.length; i++) {
-			if (files[i].matches(".*log.*")) {
+			if (files[i].matches(".*log.*") || files[i].matches(".*speeds.txt")) {
 				File file = new File(files[i]);
 				file.delete();
 				count++;

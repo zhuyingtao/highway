@@ -14,7 +14,7 @@ import com.siat.ds.NodeSegment;
 import com.siat.ds.StationSegment;
 import com.siat.msg.Configuration;
 import com.siat.msg.UserData;
-import com.siat.msg.db.DBService;
+import com.siat.msg.db.DBServiceForOracle;
 import com.siat.msg.util.DataLogger;
 
 /**
@@ -25,7 +25,7 @@ import com.siat.msg.util.DataLogger;
  */
 public class SegmentSpeed {
 
-	private DBService db = null;
+	private DBServiceForOracle db = null;
 	private String startTimeStr = null;
 	private List<UserData> userDataPool = null;
 
@@ -57,7 +57,7 @@ public class SegmentSpeed {
 
 	public SegmentSpeed(String startTimeStr) {
 		// TODO Auto-generated constructor stub
-		this.db = new DBService();
+		this.db = new DBServiceForOracle();
 		this.startTimeStr = startTimeStr;
 		this.sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		this.logger = DataLogger.getLogger();
@@ -65,155 +65,8 @@ public class SegmentSpeed {
 		this.initialRoadSections();
 	}
 
-	// clear the flags used for logger;
-	public void clearFlags() {
-		newNum = 0;
-		matchesNum = 0;
-		sameNum = 0;
-		computeNum = 0;
-	}
-
-	public boolean checkUpdate() {
-		boolean updated = false;
-		return updated;
-	}
-
-	/**
-	 * @Title: getOneBatchData
-	 * @Description: get the data of one batch from the all data
-	 * @param allData
-	 * @param startIndex
-	 * @return
-	 */
-	public List<UserData> getOneBatchData(List<UserData> allData, int startIndex) {
-		UserData ud = allData.get(startIndex);
-		List<UserData> batchData = new ArrayList<UserData>();
-		// find the end index of one batch based on interval time;
-		endIndex = startIndex;
-		int count = 0; // count the distinct data num;
-		while (endIndex < allData.size()) {
-			endIndex++;
-			UserData ud1 = allData.get(endIndex);
-			if (ud1.getTimestamp().getTime() - ud.getTimestamp().getTime() > Configuration.INTERVAL_TIME * 1000) {
-				break;
-			}
-			// at here we use the OLDEST DATA of the same user data; so the
-			// speed may be SMALLER than before;
-			int index = batchData.indexOf(ud1);
-			if (index < 0) {
-				batchData.add(ud1);
-				count++;
-			}
-		}
-		logger.info("all data size : " + allData.size() + ", one batch : "
-				+ startIndex + ", " + endIndex + ", count = " + count);
-		return batchData;
-	}
-
-	/**
-	 * @Title: computeHistorySpeed
-	 * @Description: TODO
-	 * @param startTime
-	 * @param endTime
-	 * @param rate
-	 */
-	public void computeHistorySpeed(String startTime, String endTime, int rate) {
-		// 1. get all the history data from databases into memory according to
-		// the startTime and endTime;
-
-		List<UserData> allData = this.getHistoryUserData(startTime, endTime);
-		this.userDataPool = null;
-		int startIndex = 0;
-		int batchNum = 0;
-		// 2. compute the average speed of every batch;
-		logger.info("**** All batches begin to compute ... ");
-		while (startIndex < allData.size()) {
-			// before every computing, check whether the request has been
-			// updated;
-			boolean updated = this.checkUpdate();
-			if (updated) {
-				logger.info("New request has coming ... now return ");
-				return;
-			}
-			// if not updated, then begin to compute;
-			List<UserData> batchData = this
-					.getOneBatchData(allData, startIndex);
-			this.computeAvgSpeed(batchData);
-			startIndex = endIndex;
-			batchNum++;
-		}
-		logger.info("**** All batches have finished ... count : " + batchNum);
-	}
-
-	/**
-	 * @Title: computeAvgSpeed
-	 * @Description: compute the average speed of every batch;
-	 * @param batchData
-	 */
-	public void computeAvgSpeed(List<UserData> batchData) {
-		// if it is the first batch : initial the userDataPool, then return.
-		// useDataPool is a list that contains the UserData of last batchData or
-		// unused; it will be refreshed in a specific time to keep size.
-		if (userDataPool == null) {
-			userDataPool = batchData;
-			return;
-		}
-
-		logger.info("data size : user_data_pool -> " + userDataPool.size()
-				+ " , batch_data -> " + batchData.size());
-
-		// compute every UserData in the batchData with UserDataPool;
-		for (int i = 0; i < batchData.size(); i++) {
-			// if the car data matches, then compute the interval time and
-			// distance, then compute the speed of this car, and update the data
-			// of this car in the UserDataPool;
-			// if not, then just insert the car data into the UserDataPool;
-			int speed = -1;
-			UserData nowUd = batchData.get(i);
-			int index = userDataPool.indexOf(nowUd);
-			if (index >= 0) {
-				matchesNum++;
-				UserData lastUd = userDataPool.get(index);
-				speed = (int) this.computeOneSpeed(nowUd, lastUd);
-				userDataPool.set(index, nowUd);
-			} else {
-				newNum++;
-				userDataPool.add(nowUd);
-			}
-			// if not matches or the speed is illegal,then next data;
-			if (speed == -1)
-				continue;
-
-			// add the speed into every Station Segment that related;
-			this.addSpeed(speed);
-
-		}
-		logger.info("========= in one batch : new_add = " + newNum
-				+ " , matches = " + matchesNum + " { in_same_segment = "
-				+ sameNum + " , compute = " + computeNum + " }");
-		this.clearFlags();
-
-		// compute every Station Segment's speed;
-		this.computeStationSpeed(forwardStations);
-		this.computeStationSpeed(reverseStations);
-		// compute every Node Segment's speed;
-		this.computeSectionSpeed(forwardNodes);
-		this.computeSectionSpeed(reverseNodes);
-		// dump result into text;
-		this.dumpRoadSpeeds();
-		// store result into database;
-		// this.storeData();
-
-		// 5. 维护UserDataPool,去除长时间未出现的数据。
-		if (cachedTime >= Configuration.CACHE_TIME) {
-			filterUserDataPool();
-			cachedTime = 0;
-		}
-		cachedTime += Configuration.INTERVAL_TIME;
-	}
-
 	public void addSpeed(int speed) {
-		// determine the start and the end;
+		// determine the start station and the end station;
 		int large = -1, small = -1;
 		if (isForward) {
 			small = lastStationId;
@@ -231,6 +84,22 @@ public class SegmentSpeed {
 				rs.addReal();
 		}
 		computeNum++;
+	}
+
+	public boolean checkUpdate() {
+		boolean updated = false;
+		int flag = db.checkRequest();
+		if (flag != 0)
+			updated = true;
+		return updated;
+	}
+
+	// clear the flags used for logger;
+	public void clearFlags() {
+		newNum = 0;
+		matchesNum = 0;
+		sameNum = 0;
+		computeNum = 0;
 	}
 
 	public void computeAvgSpeed(int intervalTime) {
@@ -292,8 +161,8 @@ public class SegmentSpeed {
 		this.computeStationSpeed(forwardStations);
 		this.computeStationSpeed(reverseStations);
 		// 另：计算每一个服务区间的平均速度，分双向，并打印输出
-		this.computeSectionSpeed(forwardNodes);
-		this.computeSectionSpeed(reverseNodes);
+		this.computeNodeSpeed(forwardNodes);
+		this.computeNodeSpeed(reverseNodes);
 		this.dumpRoadSpeeds();
 		this.storeData();
 
@@ -303,6 +172,166 @@ public class SegmentSpeed {
 			cachedTime = 0;
 		}
 		cachedTime += intervalTime;
+	}
+
+	/**
+	 * @Title: computeAvgSpeed
+	 * @Description: compute the average speed of every batch;
+	 * @param batchData
+	 */
+	public void computeAvgSpeed(List<UserData> batchData) {
+		// if it is the first batch : initial the userDataPool, then return.
+		// useDataPool is a list that contains the UserData of last batchData or
+		// unused; it will be refreshed in a specific time to keep size.
+		if (userDataPool == null) {
+			userDataPool = batchData;
+			return;
+		}
+
+		logger.info("**** data size : user_data_pool -> " + userDataPool.size()
+				+ " , batch_data -> " + batchData.size());
+
+		// compute every UserData in the batchData with UserDataPool;
+		for (int i = 0; i < batchData.size(); i++) {
+			// if the car data matches, then compute the interval time and
+			// distance, then compute the speed of this car, and update the data
+			// of this car in the UserDataPool;
+			// if not, then just insert the car data into the UserDataPool;
+			int speed = -1;
+			UserData nowUd = batchData.get(i);
+			int index = userDataPool.indexOf(nowUd);
+			if (index >= 0) {
+				matchesNum++;
+				UserData lastUd = userDataPool.get(index);
+				speed = (int) this.computeOneSpeed(nowUd, lastUd);
+				if (nowUd.isLater(lastUd)) // update when the nowUd is fresher;
+					userDataPool.set(index, nowUd);
+			} else {
+				newNum++;
+				userDataPool.add(nowUd);
+			}
+			// if not matches or the speed is illegal,then next data;
+			if (speed == -1)
+				continue;
+
+			// add the speed into every Station Segment that related;
+			this.addSpeed(speed);
+
+		}
+		logger.info("========= in one batch : new_add = " + newNum
+				+ " , matches = " + matchesNum + " { in_same_segment = "
+				+ sameNum + " , compute = " + computeNum + " }");
+		this.clearFlags();
+
+		// compute every Station Segment's speed;
+		this.computeStationSpeed(forwardStations);
+		this.computeStationSpeed(reverseStations);
+		// compute every Node Segment's speed;
+		this.computeNodeSpeed(forwardNodes);
+		this.computeNodeSpeed(reverseNodes);
+		// dump result into text;
+		this.dumpRoadSpeeds();
+		// store result into database;
+		this.storeData();
+
+		// 5. 维护UserDataPool,去除长时间未出现的数据。
+		if (cachedTime >= Configuration.CACHE_TIME) {
+			filterUserDataPool();
+			cachedTime = 0;
+		}
+		cachedTime += Configuration.INTERVAL_TIME;
+	}
+
+	/**
+	 * @Title: computeHistorySpeed
+	 * @Description: TODO
+	 * @param startTime
+	 * @param endTime
+	 * @param rate
+	 */
+	public void computeHistorySpeed(String startTime, String endTime, int rate) {
+		this.startTimeStr = startTime;
+
+		// 1. get all the history data from databases into memory according to
+		// the startTime and endTime;
+		List<UserData> allData = this.getHistoryUserData(startTime, endTime);
+		this.userDataPool = null;
+		int startIndex = 0;
+		int batchNum = 0;
+		// 2. compute the average speed of every batch;
+		logger.info("**** All batches begin to compute ... ");
+		while (startIndex < allData.size()) {
+			// before every computing, check whether the request has been
+			// updated;
+			boolean updated = this.checkUpdate();
+			if (updated) {
+				logger.info("New request has coming ... now return ");
+				return;
+			}
+			// if not updated, then begin to compute;
+			List<UserData> batchData = this
+					.getOneBatchData(allData, startIndex);
+			this.computeAvgSpeed(batchData);
+			// update the start time;
+			this.startTimeStr = this.updateTime(startTimeStr);
+			startIndex = endIndex;
+			batchNum++;
+		}
+		logger.info("**** All batches have finished ... count : " + batchNum);
+	}
+
+	public void computeNodeSpeed(List<NodeSegment> list) {
+		for (int i = 0; i < list.size(); i++) {
+			NodeSegment ns = list.get(i);
+			int start = ns.startNode.cellId;
+			int end = ns.endNode.cellId;
+			int direction = ns.direction;
+
+			int speed = 0;
+			int speedNum = 0;
+			int count = 0;
+			int maxSpeed = 0;
+			int minSpeed = 100;
+
+			int startIndex = -1;
+			int endIndex = -1;
+			for (int j = 0; j < forwardStations.size(); j++) {
+				StationSegment ss = forwardStations.get(j);
+				// 一个路段可能包含多个（位置相同）的基站
+				if (ss.contains(start))
+					startIndex = j;
+				if (ss.contains(end))
+					endIndex = j;
+				// 两个位置都已找到，直接跳出
+				if (startIndex != -1 && endIndex != -1)
+					break;
+			}
+
+			for (int j = startIndex; j <= endIndex; j++) {
+				StationSegment ss = null;
+				if (direction == 1) {
+					ss = forwardStations.get(j); // forward
+				} else {
+					ss = reverseStations.get(j); // reverse
+				}
+				speed += ss.getAvgSpeed();
+				speedNum += ss.getRealNum();
+				int max = ss.getMaxSpeed();
+				int min = ss.getMinSpeed();
+				if (maxSpeed < max)
+					maxSpeed = max;
+				if (minSpeed > min)
+					minSpeed = min;
+				count++;
+			}
+
+			// 此处只算的平均速度，暂时没有加权
+			speed = speed / count;
+			ns.avgSpeed = speed;
+			ns.speedNum = speedNum;
+			ns.maxSpeed = maxSpeed;
+			ns.minSpeed = minSpeed;
+		}
 	}
 
 	public int computeOneSpeed(UserData nowUd, UserData lastUd) {
@@ -336,63 +365,6 @@ public class SegmentSpeed {
 			// logger.info(" &&&&& " + rs.id + "\t filterSpeeds : "
 			// + rs.getQualifiedData().toString());
 			rs.genAvgSpeedStr(startTimeStr);
-		}
-	}
-
-	public void computeSectionSpeed(List<NodeSegment> list) {
-		for (int i = 0; i < list.size(); i++) {
-			NodeSegment rs = list.get(i);
-			int start = rs.startNode.cellId;
-			int end = rs.endNode.cellId;
-			int direction = rs.direction;
-
-			int speed = 0;
-			int speedNum = 0;
-			int count = 0;
-			int maxSpeed = 0;
-			int minSpeed = 100;
-
-			int startIndex = -1;
-			int endIndex = -1;
-			for (int j = 0; j < forwardStations.size(); j++) {
-				StationSegment rse = forwardStations.get(j);
-				// 一个路段可能包含多个（位置相同）的基站
-				if (rse.contains(start))
-					startIndex = j;
-				if (rse.contains(end))
-					endIndex = j;
-				// 两个位置都已找到，直接跳出
-				if (startIndex != -1 && endIndex != -1)
-					break;
-			}
-			if (direction == 1) {
-				// forward方向
-				for (int j = startIndex; j <= endIndex; j++) {
-					StationSegment segment = forwardStations.get(j);
-					speed += segment.getAvgSpeed();
-					speedNum += segment.getRealNum();
-					int max = segment.getMaxSpeed();
-					int min = segment.getMinSpeed();
-					if (maxSpeed < max)
-						maxSpeed = max;
-					if (minSpeed > min)
-						minSpeed = min;
-					count++;
-				}
-			} else {
-				// reverse方向
-				for (int j = startIndex; j <= endIndex; j++) {
-					speed += reverseStations.get(j).getAvgSpeed();
-					speedNum += reverseStations.get(j).getRealNum();
-					count++;
-				}
-			}
-			// 此处只算的平均速度，暂时没有加权
-			speed = speed / count;
-			rs.avgSpeed = speed;
-			rs.speedNum = speedNum;
-			rs.maxSpeed = maxSpeed;
-			rs.minSpeed = minSpeed;
 		}
 	}
 
@@ -476,8 +448,8 @@ public class SegmentSpeed {
 			if (interval > Configuration.CACHE_TIME) {
 				userDataPool.remove(i);
 				removedNum++;
-				System.out.println("remove dead data --> " + ud.getTmsi()
-						+ " @ " + nowDate + " - " + udDate);
+				logger.info("remove dead data --> " + ud.getTmsi() + " @ "
+						+ nowDate + " - " + udDate);
 			}
 		}
 		logger.info(startTimeStr + "========== removed [" + removedNum
@@ -527,18 +499,6 @@ public class SegmentSpeed {
 		return distance;
 	}
 
-	public double getIntervalTime(UserData nowUd, UserData lastUd) {
-		return (nowUd.getTimestamp().getTime() - lastUd.getTimestamp()
-				.getTime()) / (1000.0 * 60 * 60);
-	}
-
-	public ArrayList<StationSegment> getRoadSegmentList(boolean isForward) {
-		if (isForward)
-			return this.forwardStations;
-		else
-			return this.reverseStations;
-	}
-
 	/**
 	 * @Title: getUserData
 	 * @Description: get HISTORY data from databases;
@@ -549,6 +509,64 @@ public class SegmentSpeed {
 	public List<UserData> getHistoryUserData(String startTime, String endTime) {
 		List<UserData> userDatas = db.selectHistoryUserData(startTime, endTime);
 		return userDatas;
+	}
+
+	public double getIntervalTime(UserData nowUd, UserData lastUd) {
+		// mostly, the nowUd time is later than lastUd; but there are still some
+		// exceptions that nowUd time is earlier, so we use the absolute value
+		// to keep the interval time is positive;
+		return (Math.abs(nowUd.getTimestamp().getTime()
+				- lastUd.getTimestamp().getTime()))
+				/ (1000.0 * 60 * 60);
+	}
+
+	/**
+	 * @Title: getOneBatchData
+	 * @Description: get the data of one batch from the all data
+	 * @param allData
+	 * @param startIndex
+	 * @return
+	 */
+	public List<UserData> getOneBatchData(List<UserData> allData, int startIndex) {
+		UserData ud = allData.get(startIndex);
+		List<UserData> batchData = new ArrayList<UserData>();
+		// find the end index of one batch based on interval time;
+		endIndex = startIndex + 1;
+		int newAdd = 0; // count the distinct data num;
+		int same = 0;
+		while (endIndex < allData.size()) {
+			UserData ud1 = allData.get(endIndex);
+			if (ud1.getTimestamp().getTime() - ud.getTimestamp().getTime() > Configuration.INTERVAL_TIME * 1000) {
+				break;
+			}
+			// at here we use the OLDEST DATA of the same user data; so the
+			// speed may be SMALLER than before;
+			int index = batchData.indexOf(ud1);
+			if (index < 0) {
+				batchData.add(ud1);
+				newAdd++;
+			} else {
+				// if the exist data's time is later than now data's, then
+				// update it;
+				if (batchData.get(index).getTimestamp()
+						.after(ud1.getTimestamp())) {
+					batchData.set(index, ud1);
+				}
+				same++;
+			}
+			endIndex++;
+		}
+		logger.info("all data size : " + allData.size() + ", one batch : "
+				+ startIndex + ", " + endIndex + ", distinct = " + newAdd
+				+ " , same = " + same);
+		return batchData;
+	}
+
+	public ArrayList<StationSegment> getRoadSegmentList(boolean isForward) {
+		if (isForward)
+			return this.forwardStations;
+		else
+			return this.reverseStations;
 	}
 
 	/**
@@ -597,5 +615,28 @@ public class SegmentSpeed {
 		db.insertStationSpeeds(reverseStations, startTimeStr, 2);
 		db.insertNodeSpeeds(forwardNodes, startTimeStr);
 		db.insertNodeSpeeds(reverseNodes, startTimeStr);
+		// update the value in certain database to inform that new data has been
+		// inserted into database;
+		db.updateTime(startTimeStr);
+	}
+
+	/**
+	 * @Title: updateTime
+	 * @Description:
+	 * @param startTime
+	 * @return
+	 */
+	public String updateTime(String startTime) {
+		Date start = null;
+		try {
+			start = sdf.parse(startTime);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date end = new Date(start.getTime() + 1000
+				* Configuration.INTERVAL_TIME);
+		String endTime = sdf.format(end);
+		return endTime;
 	}
 }

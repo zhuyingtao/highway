@@ -100,4 +100,11 @@ public class UserData {
 				+ this.cellid + "," + this.eventid + "," + this.id + "\n";
 	}
 
+	public boolean isLater(UserData ud) {
+		boolean isLater = false;
+		if (this.timestamp.after(ud.timestamp))
+			isLater = true;
+		return isLater;
+	}
+
 }

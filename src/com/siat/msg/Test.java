@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,9 +59,10 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String filePath = "I:\\zyt\\Desktop\\highway_data\\tmp_no_res_user_hmh_6.txt";
-		Date d = getEarliestDate(new File(filePath));
-		System.out.println(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-				.format(d));
+//		String filePath = "I:\\zyt\\Desktop\\highway_data\\tmp_no_res_user_hmh_6.txt";
+//		Date d = getEarliestDate(new File(filePath));
+//		System.out.println(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+//				.format(d));
+		System.out.println(Timestamp.valueOf("2014/02/01 11:11:11".replace('/', '-')));
 	}
 }

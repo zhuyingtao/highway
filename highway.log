@@ -1,2 +1,125 @@
 INFO	=============== History speed ================
-INFO	==== begin to select history data : from 2015/01/22 07:00:00, to 2015/01/22 12:00:00
+INFO	==== begin to select history data : from 2015-03-10 10:38:58.0, to 2015-03-10 16:38:58.0
+INFO	==== select has over, using time = 0
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 0
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-03-10 10:38:58.0, to 2015-03-10 16:38:58.0
+INFO	==== select has over, using time = 12
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 12
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-03-10 10:38:58.0, to 2015-03-10 16:38:58.0
+INFO	==== select has over, using time = 21
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 21
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-01-22 07:00:00.0, to 2015-01-22 12:00:00.0
+INFO	==== select has over, using time = 13
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 13
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-01-22 07:00:00.0, to 2015-01-22 12:00:00.0
+INFO	==== select has over, using time = 13
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 13
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time is 2015-03-17 10:00:00.0
+INFO	==== set time has been updated, begin to compute
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-01-22 07:00:00.0, to 2015-01-22 12:00:00.0
+INFO	==== select has over, using time = 14
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 14
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration
+INFO	==== set time has been updated, begin to compute, count = 1
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-02-04 15:00:00.0, to 2015-02-04 20:00:00.0
+INFO	==== select has over, using time = 14
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 14
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time has been updated, begin to compute, count = 1
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-02-04 15:00:00.0, to 2015-02-04 20:00:00.0
+INFO	==== select has over, using time = 13
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 13
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time has been updated, begin to compute, count = 1
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-02-04 15:00:00.0, to 2015-02-04 20:00:00.0
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time has been updated, begin to compute, count = 1
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-02-04 15:00:00.0, to 2015-02-04 20:00:00.0
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time has been updated, begin to compute, count = 1
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-02-04 15:00:00.0, to 2015-02-04 20:00:00.0
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time has been updated, begin to compute, count = 1
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-02-04 15:00:00.0, to 2015-02-04 20:00:00.0
+INFO	==== select has over, using time = 24
+INFO	==== bulid data structure has over : all-> 0 , unused->0 , remaining -> 0, time -> 24
+INFO	**** All batches begin to compute ... 
+INFO	**** All batches have finished ... count : 0
+INFO	==== set time has been updated, begin to compute, count = 1
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-02-04 05:00:00.0, to 2015-02-04 20:00:00.0
+INFO	==== select has over, using time = 0
+INFO	==== bulid data structure has over : all-> 146202 , unused->22606 , remaining -> 123596, time -> 190
+INFO	**** All batches begin to compute ... 
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1
+INFO	==== set time has been updated, begin to compute, count = 1
+INFO	=============== History speed ================
+INFO	==== begin to select history data : from 2015-02-04 05:00:00.0, to 2015-02-04 20:00:00.0
+INFO	==== select has over, using time = 0
+INFO	==== bulid data structure has over : all-> 146202 , unused->22606 , remaining -> 123596, time -> 122
+INFO	**** All batches begin to compute ... 
+INFO	==== set time is 2015-03-17 10:00:00.0 , equals configuration , count = 1

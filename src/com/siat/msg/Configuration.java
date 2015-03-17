@@ -27,9 +27,14 @@ public class Configuration {
 			11402, 39422, 24542, 17151, 60061, 32802, 34821, 12211, 10752,
 			11172, 44101, 10761, 47461 };
 
+	// used for computing history speed;
 	public static String startTime = "2015/01/22 07:00:00";
 	public static String endTime = "2015/01/22 12:00:00";
+	// the time of request coming;
+	public static String setTime = "2015/01/22 07:00:00";
+	// the rate of computing, the default value is 1 (based on INTERVAL_TIME);
 	public static int rate = 1;
 
 	public static final Level logLevel = Level.FINEST;
+
 }
