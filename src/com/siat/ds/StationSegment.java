@@ -38,8 +38,7 @@ public class StationSegment {
 				String[] cellids = cellidStr.split(",");
 				ArrayList<Station> starts = new ArrayList<>();
 				for (int i = 0; i < cellids.length; i++) {
-					Station cs = new Station(
-							Integer.parseInt(cellids[i]));
+					Station cs = new Station(Integer.parseInt(cellids[i]));
 					starts.add(cs);
 				}
 				StationSegment rs = new StationSegment(id++, starts, length);
@@ -61,15 +60,18 @@ public class StationSegment {
 	public int startStation;
 	public int endStation;
 
+	int direction;
+	List<Integer> startIds;
+	List<Integer> endIds;
+
 	public double length; // 路段的长度
 	// 存在相同经纬度，不同cellid的基站
 	ArrayList<Station> starts;
-
 	ArrayList<Station> ends;
+
 	private int avgSpeed;
 	private int filterAvgSpeed;
 	private int maxSpeed;
-
 	private int minSpeed = 100;
 	private int realNum; // 在当前路段上的车辆数
 	// 保存一批次数据中当前路段上每一辆车的速度
@@ -78,12 +80,15 @@ public class StationSegment {
 	// 保存不同批次数据计算出来的平均速度（时间+速度）
 	private List<String> avgSpeedStrs = new ArrayList<String>();
 
-	/**
-	 * @param id
-	 * @param startStation
-	 * @param endStation
-	 * @param direction
-	 */
+	public StationSegment(int id, double length, List<Integer> startIds,
+			List<Integer> endIds, int direction) {
+		this.id = id;
+		this.length = length;
+		this.startIds = startIds;
+		this.endIds = endIds;
+		this.direction = direction;
+	}
+
 	public StationSegment(int id, ArrayList<Station> starts,
 			ArrayList<Station> ends) {
 		this.id = id;

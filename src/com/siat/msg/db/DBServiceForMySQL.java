@@ -110,7 +110,7 @@ public class DBServiceForMySQL {
 			for (int i = 0; i < rss.size(); i++) {
 				NodeSegment rs = rss.get(i);
 				pstm.setInt(1, rs.getId());
-				pstm.setString(2, rs.getSectionName());
+				pstm.setString(2, rs.getNodeName());
 				pstm.setString(3, timeStamp);
 				pstm.setInt(4, rs.getDirection());
 				pstm.setInt(5, rs.getMaxSpeed());

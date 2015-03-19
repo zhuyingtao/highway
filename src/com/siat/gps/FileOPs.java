@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * @ClassName FileOPs
+ * @ClassName FileOperation
  * @Description TODO
  * @author Zhu Yingtao
  * @date 2015年1月29日 下午2:21:45

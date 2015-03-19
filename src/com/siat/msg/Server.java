@@ -73,6 +73,10 @@ public class Server {
 		System.out.println("delete log : " + count);
 	}
 
+	public void initialize() {
+		
+	}
+
 	/**
 	 * @Title: main
 	 * @Description: TODO

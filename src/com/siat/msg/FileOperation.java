@@ -11,15 +11,23 @@ import java.util.ArrayList;
 import com.siat.msg.db.DBServiceForMySQL;
 
 /**
- * @ClassName FileOPs
- * @Description TODO
+ * @ClassName FileOperation
+ * @Description This is a previous version of using localhost database mysql and
+ *              some data files, it contains a series method of operating the
+ *              files;
  * @author Zhu Yingtao
  * @date 2015年1月29日 下午6:03:50
  */
-public class FileOPs {
+public class FileOperation {
 
 	DBServiceForMySQL db = new DBServiceForMySQL();
 
+	/**
+	 * @Title: readFromFile
+	 * @Description: read user data from file directly;
+	 * @param filePath
+	 * @return
+	 */
 	public ArrayList<UserData> readFromFile(String filePath) {
 		ArrayList<UserData> arrays = new ArrayList<>();
 		try {
@@ -39,6 +47,12 @@ public class FileOPs {
 		return arrays;
 	}
 
+	/**
+	 * @Title: scanAllFiles
+	 * @Description: scan all the file in a certain directory to do some
+	 *               operating;
+	 * @param dirPath
+	 */
 	public void scanAllFiles(String dirPath) {
 		File f = new File(dirPath);
 		if (!f.isDirectory()) {
@@ -49,7 +63,7 @@ public class FileOPs {
 		for (int i = 0; i < fileNames.length; i++) {
 			if (fileNames[i].endsWith("txt")) {
 				try {
-					db.loadData(dirPath+"/" + fileNames[i], false);
+					db.loadData(dirPath + "/" + fileNames[i], false);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -59,7 +73,7 @@ public class FileOPs {
 	}
 
 	public static void main(String[] args) {
-		FileOPs fos = new FileOPs();
+		FileOperation fos = new FileOperation();
 		fos.scanAllFiles("I:/zyt/Desktop/福银高速");
 	}
 }

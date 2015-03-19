@@ -8,15 +8,15 @@ import java.util.ArrayList;
 
 /**
  * @ClassName NodeSegment
- * @Description 服务区与服务区之间的区间 (Node and Node)
+ * @Description the segment of Node and Node
  * @author Zhu Yingtao
  * @date 2014年12月30日 上午10:59:21
  */
 public class NodeSegment {
 	public int id;
 	String sectionName;
-	public Node startNode;
-	public Node endNode;
+	public int startNode;
+	public int endNode;
 	public int direction; // 1 is forward; 2 is reverse;
 	double length;
 
@@ -31,12 +31,13 @@ public class NodeSegment {
 	 * @param endNode
 	 * @param direction
 	 */
-	public NodeSegment(int id, Node startNode, Node endNode, int direction) {
-		super();
+	public NodeSegment(int id, int startNode, int endNode, int direction,
+			double length) {
 		this.id = id;
 		this.startNode = startNode;
 		this.endNode = endNode;
 		this.direction = direction;
+		this.length = length;
 	}
 
 	public static ArrayList<NodeSegment> initial() {
@@ -57,7 +58,10 @@ public class NodeSegment {
 				double length = Double.parseDouble(parts[9]);
 
 				// 现在只用一个节点测试
-				Node ns = new Node(nodeId, nodeName, cellId, length, direction);
+				// Node ns = new Node(nodeId, nodeName, cellId, length,
+				// direction);
+				Node ns = null;
+
 				nodes.add(ns);
 				br.readLine();
 				line = br.readLine();
@@ -71,15 +75,15 @@ public class NodeSegment {
 			e.printStackTrace();
 		}
 
-		for (int j = 0; j < 2; j++) {
-			for (int i = 0; i < 24; i++) {
-				Node start = nodes.get(i);
-				Node end = nodes.get(i + 1);
-				int direction = (j == 0 ? 1 : 2);
-				NodeSegment rs = new NodeSegment(i, start, end, direction);
-				sections.add(rs);
-			}
-		}
+		// for (int j = 0; j < 2; j++) {
+		// for (int i = 0; i < 24; i++) {
+		// Node start = nodes.get(i);
+		// Node end = nodes.get(i + 1);
+		// int direction = (j == 0 ? 1 : 2);
+		// NodeSegment rs = new NodeSegment(i, start, end, direction);
+		// sections.add(rs);
+		// }
+		// }
 		return sections;
 	}
 
@@ -95,13 +99,13 @@ public class NodeSegment {
 		this.id = id;
 	}
 
-	public String getSectionName() {
-		this.sectionName = this.startNode.roadNodeName + " -- "
-				+ this.endNode.roadNodeName;
+	public String getNodeName() {
+		// this.sectionName = this.startNode.roadNodeName + " -- "
+		// + this.endNode.roadNodeName;
 		return sectionName;
 	}
 
-	public void setSectionName(String sectionName) {
+	public void setNodeName(String sectionName) {
 		this.sectionName = sectionName;
 	}
 

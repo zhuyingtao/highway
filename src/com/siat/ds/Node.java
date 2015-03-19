@@ -7,22 +7,21 @@ package com.siat.ds;
  * @date 2014年12月30日 上午11:09:26
  */
 public class Node {
+
 	int id;
-	public String roadNodeName;
+	public String name;
 	public int cellId;
-	double length;
 	int direction;
+	double length;
 
 	/**
 	 * @param id
-	 * @param roadNodeName
+	 * @param name
 	 * @param cellId
 	 * @param length
 	 */
-	public Node(int id, String roadNodeName, int cellId, double length,
-			int direction) {
+	public Node(int id, int cellId, double length, int direction) {
 		this.id = id;
-		this.roadNodeName = roadNodeName;
 		this.cellId = cellId;
 		this.length = length;
 		this.direction = direction;

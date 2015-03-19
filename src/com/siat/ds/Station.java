@@ -15,6 +15,20 @@ public class Station {
 	private double longitude;
 	private double latitude;
 
+	/**
+	 * @param cellId
+	 * @param lacId
+	 * @param longitude
+	 * @param latitude
+	 */
+	public Station(int cellId, int lacId, double longitude, double latitude) {
+		super();
+		this.cellId = cellId;
+		this.lacId = lacId;
+		this.longitude = longitude;
+		this.latitude = latitude;
+	}
+
 	public Station(int cellId) {
 		this.cellId = cellId;
 	}

@@ -59,7 +59,7 @@ public class SegmentSpeed {
 		// TODO Auto-generated constructor stub
 		this.db = new DBServiceForOracle();
 		this.startTimeStr = startTimeStr;
-		this.sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.logger = DataLogger.getLogger();
 		this.initialRoadSegments();
 		this.initialRoadSections();
@@ -360,8 +360,8 @@ public class SegmentSpeed {
 			StationSegment rs = list.get(i);
 			rs.computeAvgSpeed();
 			rs.computeFilterAvgSpeed();
-			logger.info(" ***** " + rs.id + "\t speeds : "
-					+ rs.getSpeeds().toString());
+			// logger.info(" ***** " + rs.id + "\t speeds : "
+			// + rs.getSpeeds().toString());
 			// logger.info(" &&&&& " + rs.id + "\t filterSpeeds : "
 			// + rs.getQualifiedData().toString());
 			rs.genAvgSpeedStr(startTimeStr);
@@ -409,8 +409,8 @@ public class SegmentSpeed {
 			for (int i = 0; i < forwardNodes.size(); i++) {
 				StringBuffer str = new StringBuffer();
 				NodeSegment rs = forwardNodes.get(i);
-				str.append("@" + rs.id + " : " + rs.startNode.roadNodeName
-						+ " --- " + rs.endNode.roadNodeName + "\n");
+				str.append("@" + rs.id + " : " + rs.startNode.name
+						+ " --- " + rs.endNode.name + "\n");
 				str.append("speed = " + Math.round(rs.avgSpeed) + " , num = "
 						+ rs.speedNum);
 				rs = reverseNodes.get(i);
@@ -613,8 +613,8 @@ public class SegmentSpeed {
 	public void storeData() {
 		db.insertStationSpeeds(forwardStations, startTimeStr, 1);
 		db.insertStationSpeeds(reverseStations, startTimeStr, 2);
-		db.insertNodeSpeeds(forwardNodes, startTimeStr);
-		db.insertNodeSpeeds(reverseNodes, startTimeStr);
+		db.insertNodeSpeeds(forwardNodes, startTimeStr,1);
+		db.insertNodeSpeeds(reverseNodes, startTimeStr,2);
 		// update the value in certain database to inform that new data has been
 		// inserted into database;
 		db.updateTime(startTimeStr);

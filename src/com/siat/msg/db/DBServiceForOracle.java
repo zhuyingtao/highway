@@ -12,11 +12,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.siat.ds.Node;
 import com.siat.ds.NodeSegment;
+import com.siat.ds.Station;
 import com.siat.ds.StationSegment;
 import com.siat.msg.Configuration;
 import com.siat.msg.UserData;
 import com.siat.msg.util.DataLogger;
+import com.siat.msg.util.Utility;
 
 /**
  * @ClassName DBServiceForOracle
@@ -90,6 +93,141 @@ public class DBServiceForOracle {
 		}
 	}
 
+	public List<NodeSegment> selectNodeSegment() {
+		Date date1 = new Date();
+		logger.info("==== begin to select node segment ... ");
+		String sql = "select id, direction, start_road_node, end_road_node, length from"
+				+ "hw_road_node_segment order by id";
+		List<NodeSegment> list = new ArrayList<NodeSegment>();
+
+		try {
+			pstm = conn.prepareStatement(sql);
+			ResultSet rs = pstm.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				int direction = rs.getInt(2);
+				int startNode = rs.getInt(3);
+				int endNode = rs.getInt(4);
+				double length = rs.getDouble(5);
+				NodeSegment ns = new NodeSegment(id, startNode, endNode,
+						direction, length);
+				list.add(ns);
+			}
+			rs.close();
+			pstm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date date2 = new Date();
+		logger.info("==== end of select, count = " + list.size() + " , time = "
+				+ Utility.intervalTime(date1, date2));
+		return list;
+	}
+
+	public List<Node> selectNode() {
+		Date date1 = new Date();
+		logger.info("==== begin to select node ... ");
+		String sql = "select id, direction, cell_id, length from"
+				+ "hw_road_node";
+		List<Node> list = new ArrayList<Node>();
+
+		try {
+			pstm = conn.prepareStatement(sql);
+			ResultSet rs = pstm.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				int direction = rs.getInt(2);
+				int cellId = rs.getInt(3);
+				double length = rs.getDouble(4);
+				Node node = new Node(id, cellId, length, direction);
+				list.add(node);
+			}
+			rs.close();
+			pstm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date date2 = new Date();
+		logger.info("==== end of select, count = " + list.size() + " , time = "
+				+ Utility.intervalTime(date1, date2));
+		return list;
+	}
+
+	public List<Station> selectStation() {
+		Date date1 = new Date();
+		logger.info("==== begin to select station ... ");
+		String sql = "select cell_id, lac_id, longitude, latitude from"
+				+ "hw_station where serial_number = ? ";
+		List<Station> list = new ArrayList<Station>();
+
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, 6); // select the stations in line 6 (¸£Òø¸ßËÙ);
+			ResultSet rs = pstm.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				int lacId = rs.getInt(2);
+				double longitude = rs.getDouble(3);
+				double latitude = rs.getDouble(3);
+				Station s = new Station(id, lacId, longitude, latitude);
+				list.add(s);
+			}
+			rs.close();
+			pstm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date date2 = new Date();
+		logger.info("==== end of select, count = " + list.size() + " , time = "
+				+ Utility.intervalTime(date1, date2));
+		return list;
+	}
+
+	public List<StationSegment> selectStationSegment() {
+		Date date1 = new Date();
+		logger.info("==== begin to select station segment... ");
+		String sql = "select id, roadLength, direction, cell_id_start, cell_id_end from"
+				+ "hw_station_segment";
+		List<StationSegment> list = new ArrayList<StationSegment>();
+
+		try {
+			pstm = conn.prepareStatement(sql);
+			ResultSet rs = pstm.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				double length = rs.getDouble(2);
+				int direction = rs.getInt(3);
+				// parse start string to integer array;
+				String[] starts = rs.getString(4).split(";");
+				List<Integer> startIds = new ArrayList<Integer>();
+				for (int i = 0; i < starts.length; i++) {
+					startIds.add(Integer.parseInt(starts[i]));
+				}
+				// parse end string to integer array;
+				String[] ends = rs.getString(5).split(";");
+				List<Integer> endIds = new ArrayList<Integer>();
+				for (int i = 0; i < ends.length; i++) {
+					endIds.add(Integer.parseInt(ends[i]));
+				}
+				StationSegment ss = new StationSegment(id, length, startIds,
+						endIds, direction);
+				list.add(ss);
+			}
+			rs.close();
+			pstm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date date2 = new Date();
+		logger.info("==== end of select, count = " + list.size() + " , time = "
+				+ Utility.intervalTime(date1, date2));
+		return list;
+	}
+
 	/**
 	 * @Title: selectHistoryUserData
 	 * @Description: select history user data from database,because history data
@@ -106,7 +244,9 @@ public class DBServiceForOracle {
 				+ ", to " + end);
 		List<UserData> userDatas = new ArrayList<>();
 		// there are two kinds of method to send date type;
-		String sql = "select * from hw_data_user where timestamp between ? and ?";
+		String sql = "select tmsi,to_char(timestamp,'yyyy-mm-dd hh24:mi:ss'), "
+				+ "lac, cellid, eventid, id from hw_data_user"
+				+ " where timestamp between ? and ? order by timestamp";
 		// String sql = "select * from hw_data_user where timestamp >= "
 		// + "to_date(?,'yyyy-mm-dd hh24:mi:ss.0') and timestamp < "
 		// + "to_date(?,'yyyy-mm-dd hh24:mi:ss.0')";
@@ -125,8 +265,8 @@ public class DBServiceForOracle {
 			while (rs.next()) {
 				allNum++;
 				String tmsi = rs.getString(1);
-				// Date timestamp = rs.getTimestamp(2);
-				Date timestamp = null;
+				Date timestamp = rs.getTimestamp(2);
+				// Date timestamp = null;
 				int lac = rs.getInt(3);
 				int cellid = rs.getInt(4);
 				int eventid = rs.getInt(5);
@@ -173,39 +313,41 @@ public class DBServiceForOracle {
 			String timeStamp, int direction) {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
-		String sql1 = "select id from hw_station_segment_speed where time = ? limit 1";
-		try {
-			pstm = conn.prepareStatement(sql1);
-			pstm.setTimestamp(1, Timestamp.valueOf(timeStamp.replace('/', '-')));
-			ResultSet rs = pstm.executeQuery();
-			// if the result is not null, then do not insert again;
-			if (rs.first()) {
-				logger.warning(" ==== The data have already been inserted into database!!");
-				return;
-			} else {
-				rs.close();
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		// String sql1 =
+		// "select id from hw_station_segment_speed where time = ? "
+		// + "and direction = ? and rowNum <=1";
+		// try {
+		// pstm = conn.prepareStatement(sql1);
+		// pstm.setTimestamp(1, Timestamp.valueOf(timeStamp.replace('/', '-')));
+		// pstm.setInt(2, direction);
+		// ResultSet rs = pstm.executeQuery();
+		// // if the result is not null, then do not insert again;
+		// if (rs.next()) {
+		// logger.warning(" ==== The data have already been inserted into database!!");
+		// return;
+		// } else {
+		// rs.close();
+		// }
+		// } catch (SQLException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 
-		String sql = "insert into hw_station_segment_speed values (?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into hw_station_segment_speed values (?,?,?,?,?,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			int count = 0;
 			for (int i = 0; i < ss.size(); i++) {
 				StationSegment rs = ss.get(i);
 				pstm.setInt(1, rs.id);
-				pstm.setString(2, rs.getStarts());
-				pstm.setTimestamp(3,
+				pstm.setTimestamp(2,
 						Timestamp.valueOf(timeStamp.replace('/', '-')));
-				pstm.setInt(4, direction);
-				pstm.setInt(5, rs.getMaxSpeed());
-				pstm.setInt(6, rs.getMinSpeed());
-				pstm.setInt(7, rs.getAvgSpeed());
-				pstm.setInt(8, rs.getFilterAvgSpeed());
-				pstm.setInt(9, rs.getRealNum());
+				pstm.setInt(3, direction);
+				pstm.setInt(4, rs.getMaxSpeed());
+				pstm.setInt(5, rs.getMinSpeed());
+				pstm.setInt(6, rs.getAvgSpeed());
+				pstm.setInt(7, rs.getFilterAvgSpeed());
+				pstm.setInt(8, rs.getRealNum());
 				pstm.execute();
 				count++;
 			}
@@ -223,41 +365,44 @@ public class DBServiceForOracle {
 	 * @param rss
 	 * @param timeStamp
 	 */
-	public void insertNodeSpeeds(ArrayList<NodeSegment> rss, String timeStamp) {
+	public void insertNodeSpeeds(ArrayList<NodeSegment> rss, String timeStamp,
+			int direction) {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
-		String sql1 = "select id from hw_road_node_segment_speed where time = ? limit 1";
-		try {
-			pstm = conn.prepareStatement(sql1);
-			pstm.setTimestamp(1, Timestamp.valueOf(timeStamp.replace('/', '-')));
-			ResultSet rs = pstm.executeQuery();
-			// if the result is not null, then do not insert again;
-			if (rs.first()) {
-				logger.warning(" ==== The data have already been inserted into database!!");
-				return;
-			} else {
-				rs.close();
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		// String sql1 =
+		// "select id from hw_road_node_segment_speed where time = ? "
+		// + "and id = ? and rowNum<=1";
+		// try {
+		// pstm = conn.prepareStatement(sql1);
+		// // id and time identify one record;
+		// pstm.setTimestamp(1, Timestamp.valueOf(timeStamp.replace('/', '-')));
+		// pstm.setInt(2, rss.get(10).id); // use a random id;
+		// ResultSet rs = pstm.executeQuery();
+		// // if the result is not null, then do not insert again;
+		// if (rs.next()) {
+		// logger.warning(" ==== The data have already been inserted into database!!");
+		// return;
+		// } else {
+		// rs.close();
+		// }
+		// } catch (SQLException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 
-		String sql = "insert into hw_road_node_segment_speed values (?,?,?,?,?,?,?,?)";
+		String sql = "insert into hw_road_node_segment_speed values (?,?,?,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			int count = 0;
 			for (int i = 0; i < rss.size(); i++) {
 				NodeSegment rs = rss.get(i);
 				pstm.setInt(1, rs.getId());
-				pstm.setString(2, rs.getSectionName());
-				pstm.setTimestamp(3,
+				pstm.setTimestamp(2,
 						Timestamp.valueOf(timeStamp.replace('/', '-')));
-				pstm.setInt(4, rs.getDirection());
-				pstm.setInt(5, rs.getMaxSpeed());
-				pstm.setInt(6, rs.getMinSpeed());
-				pstm.setInt(7, rs.getAvgSpeed());
-				pstm.setInt(8, rs.getSpeedNum());
+				pstm.setInt(3, rs.getMaxSpeed());
+				pstm.setInt(4, rs.getMinSpeed());
+				pstm.setInt(5, rs.getAvgSpeed());
+				pstm.setInt(6, rs.getSpeedNum());
 				pstm.execute();
 				count++;
 			}
@@ -335,14 +480,17 @@ public class DBServiceForOracle {
 
 	public int checkRequest() {
 		int flag = 0;
-		String sql = "select * from hw_para_time_set";
+		String sql = "select to_char(startTime,'yyyy-mm-dd hh24:mi:ss'),"
+				+ "to_char(endTime,'yyyy-mm-dd hh24:mi:ss'),"
+				+ "to_char(setTime,'yyyy-mm-dd hh24:mi:ss'), interval "
+				+ " from hw_para_time_set";
 		try {
 			pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
 			int count = 0;
 			while (rs.next()) {
 				count++;
-				String setTime = rs.getString(4);
+				String setTime = rs.getString(3);
 				// if setTime is not changed, that means there is no new
 				// request;
 				if (setTime == null)
@@ -358,7 +506,7 @@ public class DBServiceForOracle {
 				Configuration.setTime = setTime;
 				Configuration.startTime = rs.getString(1);
 				Configuration.endTime = rs.getString(2);
-				Configuration.rate = rs.getInt(3);
+				Configuration.rate = rs.getInt(4);
 				flag = 1;
 			}
 			rs.close();
