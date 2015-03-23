@@ -1,4 +1,5 @@
 package com.siat.gps;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +53,7 @@ public class RoadNode implements Serializable {
 	}
 
 	public double length() {
-		return Utility.getDistance(start, end);
+		// return Utility.getDistance(start, end);
+		return 0;
 	}
 }

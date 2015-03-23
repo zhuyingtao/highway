@@ -17,7 +17,12 @@ import com.siat.msg.util.DataLogger;
  */
 public class StationSegment {
 
-	// 从文件里读取基站与基站之间的路段信息
+	/**
+	 * @Title: readFromFile
+	 * @Description: DEPRECATED
+	 * @param filePath
+	 * @return
+	 */
 	@SuppressWarnings("unused")
 	public static ArrayList<StationSegment> readFromFile(String filePath) {
 		ArrayList<StationSegment> rss = new ArrayList<>();
@@ -60,11 +65,11 @@ public class StationSegment {
 	public int startStation;
 	public int endStation;
 
-	int direction;
+	private int direction;
 	List<Integer> startIds;
 	List<Integer> endIds;
 
-	public double length; // 路段的长度
+	private double length; // 路段的长度
 	// 存在相同经纬度，不同cellid的基站
 	ArrayList<Station> starts;
 	ArrayList<Station> ends;
@@ -73,7 +78,7 @@ public class StationSegment {
 	private int filterAvgSpeed;
 	private int maxSpeed;
 	private int minSpeed = 100;
-	private int realNum; // 在当前路段上的车辆数
+	private int realNum = 0; // 在当前路段上的车辆数
 	// 保存一批次数据中当前路段上每一辆车的速度
 	private List<Integer> speeds = new ArrayList<Integer>();
 
@@ -83,10 +88,10 @@ public class StationSegment {
 	public StationSegment(int id, double length, List<Integer> startIds,
 			List<Integer> endIds, int direction) {
 		this.id = id;
-		this.length = length;
+		this.setLength(length);
 		this.startIds = startIds;
 		this.endIds = endIds;
-		this.direction = direction;
+		this.setDirection(direction);
 	}
 
 	public StationSegment(int id, ArrayList<Station> starts,
@@ -99,7 +104,41 @@ public class StationSegment {
 	public StationSegment(int id, ArrayList<Station> starts, double length) {
 		this.id = id;
 		this.starts = starts;
-		this.length = length;
+		this.setLength(length);
+	}
+
+	/**
+	 * @Title: initStarts
+	 * @Description: After select data from database, the StationSegment and
+	 *               Station are still unlinked (because the StationSegment only
+	 *               selected the Station id, not object), this method is used
+	 *               to linked them;
+	 * @param stations
+	 */
+	public void initStarts(List<Station> stations) {
+		this.starts = new ArrayList<>();
+		for (int i = 0; i < this.startIds.size(); i++) {
+			int id = startIds.get(i);
+			for (int j = 0; j < stations.size(); j++) {
+				if (stations.get(j).getCellId() == id) {
+					this.starts.add(stations.get(j));
+					break;
+				}
+			}
+		}
+	}
+
+	public void initEnds(List<Station> stations) {
+		this.ends = new ArrayList<>();
+		for (int i = 0; i < this.endIds.size(); i++) {
+			int id = endIds.get(i);
+			for (int j = 0; j < stations.size(); j++) {
+				if (stations.get(j).getCellId() == id) {
+					this.ends.add(stations.get(j));
+					break;
+				}
+			}
+		}
 	}
 
 	public void addReal() {
@@ -114,26 +153,28 @@ public class StationSegment {
 			minSpeed = speed;
 	}
 
-	public void clear() {
+	public void clearSpeeds() {
 		this.speeds.clear();
-		realNum = 0;
+		this.realNum = 0;
 	}
 
 	public void computeAvgSpeed() {
-		// 如果此批次的数据为空，则直接返回，使用上一批数据的结果
+		// if this batch is empty, then just return and maintain the last
+		// average speed of this segment;
 		if (this.speeds.size() == 0)
 			return;
 
 		double sum = 0;
-		for (int i = 0; i < getSpeeds().size(); i++) {
-			sum += getSpeeds().get(i);
+		for (int i = 0; i < this.speeds.size(); i++) {
+			sum += this.speeds.get(i);
 		}
 		this.avgSpeed = (int) (sum / speeds.size());
 	}
 
 	public void computeFilterAvgSpeed() {
-		if (getSpeeds().size() == 0)
+		if (this.speeds.size() == 0)
 			return;
+
 		List<Integer> qualifiedSpeeds = this.getQualifiedData();
 		double sum = 0;
 		for (int i = 0; i < qualifiedSpeeds.size(); i++) {
@@ -143,10 +184,19 @@ public class StationSegment {
 			this.filterAvgSpeed = (int) (sum / qualifiedSpeeds.size());
 	}
 
+	/**
+	 * @Title: contains
+	 * @Description: determine whether the car belongs to this segment. Now we
+	 *               just assert that if the cellId of the data is contained in
+	 *               the startIds, then it belongs to this segment. This may be
+	 *               INACCURATE.
+	 * @param cellid
+	 * @return
+	 */
 	public boolean contains(int cellid) {
 		boolean contains = false;
-		for (int i = 0; i < starts.size(); i++) {
-			if (starts.get(i).getCellId() == cellid) {
+		for (int i = 0; i < startIds.size(); i++) {
+			if (startIds.get(i) == cellid) {
 				contains = true;
 				break;
 			}
@@ -248,7 +298,33 @@ public class StationSegment {
 		return sum;
 	}
 
-	public static void main(String[] args) {
+	/**
+	 * @return the direction
+	 */
+	public int getDirection() {
+		return direction;
+	}
 
+	/**
+	 * @param direction
+	 *            the direction to set
+	 */
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+
+	/**
+	 * @return the length
+	 */
+	public double getLength() {
+		return length;
+	}
+
+	/**
+	 * @param length
+	 *            the length to set
+	 */
+	public void setLength(double length) {
+		this.length = length;
 	}
 }

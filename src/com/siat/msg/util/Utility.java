@@ -22,4 +22,13 @@ public class Utility {
 		long d2 = end.getTime();
 		return (d2 - d1) / 1000;
 	}
+
+	public static void sleep(double second) {
+		try {
+			Thread.sleep((long) (second * 1000));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

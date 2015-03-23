@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.siat.ds.NodeSegment;
+import com.siat.ds.Station;
 import com.siat.ds.StationSegment;
 import com.siat.msg.Configuration;
 import com.siat.msg.UserData;
 import com.siat.msg.db.DBServiceForOracle;
 import com.siat.msg.util.DataLogger;
+import com.siat.msg.util.Utility;
 
 /**
  * @ClassName SpeedAlgorithm
@@ -23,7 +25,7 @@ import com.siat.msg.util.DataLogger;
  * @author Zhu Yingtao
  * @date 2014年12月16日 下午3:12:33
  */
-public class SegmentSpeed {
+public class StationSegmentSpeed {
 
 	private DBServiceForOracle db = null;
 	private String startTimeStr = null;
@@ -31,8 +33,8 @@ public class SegmentSpeed {
 
 	private int cachedTime = 0;
 
-	private int nowStationId = 0;
-	private int lastStationId = 0;
+	private int nowSegmentId = 0;
+	private int lastSegmentId = 0;
 
 	// Lists for StationSegment and NodeSegment stored the computed speed and
 	// some other information;
@@ -40,6 +42,8 @@ public class SegmentSpeed {
 	private ArrayList<StationSegment> reverseStations;
 	private ArrayList<NodeSegment> forwardNodes;
 	private ArrayList<NodeSegment> reverseNodes;
+
+	private List<StationSegment> stationSegments;
 
 	private SimpleDateFormat sdf = null;
 
@@ -55,33 +59,25 @@ public class SegmentSpeed {
 	// used for history speed, marked the index of one batch data;
 	private int endIndex = 0;
 
-	public SegmentSpeed(String startTimeStr) {
+	// hold a reference of NodeSegmentSpeed just now;
+	NodeSegmentSpeed nss = null;
+
+	public StationSegmentSpeed(String startTimeStr) {
 		// TODO Auto-generated constructor stub
 		this.db = new DBServiceForOracle();
 		this.startTimeStr = startTimeStr;
 		this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.logger = DataLogger.getLogger();
-		this.initialRoadSegments();
-		this.initialRoadSections();
+		this.stationSegments = this.initialStationSegments();
+		this.nss = new NodeSegmentSpeed();
 	}
 
 	public void addSpeed(int speed) {
-		// determine the start station and the end station;
-		int large = -1, small = -1;
-		if (isForward) {
-			small = lastStationId;
-			large = nowStationId;
-		} else {
-			small = nowStationId;
-			large = lastStationId;
-		}
-		// < or <= ?
-		for (int j = small; j <= large; j++) {
-			StationSegment rs = isForward ? (forwardStations.get(j))
-					: (reverseStations.get(j));
-			rs.addSpeed(speed);
-			if (j == nowStationId)
-				rs.addReal();
+		for (int i = lastSegmentId; i <= nowSegmentId; i++) {
+			StationSegment ss = stationSegments.get(i);
+			ss.addSpeed(speed);
+			if (i == nowSegmentId)
+				ss.addReal();
 		}
 		computeNum++;
 	}
@@ -115,7 +111,8 @@ public class SegmentSpeed {
 
 		// 2. 用userDataPool暂存上一批的数据，将最新一批的数据与上一批数据比较
 		for (int i = 0; i < nowData.size(); i++) {
-			// 如果车辆id匹配，则得出时间距离差，算出每一辆车的平均速度，然后更新userDataPool中的数据;
+			// 如果车辆id匹配，则得出时间距离差，算出每一辆车的平均速度，
+			// 然后更新userDataPool中的数据;
 			// 如果没有匹配车辆，则将新车辆直接插入userDataPool中。
 			int speed = -1;
 			UserData nowUd = nowData.get(i);
@@ -136,18 +133,18 @@ public class SegmentSpeed {
 			// 3. 将计算出的车辆速度补足到经过的每一个路段区间中
 			int large = -1, small = -1;
 			if (isForward) {
-				small = lastStationId;
-				large = nowStationId;
+				small = lastSegmentId;
+				large = nowSegmentId;
 			} else {
-				small = nowStationId;
-				large = lastStationId;
+				small = nowSegmentId;
+				large = lastSegmentId;
 			}
 			// < or <= ?
 			for (int j = small; j <= large; j++) {
 				StationSegment rs = isForward ? (forwardStations.get(j))
 						: (reverseStations.get(j));
 				rs.addSpeed(speed);
-				if (j == nowStationId)
+				if (j == nowSegmentId)
 					rs.addReal();
 			}
 			computeNum++;
@@ -163,8 +160,8 @@ public class SegmentSpeed {
 		// 另：计算每一个服务区间的平均速度，分双向，并打印输出
 		this.computeNodeSpeed(forwardNodes);
 		this.computeNodeSpeed(reverseNodes);
-		this.dumpRoadSpeeds();
-		this.storeData();
+		this.dumpData(startTimeStr);
+		this.storeData(startTimeStr);
 
 		// 5. 维护UserDataPool,去除长时间未出现的数据。
 		if (cachedTime >= Configuration.CACHE_TIME) {
@@ -182,7 +179,8 @@ public class SegmentSpeed {
 	public void computeAvgSpeed(List<UserData> batchData) {
 		// if it is the first batch : initial the userDataPool, then return.
 		// useDataPool is a list that contains the UserData of last batchData or
-		// unused; it will be refreshed in a specific time to keep size.
+		// unused up till now; it will be refreshed in a specific time to keep
+		// size.
 		if (userDataPool == null) {
 			userDataPool = batchData;
 			return;
@@ -216,7 +214,6 @@ public class SegmentSpeed {
 
 			// add the speed into every Station Segment that related;
 			this.addSpeed(speed);
-
 		}
 		logger.info("========= in one batch : new_add = " + newNum
 				+ " , matches = " + matchesNum + " { in_same_segment = "
@@ -224,17 +221,16 @@ public class SegmentSpeed {
 		this.clearFlags();
 
 		// compute every Station Segment's speed;
-		this.computeStationSpeed(forwardStations);
-		this.computeStationSpeed(reverseStations);
-		// compute every Node Segment's speed;
-		this.computeNodeSpeed(forwardNodes);
-		this.computeNodeSpeed(reverseNodes);
-		// dump result into text;
-		this.dumpRoadSpeeds();
+		this.computeStationSpeed(stationSegments);
 		// store result into database;
-		this.storeData();
+		this.storeData(startTimeStr);
+		// dump result into text;
+		if (Configuration.WRITE_TO_FILE) {
+			this.dumpData(startTimeStr);
+		}
 
-		// 5. 维护UserDataPool,去除长时间未出现的数据。
+		// maintain the UserDataPool, delete the data which is not used for a
+		// period of time;
 		if (cachedTime >= Configuration.CACHE_TIME) {
 			filterUserDataPool();
 			cachedTime = 0;
@@ -251,16 +247,21 @@ public class SegmentSpeed {
 	 */
 	public void computeHistorySpeed(String startTime, String endTime, int rate) {
 		this.startTimeStr = startTime;
+		this.userDataPool = null;
+		int startIndex = 0;
+		int batchNum = 0;
+		// set the interval computing time of every batch, if it is not enough,
+		// then just wait; if it is over, then give a warn;
+		int batchInterval = Configuration.INTERVAL_TIME / rate;
 
 		// 1. get all the history data from databases into memory according to
 		// the startTime and endTime;
 		List<UserData> allData = this.getHistoryUserData(startTime, endTime);
-		this.userDataPool = null;
-		int startIndex = 0;
-		int batchNum = 0;
 		// 2. compute the average speed of every batch;
 		logger.info("**** All batches begin to compute ... ");
 		while (startIndex < allData.size()) {
+			Date date1 = new Date();
+
 			// before every computing, check whether the request has been
 			// updated;
 			boolean updated = this.checkUpdate();
@@ -272,19 +273,35 @@ public class SegmentSpeed {
 			List<UserData> batchData = this
 					.getOneBatchData(allData, startIndex);
 			this.computeAvgSpeed(batchData);
+			nss.computeAvgSpeed(stationSegments, startTimeStr);
 			// update the start time;
 			this.startTimeStr = this.updateTime(startTimeStr);
 			startIndex = endIndex;
 			batchNum++;
+
+			// check the computing time;
+			Date date2 = new Date();
+			double time = (date2.getTime() - date1.getTime()) / 1000.0; // s
+			if (time > batchInterval) {
+				// computing time is exceed;
+				logger.warning("'''''''' over time , stand = " + batchInterval
+						+ " s , real = " + time + " s");
+			} else {
+				// computing time is not enough;
+				double waitTime = batchInterval - time;
+				logger.info("''''''' wait time , sleep = " + waitTime + " s ");
+				Utility.sleep(waitTime);
+			}
 		}
 		logger.info("**** All batches have finished ... count : " + batchNum);
 	}
 
+	// deprecated
 	public void computeNodeSpeed(List<NodeSegment> list) {
 		for (int i = 0; i < list.size(); i++) {
 			NodeSegment ns = list.get(i);
-			int start = ns.startNode.cellId;
-			int end = ns.endNode.cellId;
+			int start = ns.startNodeId;
+			int end = ns.endNodeId;
 			int direction = ns.direction;
 
 			int speed = 0;
@@ -334,17 +351,24 @@ public class SegmentSpeed {
 		}
 	}
 
+	/**
+	 * @Title: computeOneSpeed
+	 * @Description: compute one car's speed according to the user data;
+	 * @param nowUd
+	 * @param lastUd
+	 * @return
+	 */
 	public int computeOneSpeed(UserData nowUd, UserData lastUd) {
 		int speed = -1;
 		isForward = this.getDirection(nowUd, lastUd);
 		double time = this.getIntervalTime(nowUd, lastUd);
-		double distance = this.getDistance(isForward);
+		double distance = this.getDistance();
 
 		if (distance == -1) {
 			sameNum++;
 		} else {
 			speed = (int) (distance / time);
-			// 速度超出正常范围，则丢弃，返回-1
+			// if the speed is too large and negative, then it is illegal;
 			if (speed < 0 || speed > 250) {
 				logger.warning("illegal speed : d = " + distance + ", t = "
 						+ time + ", s = " + speed + "\t , " + nowUd.getCellid()
@@ -355,45 +379,45 @@ public class SegmentSpeed {
 		return speed;
 	}
 
+	/**
+	 * @Title: computeStationSpeed
+	 * @Description: compute every station segment's speed;
+	 * @param list
+	 */
 	public void computeStationSpeed(List<StationSegment> list) {
 		for (int i = 0; i < list.size(); i++) {
 			StationSegment rs = list.get(i);
 			rs.computeAvgSpeed();
 			rs.computeFilterAvgSpeed();
-			// logger.info(" ***** " + rs.id + "\t speeds : "
-			// + rs.getSpeeds().toString());
-			// logger.info(" &&&&& " + rs.id + "\t filterSpeeds : "
-			// + rs.getQualifiedData().toString());
-			rs.genAvgSpeedStr(startTimeStr);
 		}
 	}
 
-	public void dumpRoadSpeeds() {
+	/**
+	 * @Title: dumpData
+	 * @Description: write the speed data to file directly, so it is easier to
+	 *               examine the result;
+	 */
+	public void dumpData(String timeStamp) {
 		BufferedWriter bw = null;
-		BufferedWriter bw2 = null;
 		try {
 			bw = new BufferedWriter(new FileWriter("station_speeds.txt", true));
-			bw2 = new BufferedWriter(new FileWriter("section_speeds.txt", true));
 
-			// 按时间批次输出所有路段速度信息
-			bw.write("=======Time : " + startTimeStr + " =====\n");
-			for (int i = 0; i < forwardStations.size(); i++) {
-				StringBuffer str = new StringBuffer();
-				StationSegment rs = forwardStations.get(i);
-				str.append("@" + rs.id + " --- ");
-				str.append(Math.round(rs.getAvgSpeed()) + " & "
-						+ Math.round(rs.getFilterAvgSpeed()));
-				// 清空speed表，以便下次使用
-				rs.clear();
-				rs = reverseStations.get(i);
-				str.append("\t||\t" + Math.round(rs.getAvgSpeed()) + " & "
-						+ Math.round(rs.getFilterAvgSpeed()) + "\n");
-				bw.write(str.toString());
-				// 清空speed表，以便下次使用
-				rs.clear();
+			bw.write("=======Time : " + timeStamp + " =====\n");
+			StringBuffer str = new StringBuffer();
+			str.append("id\t\tdir\t\tmax\t\tmin\t\tavg\t\tfilter\t\tnum");
+			// write out all the node segments information;
+			for (int i = 0; i < stationSegments.size(); i++) {
+				StationSegment rs = stationSegments.get(i);
+				str.append(rs.id + " -- " + rs.getDirection() + " : "
+						+ rs.getMaxSpeed() + " , " + rs.getMinSpeed() + " , "
+						+ rs.getAvgSpeed() + " , " + rs.getFilterAvgSpeed()
+						+ " , (" + rs.getRealNum() + ")\n");
+				// clear speed list for the next batch;
+				rs.clearSpeeds();
 			}
+			bw.write(str.toString() + "\n\n");
 
-			// 按路段输出所有批次速度信息
+			// print the speed info of all batch for every station;
 			// for (int i = 0; i < forwardRS.size(); i++) {
 			// RoadSegment rs = forwardRS.get(i);
 			// String str = rs.dumpAvgSpeedStr();
@@ -404,34 +428,19 @@ public class SegmentSpeed {
 			// bw.write(str + "\n");
 			// }
 
-			// 输出区间速度信息
-			bw2.write("=======Time : " + startTimeStr + " =====\n");
-			for (int i = 0; i < forwardNodes.size(); i++) {
-				StringBuffer str = new StringBuffer();
-				NodeSegment rs = forwardNodes.get(i);
-				str.append("@" + rs.id + " : " + rs.startNode.name
-						+ " --- " + rs.endNode.name + "\n");
-				str.append("speed = " + Math.round(rs.avgSpeed) + " , num = "
-						+ rs.speedNum);
-				rs = reverseNodes.get(i);
-				str.append("\t||\tspeed = " + Math.round(rs.avgSpeed)
-						+ " , num = " + rs.speedNum + "\n");
-				bw2.write(str.toString());
-			}
-
-			bw.write("\n\n");
 			bw.flush();
 			bw.close();
-
-			bw2.write("\n\n");
-			bw2.flush();
-			bw2.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * @Title: filterUserDataPool
+	 * @Description: filter the dead data (not used for a long time) in the user
+	 *               data pool;
+	 */
 	public void filterUserDataPool() {
 		Date nowDate = null;
 		int removedNum = 0;
@@ -456,45 +465,74 @@ public class SegmentSpeed {
 				+ "] dead car !");
 	}
 
+	/**
+	 * @Title: getDirection
+	 * @Description: determine the direction that the car runs in now. As the
+	 *               station segment is in ascending order, so we can find the
+	 *               station segment the car of now and last belongs to , then
+	 *               based on the id to determine the direction.
+	 * @param nowUd
+	 * @param lastUd
+	 * @return
+	 */
 	public boolean getDirection(UserData nowUd, UserData lastUd) {
-		int nowCellid = nowUd.getCellid();
-		int lastCellid = lastUd.getCellid();
-		nowStationId = -1;
-		lastStationId = -1;
-		for (int i = 0; i < forwardStations.size(); i++) {
-			StationSegment rs = forwardStations.get(i);
-			// 一个路段可能包含多个（位置相同）的基站
-			if (rs.contains(nowCellid))
-				nowStationId = i;
-			if (rs.contains(lastCellid))
-				lastStationId = i;
-			// 两个位置都已找到，直接跳出
-			if (nowStationId != -1 && lastStationId != -1)
+		int nowId = nowUd.getCellid();
+		int lastId = lastUd.getCellid();
+		// the boundary of forward and reverse;
+		int boundary = stationSegments.size() / 2;
+		nowSegmentId = -1;
+		lastSegmentId = -1;
+
+		for (int i = 0; i < boundary; i++) {
+			StationSegment ss = stationSegments.get(i);
+			// a segment may contains more than one station (same location);
+			if (ss.contains(nowId))
+				nowSegmentId = i;
+			if (ss.contains(lastId))
+				lastSegmentId = i;
+			// the two segmentId have both been found, then break;
+			if (nowSegmentId != -1 && lastSegmentId != -1)
 				break;
 		}
-		if (nowStationId == -1 || lastStationId == -1)
-			logger.severe("===== road segment fault ! " + nowStationId + "\t"
-					+ lastStationId + "\t" + nowCellid + "\t" + lastCellid);
-		if (nowStationId > lastStationId)
+		if (nowSegmentId == -1 || lastSegmentId == -1)
+			logger.severe("===== road segment fault ! now_seg = "
+					+ nowSegmentId + ", now_id = " + nowId + " , last_seg = "
+					+ lastSegmentId + " , last_id = " + lastId);
+		if (nowSegmentId >= lastSegmentId)
 			return true;
-		else
+		else {
+			// this is in reverse direction, then we do some changes, so that
+			// the nowSegmentId always after the lastSegmentId;
+			for (int i = boundary; i < stationSegments.size(); i++) {
+				StationSegment rs = stationSegments.get(i);
+				if (rs.contains(nowId))
+					nowSegmentId = i;
+				if (rs.contains(lastId))
+					lastSegmentId = i;
+				if (nowSegmentId != -1 && lastSegmentId != -1)
+					break;
+			}
 			return false;
+		}
 	}
 
-	public double getDistance(boolean direction) {
+	/**
+	 * @Title: getDistance
+	 * @Description: get the distance of two related user data;
+	 * @return
+	 */
+	public double getDistance() {
 		double distance = 0;
-		// 两次数据处于同一路段，无法计算距离，返回-1
-		if (nowStationId == lastStationId)
+		// one of the two data is illegal;
+		if (nowSegmentId == -1 || lastSegmentId == -1)
 			return -1;
-		// 只算基站与基站之间的距离，偏小
-		if (direction == true) {
-			for (int i = lastStationId; i < nowStationId; i++) {
-				distance += forwardStations.get(i).length;
-			}
-		} else {
-			for (int i = nowStationId; i < lastStationId; i++) {
-				distance += reverseStations.get(i).length;
-			}
+		// the two data is in same segment (or may be in two contiguous
+		// segments)，then return -1;
+		if (nowSegmentId == lastSegmentId)
+			return -1;
+		// the two data is in different segment;
+		for (int i = lastSegmentId; i < nowSegmentId; i++) {
+			distance += stationSegments.get(i).getLength();
 		}
 		return distance;
 	}
@@ -511,10 +549,18 @@ public class SegmentSpeed {
 		return userDatas;
 	}
 
+	/**
+	 * @Title: getIntervalTime
+	 * @Description: get the interval time (hour) of last data and now data.
+	 * @param nowUd
+	 * @param lastUd
+	 * @return the interval hour;
+	 */
 	public double getIntervalTime(UserData nowUd, UserData lastUd) {
 		// mostly, the nowUd time is later than lastUd; but there are still some
-		// exceptions that nowUd time is earlier, so we use the absolute value
-		// to keep the interval time is positive;
+		// exceptions(if the selected data is not in order) that nowUd time is
+		// earlier, so we use the absolute value to keep the interval time is
+		// positive;
 		return (Math.abs(nowUd.getTimestamp().getTime()
 				- lastUd.getTimestamp().getTime()))
 				/ (1000.0 * 60 * 60);
@@ -532,14 +578,16 @@ public class SegmentSpeed {
 		List<UserData> batchData = new ArrayList<UserData>();
 		// find the end index of one batch based on interval time;
 		endIndex = startIndex + 1;
-		int newAdd = 0; // count the distinct data num;
-		int same = 0;
+		int newAdd = 0; // count the distinct data number;
+		int same = 0; // count the same data number
 		while (endIndex < allData.size()) {
 			UserData ud1 = allData.get(endIndex);
 			if (ud1.getTimestamp().getTime() - ud.getTimestamp().getTime() > Configuration.INTERVAL_TIME * 1000) {
+				logger.info("batch time : " + ud1.getTimestamp() + "----"
+						+ ud.getTimestamp());
 				break;
 			}
-			// at here we use the OLDEST DATA of the same user data; so the
+			// here we use the OLDEST of the same user data; so the
 			// speed may be SMALLER than before;
 			int index = batchData.indexOf(ud1);
 			if (index < 0) {
@@ -560,13 +608,6 @@ public class SegmentSpeed {
 				+ startIndex + ", " + endIndex + ", distinct = " + newAdd
 				+ " , same = " + same);
 		return batchData;
-	}
-
-	public ArrayList<StationSegment> getRoadSegmentList(boolean isForward) {
-		if (isForward)
-			return this.forwardStations;
-		else
-			return this.reverseStations;
 	}
 
 	/**
@@ -592,44 +633,45 @@ public class SegmentSpeed {
 		return userDatas;
 	}
 
-	public void initialRoadSections() {
-		ArrayList<NodeSegment> rss = NodeSegment.initial();
-		this.forwardNodes = new ArrayList<>();
-		this.reverseNodes = new ArrayList<>();
-		for (int i = 0; i < 24; i++) {
-			forwardNodes.add(rss.get(i));
+	/**
+	 * @Title: initialStationSegments
+	 * @Description: initial the station segments and the stations;
+	 * @return
+	 */
+	public List<StationSegment> initialStationSegments() {
+		logger.info("initial station segments ... ");
+		List<Station> stations = db.selectStation();
+		List<StationSegment> segments = db.selectStationSegment();
+		for (int i = 0; i < segments.size(); i++) {
+			StationSegment ss = segments.get(i);
+			ss.initStarts(stations);
+			ss.initEnds(stations);
 		}
-		for (int i = 24; i < 48; i++) {
-			reverseNodes.add(rss.get(i));
-		}
+		return segments;
 	}
 
-	public void initialRoadSegments() {
-		// 暂时处理:正向逆向路段对象完全一样(从0到n);
-		this.forwardStations = StationSegment.readFromFile("data/路段.txt");
-		this.reverseStations = StationSegment.readFromFile("data/路段.txt");
-	}
-
-	public void storeData() {
-		db.insertStationSpeeds(forwardStations, startTimeStr, 1);
-		db.insertStationSpeeds(reverseStations, startTimeStr, 2);
-		db.insertNodeSpeeds(forwardNodes, startTimeStr,1);
-		db.insertNodeSpeeds(reverseNodes, startTimeStr,2);
+	/**
+	 * @Title: storeData
+	 * @Description: store the speed data into the database;
+	 * @param timeStamp
+	 */
+	public void storeData(String timeStamp) {
+		db.insertStationSpeeds(stationSegments, timeStamp);
 		// update the value in certain database to inform that new data has been
 		// inserted into database;
-		db.updateTime(startTimeStr);
+		db.updateTime(timeStamp);
 	}
 
 	/**
 	 * @Title: updateTime
 	 * @Description:
-	 * @param startTime
+	 * @param timeStamp
 	 * @return
 	 */
-	public String updateTime(String startTime) {
+	public String updateTime(String timeStamp) {
 		Date start = null;
 		try {
-			start = sdf.parse(startTime);
+			start = sdf.parse(timeStamp);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

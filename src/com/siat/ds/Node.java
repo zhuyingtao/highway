@@ -11,7 +11,7 @@ public class Node {
 	int id;
 	public String name;
 	public int cellId;
-	int direction;
+	public int direction;
 	double length;
 
 	/**

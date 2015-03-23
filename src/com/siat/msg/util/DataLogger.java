@@ -24,7 +24,7 @@ public class DataLogger {
 			logger = Logger.getLogger(DataLogger.class.getName());
 			FileHandler fh = null;
 			try {
-				fh = new FileHandler("highway.log", true);
+				fh = new FileHandler("highway.log");
 				fh.setFormatter(new Formatter() {
 					@Override
 					public String format(LogRecord record) {

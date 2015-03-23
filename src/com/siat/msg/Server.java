@@ -6,9 +6,10 @@ package com.siat.msg;
 import java.io.File;
 import java.util.logging.Logger;
 
-import com.siat.msg.alg.SegmentSpeed;
+import com.siat.msg.alg.StationSegmentSpeed;
 import com.siat.msg.db.DBServiceForOracle;
 import com.siat.msg.util.DataLogger;
+import com.siat.msg.util.Utility;
 
 /**
  * @ClassName Server
@@ -24,16 +25,13 @@ public class Server {
 		this.clearLog(); // delete the previous log;
 		Logger logger = DataLogger.getLogger();
 		int i = 0;
-		SegmentSpeed sa = new SegmentSpeed(Configuration.START_TIME);
+		StationSegmentSpeed sa = new StationSegmentSpeed(
+				Configuration.START_TIME);
 		while (true) {
 			int request = this.checkRequest();
 			if (request == 0) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				// wait 1 second;
+				Utility.sleep(1);
 			} else if (request == 1) {
 				logger.info("=============== History speed ================");
 				sa.computeHistorySpeed(Configuration.startTime,
@@ -64,17 +62,15 @@ public class Server {
 		String[] files = f.list();
 		int count = 0;
 		for (int i = 0; i < files.length; i++) {
-			if (files[i].matches(".*log.*") || files[i].matches(".*speeds.txt")) {
+			if (files[i].matches("(.*)\\.log(.*)")
+					|| files[i].matches(".*speeds\\.txt")) {
 				File file = new File(files[i]);
 				file.delete();
+				System.out.println(file.getName() + " deleted ! ");
 				count++;
 			}
 		}
 		System.out.println("delete log : " + count);
-	}
-
-	public void initialize() {
-		
 	}
 
 	/**

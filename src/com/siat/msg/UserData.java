@@ -101,7 +101,7 @@ public class UserData {
 	}
 
 	public boolean isLater(UserData ud) {
-		boolean isLater = false;
+		boolean isLater = false;	
 		if (this.timestamp.after(ud.timestamp))
 			isLater = true;
 		return isLater;

@@ -27,6 +27,8 @@ public class Configuration {
 			11402, 39422, 24542, 17151, 60061, 32802, 34821, 12211, 10752,
 			11172, 44101, 10761, 47461 };
 
+	public static int[] unused = { 15851, 34361 };
+
 	// used for computing history speed;
 	public static String startTime = "2015/01/22 07:00:00";
 	public static String endTime = "2015/01/22 12:00:00";
@@ -36,5 +38,7 @@ public class Configuration {
 	public static int rate = 1;
 
 	public static final Level logLevel = Level.FINEST;
+	// whether write the speed results to file;
+	public static final boolean WRITE_TO_FILE = false;
 
 }

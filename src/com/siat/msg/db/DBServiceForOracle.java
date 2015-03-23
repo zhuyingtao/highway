@@ -34,7 +34,7 @@ public class DBServiceForOracle {
 	String user = "hw";
 	String password = "hw";
 
-	Connection conn = null;
+	static Connection conn = null;
 	PreparedStatement pstm = null;
 	Logger logger = null;
 
@@ -96,7 +96,7 @@ public class DBServiceForOracle {
 	public List<NodeSegment> selectNodeSegment() {
 		Date date1 = new Date();
 		logger.info("==== begin to select node segment ... ");
-		String sql = "select id, direction, start_road_node, end_road_node, length from"
+		String sql = "select id, direction, start_road_node, end_road_node, length from "
 				+ "hw_road_node_segment order by id";
 		List<NodeSegment> list = new ArrayList<NodeSegment>();
 
@@ -128,7 +128,7 @@ public class DBServiceForOracle {
 	public List<Node> selectNode() {
 		Date date1 = new Date();
 		logger.info("==== begin to select node ... ");
-		String sql = "select id, direction, cell_id, length from"
+		String sql = "select id, direction, cell_id, length from "
 				+ "hw_road_node";
 		List<Node> list = new ArrayList<Node>();
 
@@ -158,7 +158,7 @@ public class DBServiceForOracle {
 	public List<Station> selectStation() {
 		Date date1 = new Date();
 		logger.info("==== begin to select station ... ");
-		String sql = "select cell_id, lac_id, longitude, latitude from"
+		String sql = "select cell_id, lac_id, longitude, latitude from "
 				+ "hw_station where serial_number = ? ";
 		List<Station> list = new ArrayList<Station>();
 
@@ -189,7 +189,7 @@ public class DBServiceForOracle {
 	public List<StationSegment> selectStationSegment() {
 		Date date1 = new Date();
 		logger.info("==== begin to select station segment... ");
-		String sql = "select id, roadLength, direction, cell_id_start, cell_id_end from"
+		String sql = "select id, roadLength, direction, cell_id_start, cell_id_end from "
 				+ "hw_station_segment";
 		List<StationSegment> list = new ArrayList<StationSegment>();
 
@@ -244,61 +244,63 @@ public class DBServiceForOracle {
 				+ ", to " + end);
 		List<UserData> userDatas = new ArrayList<>();
 		// there are two kinds of method to send date type;
+		// String sql =
+		// "select tmsi,to_char(timestamp,'yyyy-mm-dd hh24:mi:ss'), "
+		// + "lac, cellid, eventid, id from hw_data_user_tmp"
+		// + " where timestamp between ? and ? ";
+		// + "order by timestamp";
 		String sql = "select tmsi,to_char(timestamp,'yyyy-mm-dd hh24:mi:ss'), "
-				+ "lac, cellid, eventid, id from hw_data_user"
-				+ " where timestamp between ? and ? order by timestamp";
-		// String sql = "select * from hw_data_user where timestamp >= "
-		// + "to_date(?,'yyyy-mm-dd hh24:mi:ss.0') and timestamp < "
-		// + "to_date(?,'yyyy-mm-dd hh24:mi:ss.0')";
+				+ "lac, cellid, eventid, id from hw_data_user where timestamp"
+				+ " between to_date(?,'yyyy-mm-dd hh24:mi:ss') and "
+				+ "to_date(?,'yyyy-mm-dd hh24:mi:ss') order by timestamp";
+		int allNum = 0;
+		int unusedNum = 0;
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setTimestamp(1, Timestamp.valueOf(start.replace('/', '-')));
-			// pstm.setString(1, start);
-			pstm.setTimestamp(2, Timestamp.valueOf(end.replace('/', '-')));
-			// pstm.setString(2, end);
+			pstm.setString(1, start);
+			pstm.setString(2, end);
 			ResultSet rs = pstm.executeQuery();
-			int allNum = 0;
-			int unusedNum = 0;
-			Date date3 = new Date();
 			logger.info("==== select has over, using time = "
-					+ (date3.getTime() - date1.getTime()) / 1000);
+					+ Utility.intervalTime(date1, new Date()) + " s ");
 			while (rs.next()) {
 				allNum++;
 				String tmsi = rs.getString(1);
 				Date timestamp = rs.getTimestamp(2);
-				// Date timestamp = null;
 				int lac = rs.getInt(3);
 				int cellid = rs.getInt(4);
 				int eventid = rs.getInt(5);
 				int id = rs.getInt(6);
+				// not to check now , all id has been used;
 				// filter some unused data £ºcellid = unusedId;
-				boolean unused = false;
-				for (int i = 0; i < Configuration.unusedId.length; i++) {
-					if (cellid == Configuration.unusedId[i]) {
-						unused = true;
-						break;
-					}
-				}
-				if (unused) {
-					unusedNum++;
-					continue;
-				}
-				// can't do the duplicate checking, just add directly;
+				// boolean unused = false;
+				// for (int i = 0; i < Configuration.unused.length; i++) {
+				// if (cellid == Configuration.unused[i]) {
+				// unused = true;
+				// break;
+				// }
+				// }
+				// if (unused) {
+				// unusedNum++;
+				// continue;
+				// }
+
+				// because the data number is usually very large, so we can't do
+				// the duplicate checking, just add directly;
 				UserData ud = new UserData(tmsi, timestamp, lac, cellid,
 						eventid, id);
 				userDatas.add(ud);
-
 			}
-			Date date2 = new Date();
+			rs.close();
+			pstm.close();
 
-			logger.info("==== bulid data structure has over : all-> " + allNum
-					+ " , unused->" + unusedNum + " , remaining -> "
-					+ (allNum - unusedNum) + ", time -> "
-					+ ((date2.getTime() - date1.getTime())) / 1000);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		logger.info("==== traverse data structure has over : all-> " + allNum
+				+ " , unused->" + unusedNum + " , remaining -> "
+				+ (allNum - unusedNum) + ", time -> "
+				+ Utility.intervalTime(date1, new Date()) + " s ");
 		return userDatas;
 	}
 
@@ -309,8 +311,7 @@ public class DBServiceForOracle {
 	 * @param timeStamp
 	 * @param direction
 	 */
-	public void insertStationSpeeds(ArrayList<StationSegment> ss,
-			String timeStamp, int direction) {
+	public void insertStationSpeeds(List<StationSegment> ss, String timeStamp) {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
 		// String sql1 =
@@ -333,7 +334,7 @@ public class DBServiceForOracle {
 		// e1.printStackTrace();
 		// }
 
-		String sql = "insert into hw_station_segment_speed values (?,?,?,?,?,?,?,?)";
+		String sql = "insert into hw_station_segment_speed values (?,?,?,?,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			int count = 0;
@@ -342,12 +343,11 @@ public class DBServiceForOracle {
 				pstm.setInt(1, rs.id);
 				pstm.setTimestamp(2,
 						Timestamp.valueOf(timeStamp.replace('/', '-')));
-				pstm.setInt(3, direction);
-				pstm.setInt(4, rs.getMaxSpeed());
-				pstm.setInt(5, rs.getMinSpeed());
-				pstm.setInt(6, rs.getAvgSpeed());
-				pstm.setInt(7, rs.getFilterAvgSpeed());
-				pstm.setInt(8, rs.getRealNum());
+				pstm.setInt(3, rs.getMaxSpeed());
+				pstm.setInt(4, rs.getMinSpeed());
+				pstm.setInt(5, rs.getAvgSpeed());
+				pstm.setInt(6, rs.getFilterAvgSpeed());
+				pstm.setInt(7, rs.getRealNum());
 				pstm.execute();
 				count++;
 			}
@@ -355,18 +355,19 @@ public class DBServiceForOracle {
 					+ count);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info(" ==== duplicated ! the data of time = " + timeStamp
+					+ " has been "
+					+ "insert into the hw_station_segment_speed !");
 		}
 	}
 
 	/**
 	 * @Title: insertNodeSpeeds
 	 * @Description: insert node speeds into database;
-	 * @param rss
+	 * @param ns
 	 * @param timeStamp
 	 */
-	public void insertNodeSpeeds(ArrayList<NodeSegment> rss, String timeStamp,
-			int direction) {
+	public void insertNodeSpeeds(List<NodeSegment> nss, String timeStamp) {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
 		// String sql1 =
@@ -394,23 +395,25 @@ public class DBServiceForOracle {
 		try {
 			pstm = conn.prepareStatement(sql);
 			int count = 0;
-			for (int i = 0; i < rss.size(); i++) {
-				NodeSegment rs = rss.get(i);
-				pstm.setInt(1, rs.getId());
+			for (int i = 0; i < nss.size(); i++) {
+				NodeSegment ns = nss.get(i);
+				pstm.setInt(1, ns.getId());
 				pstm.setTimestamp(2,
 						Timestamp.valueOf(timeStamp.replace('/', '-')));
-				pstm.setInt(3, rs.getMaxSpeed());
-				pstm.setInt(4, rs.getMinSpeed());
-				pstm.setInt(5, rs.getAvgSpeed());
-				pstm.setInt(6, rs.getSpeedNum());
+				pstm.setInt(3, ns.getMaxSpeed());
+				pstm.setInt(4, ns.getMinSpeed());
+				pstm.setInt(5, ns.getAvgSpeed());
+				pstm.setInt(6, ns.getSpeedNum());
 				pstm.execute();
 				count++;
 			}
-			logger.info(" ==== insert NodeSpeed into databases, count = "
+			pstm.close();
+			logger.info(" ==== insert NodeSegmentSpeed into databases, count = "
 					+ count);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info(" ==== duplicated , the data of time = " + timeStamp
+					+ " has been " + "insert into the hw_node_segment_speed !");
 		}
 	}
 
@@ -485,9 +488,10 @@ public class DBServiceForOracle {
 				+ "to_char(setTime,'yyyy-mm-dd hh24:mi:ss'), interval "
 				+ " from hw_para_time_set";
 		try {
+			// count the record number,if it > 1, then may be something error;
+			int count = 0;
 			pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
-			int count = 0;
 			while (rs.next()) {
 				count++;
 				String setTime = rs.getString(3);
