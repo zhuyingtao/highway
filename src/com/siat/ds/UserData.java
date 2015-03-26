@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.siat.msg;
+package com.siat.ds;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Hashtable;
 
 /**
  * @ClassName UserData
@@ -94,6 +96,12 @@ public class UserData {
 	}
 
 	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return this.tmsi.hashCode();
+	}
+
+	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return this.tmsi + "," + this.timestamp + "," + this.lac + ","
@@ -101,10 +109,21 @@ public class UserData {
 	}
 
 	public boolean isLater(UserData ud) {
-		boolean isLater = false;	
+		boolean isLater = false;
 		if (this.timestamp.after(ud.timestamp))
 			isLater = true;
 		return isLater;
 	}
 
+	public static void main(String[] args) {
+		String a = "4987986B6F3A9C3A1D7354B175B052F7";
+		String b = "4987D6ECDBEFC89426D9C847921E2462";
+		String c = "4987986B6F3A9C3A1D7354B175B052F7";
+		System.out.println(a.hashCode() + "  ; " + b.hashCode() + " ; "
+				+ c.hashCode());
+		HashSet<UserData> ud = new HashSet<>();
+		for (int i = 0; i < ud.size(); i++) {
+			
+		}
+	}
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import com.siat.msg.UserData;
+import com.siat.ds.UserData;
 
 /**
  * @ClassName DBServiceForMySQL

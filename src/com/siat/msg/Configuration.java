@@ -37,7 +37,10 @@ public class Configuration {
 	// the rate of computing, the default value is 1 (based on INTERVAL_TIME);
 	public static int rate = 1;
 
-	public static final Level logLevel = Level.FINEST;
+	public static final Level logLevel = Level.INFO;
+
+	// whether write the speed results to database;
+	public static final boolean WRITE_TO_DATABASE = true;
 	// whether write the speed results to file;
 	public static final boolean WRITE_TO_FILE = false;
 

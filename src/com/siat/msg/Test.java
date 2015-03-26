@@ -101,6 +101,37 @@ public class Test {
 		}
 	}
 
+	public static void transform() {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(
+					"I:/day_new.csv"));
+			BufferedReader br = new BufferedReader(new FileReader(
+					"I:/ntydx.txt"));
+			String line = br.readLine();
+			int lineCount = 0;
+			StringBuffer sb = new StringBuffer();
+			while (line != null) {
+				lineCount++;
+				if (lineCount % 100000 == 0)
+					System.out.println(lineCount + " has finished!");
+				sb.append(line + "\n");
+				if (lineCount % 10000 == 0) {
+					bw.write(sb.toString());
+					bw.flush();
+					sb = new StringBuffer();
+				}
+				line = br.readLine();
+			}
+			br.close();
+			bw.write(sb.toString());
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * @Title: main
 	 * @Description: TODO
@@ -115,6 +146,7 @@ public class Test {
 		// .format(d));
 		// System.out.println(Timestamp.valueOf("2014/02/01 11:11:11".replace('/',
 		// '-')));
-		getDayData("2015-02-18 00:00:00", "2015-02-19 00:00:01");
+//		getDayData("2015-02-18 00:00:00", "2015-02-19 00:00:01");
+		transform();
 	}
 }

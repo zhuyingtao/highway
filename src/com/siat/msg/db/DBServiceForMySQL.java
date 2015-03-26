@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 import com.siat.ds.NodeSegment;
 import com.siat.ds.StationSegment;
+import com.siat.ds.UserData;
 import com.siat.msg.Configuration;
-import com.siat.msg.UserData;
 import com.siat.msg.util.DataLogger;
 
 /**
@@ -116,7 +116,7 @@ public class DBServiceForMySQL {
 				pstm.setInt(5, rs.getMaxSpeed());
 				pstm.setInt(6, rs.getMinSpeed());
 				pstm.setInt(7, rs.getAvgSpeed());
-				pstm.setInt(8, rs.getSpeedNum());
+				pstm.setInt(8, rs.getRealNum());
 				pstm.execute();
 			}
 			logger.info("insert into databases.");

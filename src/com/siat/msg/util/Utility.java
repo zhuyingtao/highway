@@ -12,10 +12,12 @@ public class Utility {
 
 	/**
 	 * @Title: intervalTime
-	 * @Description: TODO
+	 * @Description: compute the interval second between start and end;
 	 * @param start
+	 *            the start time
 	 * @param end
-	 * @return
+	 *            the end time
+	 * @return the interval second
 	 */
 	public static long intervalTime(Date start, Date end) {
 		long d1 = start.getTime();
@@ -23,6 +25,12 @@ public class Utility {
 		return (d2 - d1) / 1000;
 	}
 
+	/**
+	 * @Title: sleep
+	 * @Description: sleep for some time;
+	 * @param second
+	 *            the specific time (s) want to sleep;
+	 */
 	public static void sleep(double second) {
 		try {
 			Thread.sleep((long) (second * 1000));

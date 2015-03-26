@@ -32,7 +32,6 @@ public class NodeSegmentSpeed {
 		// TODO Auto-generated constructor stub
 		this.db = new DBServiceForOracle();
 		this.logger = DataLogger.getLogger();
-		this.nodeSegments = this.initialNodeSegment();
 	}
 
 	/**
@@ -48,14 +47,13 @@ public class NodeSegmentSpeed {
 			// sometimes the node segment's start or end node may not in the
 			// node list, now we just skip this node segment.
 			if (ns.startNode == null) {
-				logger.severe(">>>>> Can't find the start Node -> "
+				logger.fine(">>>>> Can't find the start Node -> "
 						+ ns.startNodeId);
 				continue;
 			}
 			int start = ns.startNode.cellId;
 			if (ns.endNode == null) {
-				logger.severe(">>>>> Can't find the end Node -> "
-						+ ns.endNodeId);
+				logger.fine(">>>>> Can't find the end Node -> " + ns.endNodeId);
 				continue;
 			}
 			int end = ns.endNode.cellId;
@@ -101,11 +99,13 @@ public class NodeSegmentSpeed {
 			// length rate;
 			double sum = 0; // sum of speed * length;
 			double length = 0; // sum of length;
-			int maxSpeed = 0;
+			int maxSpeed = -1;
 			int minSpeed = 200;
 			int num = 0; // the car number in this node segment;
+			int expectedNum = 0;
 			for (int j = startIndex; j <= endIndex; j++) {
 				StationSegment ss = stations.get(i);
+				// use filter speed;
 				sum += ss.getFilterAvgSpeed() * ss.getLength();
 				length += ss.getLength();
 				if (maxSpeed < ss.getMaxSpeed())
@@ -113,22 +113,26 @@ public class NodeSegmentSpeed {
 				if (minSpeed > ss.getMinSpeed())
 					minSpeed = ss.getMinSpeed();
 				num += ss.getRealNum();
+				expectedNum += ss.getExpectedNum(); // here , INACCURATE
 			}
 			int avgSpeed = (int) (sum / length);
+			if (avgSpeed == 0) // set default is 80;
+				avgSpeed = 80;
 
 			// 4. set these speeds to this Node Segment;
-			ns.avgSpeed = avgSpeed;
-			ns.maxSpeed = maxSpeed;
-			ns.minSpeed = minSpeed;
-			ns.speedNum = num;
+			ns.setAvgSpeed(avgSpeed);
+			ns.setMaxSpeed(maxSpeed);
+			ns.setMinSpeed(minSpeed);
+			ns.setRealNum(num);
+			ns.setExpectedNum(expectedNum);
 		}
 
 		// 5. after all the segments have been computing, store them into
 		// database;
-		this.storeData(timeStamp);
-		if (Configuration.WRITE_TO_FILE) {
+		if (Configuration.WRITE_TO_DATABASE)
+			this.storeData(timeStamp);
+		if (Configuration.WRITE_TO_FILE)
 			this.dumpData(timeStamp);
-		}
 	}
 
 	/**
@@ -158,7 +162,8 @@ public class NodeSegmentSpeed {
 				NodeSegment ns = nodeSegments.get(i);
 				sb.append(ns.getId() + " -- " + ns.getDirection() + " : "
 						+ ns.getMaxSpeed() + " , " + ns.getMinSpeed() + " , "
-						+ ns.getAvgSpeed() + " ( " + ns.getSpeedNum() + " )\n");
+						+ ns.getAvgSpeed() + " ( " + ns.getRealNum() + " , "
+						+ ns.getExpectedNum() + " )\n");
 			}
 			bw.write(sb.toString() + "\n\n");
 			bw.flush();
@@ -169,7 +174,7 @@ public class NodeSegmentSpeed {
 		}
 	}
 
-	public List<NodeSegment> initialNodeSegment() {
+	public List<NodeSegment> initialNodeSegments() {
 		logger.info("initial node segments ... ");
 		List<Node> nodes = db.selectNode();
 		List<NodeSegment> segments = db.selectNodeSegment();
@@ -178,6 +183,7 @@ public class NodeSegmentSpeed {
 			ns.initStart(nodes);
 			ns.initEnd(nodes);
 		}
+		this.nodeSegments = segments;
 		return segments;
 	}
 }

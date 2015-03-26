@@ -1,7 +1,45 @@
+数据问题 ： 1.  SEVERE	>>>>> Can't find the end Node -> 3735
+					   NodeSegment 中 start 或 end 无法在 Node 中找到；
+				  2.  SEVERE	===== road segment fault ! now_seg = -1, now_id = 15851
+				  	   UserData 中 cellId 无法在 Station Segment 中找到；
+				  	   
 
-===== 2015年3月22日 
+===== 2015年3月22日	星期日
 	1. 编码抽取某日数据，导入数据库中，出现错误： 数据库表空间不足
 		将User_data中数据删除，只导入一天的数据
-	### 遗留问题： 数据库的存储空间不足
 	2. 修正运行时出现的BUG，调整输出结构
 	3. 增加频率控制
+	### 遗留问题： 数据库的存储空间不足 ----- resolved
+	
+===== 2015年3月23日	星期一
+	1. 继续调试，增加部分log信息
+	2. 数据库加索引，加快查询速度
+	3. 解决逆向无速度信息BUG
+	4. 计算一天02-18的速度信息
+	### 遗留问题： ResultSet 遍历速度过慢
+	
+===== 2015年3月24日	星期二
+	1. 导入GPS数据，解决时间格式问题
+	2. 解决计算一天速度出现的BUG：数据库pstm关闭、存储时间不准确
+	3. 增加expected_num字段
+	### 遗留问题 ： node segment 的 expected_num 求值问题 ----- resolved
+							 批量写入数据 ----- resolved
+							 
+===== 2015年3月25日	星期三
+	1. 修正expected_num计算问题
+	2. 调整代码结构，增加SpeedAlgorithm类
+	### 遗留问题 ：  UserDataPool何时清空
+	
+===== 2015年3月26日	星期四
+	1. 数据库表空间扩展 
+		http://jingyan.baidu.com/article/3c48dd347c9e74e10be35835.html
+	2. 数据库批量插入，addBatch() ,插入比原来快5- 10倍
+	
+	
+	
+	
+	
+	
+	
+	
+	

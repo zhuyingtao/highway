@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import com.siat.ds.Node;
 import com.siat.ds.NodeSegment;
+import com.siat.ds.Station;
+import com.siat.ds.StationSegment;
+import com.siat.ds.UserData;
 import com.siat.msg.db.DBServiceForMySQL;
 
 /**
@@ -30,7 +33,7 @@ public class FileOperation {
 	 * @param filePath
 	 * @return
 	 */
-	public ArrayList<UserData> readFromFile(String filePath) {
+	public ArrayList<UserData> readUserData(String filePath) {
 		ArrayList<UserData> arrays = new ArrayList<>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -120,6 +123,50 @@ public class FileOperation {
 		// }
 		// }
 		return sections;
+	}
+
+	/**
+	 * @Title: readFromFile
+	 * @Description: DEPRECATED
+	 * @param filePath
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	public static ArrayList<StationSegment> readStationSegment(String filePath) {
+		ArrayList<StationSegment> rss = new ArrayList<>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(filePath));
+			br.readLine();
+			String line = br.readLine();
+			int id = 0;
+			while (line != null) {
+				String[] parts = line.split("\t");
+				double xs = Double.parseDouble(parts[0]);
+				double ys = Double.parseDouble(parts[1]);
+				double xe = Double.parseDouble(parts[2]);
+				double ye = Double.parseDouble(parts[3]);
+				double length = Double.parseDouble(parts[4]);
+				String cellidStr = parts[5];
+				String lacidStr = parts[6];
+				String[] cellids = cellidStr.split(",");
+				ArrayList<Station> starts = new ArrayList<>();
+				for (int i = 0; i < cellids.length; i++) {
+					Station cs = new Station(Integer.parseInt(cellids[i]));
+					starts.add(cs);
+				}
+				StationSegment rs = new StationSegment(id++, starts, length);
+				rss.add(rs);
+				line = br.readLine();
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rss;
 	}
 
 	public static void main(String[] args) {

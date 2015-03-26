@@ -1,9 +1,5 @@
 package com.siat.ds;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,50 +12,6 @@ import com.siat.msg.util.DataLogger;
  * @date 2014年12月16日 下午2:54:15
  */
 public class StationSegment {
-
-	/**
-	 * @Title: readFromFile
-	 * @Description: DEPRECATED
-	 * @param filePath
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	public static ArrayList<StationSegment> readFromFile(String filePath) {
-		ArrayList<StationSegment> rss = new ArrayList<>();
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(filePath));
-			br.readLine();
-			String line = br.readLine();
-			int id = 0;
-			while (line != null) {
-				String[] parts = line.split("\t");
-				double xs = Double.parseDouble(parts[0]);
-				double ys = Double.parseDouble(parts[1]);
-				double xe = Double.parseDouble(parts[2]);
-				double ye = Double.parseDouble(parts[3]);
-				double length = Double.parseDouble(parts[4]);
-				String cellidStr = parts[5];
-				String lacidStr = parts[6];
-				String[] cellids = cellidStr.split(",");
-				ArrayList<Station> starts = new ArrayList<>();
-				for (int i = 0; i < cellids.length; i++) {
-					Station cs = new Station(Integer.parseInt(cellids[i]));
-					starts.add(cs);
-				}
-				StationSegment rs = new StationSegment(id++, starts, length);
-				rss.add(rs);
-				line = br.readLine();
-			}
-			br.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return rss;
-	}
 
 	public int id; // 自定义编号
 	public int startStation;
@@ -74,11 +26,12 @@ public class StationSegment {
 	ArrayList<Station> starts;
 	ArrayList<Station> ends;
 
-	private int avgSpeed;
-	private int filterAvgSpeed;
-	private int maxSpeed;
+	private int avgSpeed = 80; // set default is 80;
+	private int filterAvgSpeed = 80;
+	private int maxSpeed = -1;
 	private int minSpeed = 100;
-	private int realNum = 0; // 在当前路段上的车辆数
+	private int realNum = 0; // the real number in this station segment;
+	private int expectedNum = 0; // the expected number in this station segment;
 	// 保存一批次数据中当前路段上每一辆车的速度
 	private List<Integer> speeds = new ArrayList<Integer>();
 
@@ -145,6 +98,10 @@ public class StationSegment {
 		this.realNum++;
 	}
 
+	public void addExpected() {
+		this.expectedNum++;
+	}
+
 	public void addSpeed(int speed) {
 		this.speeds.add(speed);
 		if (maxSpeed < speed)
@@ -156,6 +113,7 @@ public class StationSegment {
 	public void clearSpeeds() {
 		this.speeds.clear();
 		this.realNum = 0;
+		this.expectedNum = 0;
 	}
 
 	public void computeAvgSpeed() {
@@ -220,6 +178,8 @@ public class StationSegment {
 	}
 
 	public int getAvgSpeed() {
+		if (this.expectedNum < 8)
+			return 80;
 		return this.avgSpeed;
 	}
 
@@ -228,6 +188,8 @@ public class StationSegment {
 	}
 
 	public int getFilterAvgSpeed() {
+		if (this.expectedNum < 8)
+			return 80;
 		return this.filterAvgSpeed;
 	}
 
@@ -251,10 +213,10 @@ public class StationSegment {
 		double variance = variance(speeds, avgSpeed);
 		double svar = Math.sqrt(variance);
 		for (int i = 0; i < speeds.size(); i++) {
-			if (Math.abs(speeds.get(i) - avgSpeed) <= 2 * svar) {
+			if (Math.abs(speeds.get(i) - avgSpeed) <= 3 * svar) {
 				qualifiedSpeeds.add(speeds.get(i));
 			} else {
-				DataLogger.getLogger().info(
+				DataLogger.getLogger().fine(
 						"===> Filter one speed : avg = " + this.avgSpeed
 								+ " , speed = " + speeds.get(i)
 								+ " , variance = " + variance);
@@ -265,6 +227,10 @@ public class StationSegment {
 
 	public int getRealNum() {
 		return this.realNum;
+	}
+
+	public int getExpectedNum() {
+		return this.expectedNum;
 	}
 
 	public List<Integer> getSpeeds() {

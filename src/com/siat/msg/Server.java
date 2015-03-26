@@ -6,7 +6,7 @@ package com.siat.msg;
 import java.io.File;
 import java.util.logging.Logger;
 
-import com.siat.msg.alg.StationSegmentSpeed;
+import com.siat.msg.alg.SpeedAlgorithm;
 import com.siat.msg.db.DBServiceForOracle;
 import com.siat.msg.util.DataLogger;
 import com.siat.msg.util.Utility;
@@ -24,9 +24,9 @@ public class Server {
 	public void work() {
 		this.clearLog(); // delete the previous log;
 		Logger logger = DataLogger.getLogger();
-		int i = 0;
-		StationSegmentSpeed sa = new StationSegmentSpeed(
-				Configuration.START_TIME);
+		SpeedAlgorithm sa = new SpeedAlgorithm();
+		// initial all the station segments and node segments;
+		sa.initSegments();
 		while (true) {
 			int request = this.checkRequest();
 			if (request == 0) {
@@ -34,13 +34,25 @@ public class Server {
 				Utility.sleep(1);
 			} else if (request == 1) {
 				logger.info("=============== History speed ================");
-				sa.computeHistorySpeed(Configuration.startTime,
-						Configuration.endTime, Configuration.rate);
+				String[] strs = { "00", "01", "02", "03", "04", "05", "06",
+						"07", "08", "09", "10", "11", "12", "13", "14", "15",
+						"16", "17", "18", "19", "20", "21", "22", "23" };
+				for (int j = 0; j < 23; j++) {
+					String startTime = "2015-02-18 " + strs[j] + ":00:00";
+					String endTime = "2015-02-18 " + strs[j + 1] + ":00:00";
+					sa.computeHistorySpeed(startTime, endTime,
+							Configuration.rate);
+				}
+				break;
+				// sa.computeHistorySpeed(Configuration.startTime,
+				// Configuration.endTime, Configuration.rate);
 			} else if (request == 2) {
-				logger.severe("==================== Number : " + i + " start");
-				sa.computeAvgSpeed(Configuration.INTERVAL_TIME);
-				logger.severe("=================== Number : " + i + " end \n\n");
-				i++;
+				// logger.severe("==================== Number : " + i +
+				// " start");
+				// sa.computeAvgSpeed(Configuration.INTERVAL_TIME);
+				// logger.severe("=================== Number : " + i +
+				// " end \n\n");
+				// i++;
 			}
 		}
 	}
