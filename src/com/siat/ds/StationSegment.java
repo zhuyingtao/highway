@@ -178,8 +178,8 @@ public class StationSegment {
 	}
 
 	public int getAvgSpeed() {
-		if (this.expectedNum < 8)
-			return 80;
+		// if (this.expectedNum < 10)
+		// return 80;
 		return this.avgSpeed;
 	}
 
@@ -188,8 +188,8 @@ public class StationSegment {
 	}
 
 	public int getFilterAvgSpeed() {
-		if (this.expectedNum < 8)
-			return 80;
+		// if (this.expectedNum < 10)
+		// return 80;
 		return this.filterAvgSpeed;
 	}
 

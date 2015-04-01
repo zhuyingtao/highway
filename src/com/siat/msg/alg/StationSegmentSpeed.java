@@ -5,10 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.siat.ds.Station;
@@ -17,6 +19,7 @@ import com.siat.ds.UserData;
 import com.siat.msg.Configuration;
 import com.siat.msg.db.DBServiceForOracle;
 import com.siat.msg.util.DataLogger;
+import com.siat.msg.util.Utility;
 
 /**
  * @ClassName SpeedAlgorithm
@@ -51,11 +54,20 @@ public class StationSegmentSpeed {
 		this.db = new DBServiceForOracle();
 		this.logger = DataLogger.getLogger();
 		this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		for (int i = 0; i < bufferDatas.length; i++) {
+			bufferDatas[i] = new StringBuffer();
+		}
 	}
 
-	public void addSpeed(int speed) {
+	int[] segments = { 153, 86, 162, 89, 164, 107, 25, 23, 44, 119 };
+
+	public void addSpeed(int speed, UserData ud) {
 		for (int i = lastSegmentId; i <= nowSegmentId; i++) {
 			StationSegment ss = stationSegments.get(i);
+//			for (int j = 0; j < segments.length; j++) {
+//				if ((i + 1) == segments[j])
+//					this.dumpSpecificData(ud, i + 1);
+//			}
 			ss.addSpeed(speed);
 			ss.addExpected();
 			if (i == nowSegmentId)
@@ -215,7 +227,7 @@ public class StationSegmentSpeed {
 				continue;
 
 			// add the speed into every Station Segment that related;
-			this.addSpeed(speed);
+			this.addSpeed(speed, nowUd);
 		}
 
 		logger.info("========= in one batch : new_add = " + newNum
@@ -315,7 +327,7 @@ public class StationSegmentSpeed {
 	 */
 	public int computeOneSpeed(UserData nowUd, UserData lastUd) {
 		int speed = -1;
-		this.getDirection(nowUd, lastUd);
+		this.getSegmentId(nowUd, lastUd);
 		double time = this.getIntervalTime(nowUd, lastUd);
 		double distance = this.getDistance();
 
@@ -325,9 +337,9 @@ public class StationSegmentSpeed {
 			speed = (int) (distance / time);
 			// if the speed is too large and negative, then it is illegal;
 			if (speed < 0 || speed > 250) {
-				logger.warning("illegal speed : d = " + distance + ", t = "
-						+ time + ", s = " + speed + "\t , " + nowUd.getCellid()
-						+ "\t" + lastUd.getCellid());
+				logger.fine("illegal speed : d = " + distance + ", t = " + time
+						+ ", s = " + speed + "\t , " + nowUd.getCellid() + "\t"
+						+ lastUd.getCellid());
 				speed = -1;
 			}
 		}
@@ -382,30 +394,58 @@ public class StationSegmentSpeed {
 	 *               data pool;
 	 */
 	public void filterUserDataPool(String timeStamp) {
-		Date nowDate = null;
+		Date endTime = null;
+		Date nowTime = new Date();
 		int removedNum = 0;
 		try {
-			nowDate = sdf.parse(timeStamp);
+			endTime = sdf.parse(timeStamp);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		for (int i = 0; i < userDataPool.size(); i++) {
-			UserData ud = userDataPool.get(i);
-			Date udDate = ud.getTimestamp();
-			double interval = Math.abs(nowDate.getTime() - udDate.getTime()) / 1000;
+
+		// as I use the hash map to store the user data pool, I can't traverse
+		// the structure directly; so I use the method below:
+		Set<String> keySet = userDataPool.keySet();
+		Iterator<String> keys = keySet.iterator();
+		List<String> removedKey = new ArrayList<>();
+		while (keys.hasNext()) {
+			String key = keys.next();
+			UserData ud = userDataPool.get(key);
+			Date startTime = ud.getTimestamp();
+			double interval = Math
+					.abs(Utility.intervalTime(startTime, endTime));
 			if (interval >= Configuration.CACHE_TIME) {
-				userDataPool.remove(i);
+				// ///////// can't remove here!!!!!!!!
+				// userDataPool.remove(key);
+				removedKey.add(key);
 				removedNum++;
-				logger.info("remove dead data --> " + ud.getTmsi() + " @ "
-						+ nowDate + " - " + udDate);
+				logger.fine("remove dead data --> " + ud.getTmsi() + " @ "
+						+ endTime + " - " + startTime);
 			}
 		}
+		// remove should be here;
+		for (int i = 0; i < removedKey.size(); i++) {
+			userDataPool.remove(removedKey.get(i));
+		}
+		// for (int i = 0; i < userDataPool.size(); i++) {
+		// UserData ud = userDataPool.get();
+		// Date udDate = ud.getTimestamp();
+		// double interval = Math.abs(nowDate.getTime() - udDate.getTime()) /
+		// 1000;
+		// if (interval >= Configuration.CACHE_TIME) {
+		// userDataPool.remove(i);
+		// removedNum++;
+		// logger.info("remove dead data --> " + ud.getTmsi() + " @ "
+		// + nowDate + " - " + udDate);
+		// }
+		// }
 		logger.info(timeStamp + "========== removed [" + removedNum
-				+ "] dead car !");
+				+ "] dead car !   using time = "
+				+ Utility.intervalTime(nowTime, new Date()) + " s ");
 	}
 
 	/**
-	 * @Title: getDirection
+	 * @Title: getSegmentId
 	 * @Description: determine the direction that the car runs in now. As the
 	 *               station segment is in ascending order, so we can find the
 	 *               station segment the car of now and last belongs to , then
@@ -414,7 +454,7 @@ public class StationSegmentSpeed {
 	 * @param lastUd
 	 * @return
 	 */
-	public boolean getDirection(UserData nowUd, UserData lastUd) {
+	public boolean getSegmentId(UserData nowUd, UserData lastUd) {
 		int nowId = nowUd.getCellid();
 		int lastId = lastUd.getCellid();
 		// the boundary of forward and reverse;
@@ -563,5 +603,90 @@ public class StationSegmentSpeed {
 
 	public void setStationSegments(List<StationSegment> stationSegments) {
 		this.stationSegments = stationSegments;
+	}
+
+	StringBuffer[] bufferDatas = new StringBuffer[10];
+
+	public void dumpSpecificData(UserData ud, int segmentId) {
+		try {
+			if (segmentId == 153
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 09:04:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 09:06:00"))))) {
+				bufferDatas[0].append(ud.toString() + "\n");
+			} else if (segmentId == 86
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 09:52:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 09:54:00"))))) {
+				bufferDatas[1].append(ud.toString() + "\n");
+			} else if (segmentId == 162
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 10:26:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 10:28:00"))))) {
+				bufferDatas[2].append(ud.toString() + "\n");
+			} else if (segmentId == 89
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 10:30:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 10:32:00"))))) {
+				bufferDatas[3].append(ud.toString() + "\n");
+			} else if (segmentId == 164
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 10:36:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 10:38:00"))))) {
+				bufferDatas[4].append(ud.toString() + "\n");
+			} else if (segmentId == 170
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 10:46:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 10:48:00"))))) {
+				bufferDatas[5].append(ud.toString() + "\n");
+			} else if (segmentId == 25
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 12:14:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 12:16:00"))))) {
+				bufferDatas[6].append(ud.toString() + "\n");
+			} else if (segmentId == 23
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 13:16:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 13:18:00"))))) {
+				bufferDatas[7].append(ud.toString() + "\n");
+			} else if (segmentId == 44
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 15:14:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 15:16:00"))))) {
+				bufferDatas[8].append(ud.toString() + "\n");
+			} else if (segmentId == 119
+					&& (ud.getTimestamp().after(
+							sdf.parse("2015-02-18 17:10:00")) && (ud
+							.getTimestamp().before(sdf
+							.parse("2015-02-18 17:12:00"))))) {
+				bufferDatas[9].append(ud.toString() + "\n");
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeToFile(){
+		try {
+			BufferedWriter bw=new  BufferedWriter(new FileWriter("part-data.txt",true));
+			for (int i = 0; i < bufferDatas.length; i++) {
+				bw.write(bufferDatas[i].toString()+"\n\n");
+				bw.flush();
+			}
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

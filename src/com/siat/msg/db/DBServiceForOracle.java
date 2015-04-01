@@ -1,5 +1,8 @@
 package com.siat.msg.db;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +32,7 @@ import com.siat.msg.util.Utility;
  * @author Zhu Yingtao
  * @date 2015年1月12日 下午9:05:27
  */
-public class DBServiceForOracle {
+public class DBServiceForOracle extends Object {
 
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@210.75.252.44:1521:ORCL";
@@ -44,10 +49,10 @@ public class DBServiceForOracle {
 	 */
 	public DBServiceForOracle() {
 		// TODO Auto-generated constructor stub
-		if (conn == null)
-			conn = this.getConnection();
 		if (logger == null)
 			logger = DataLogger.getLogger();
+		if (conn == null)
+			conn = this.getConnection();
 	}
 
 	/**
@@ -56,6 +61,7 @@ public class DBServiceForOracle {
 	 */
 	private Connection getConnection() {
 		// TODO Auto-generated method stub
+		Date date1 = new Date();
 		Connection conn = null;
 		try {
 			Class.forName(driver);
@@ -67,6 +73,8 @@ public class DBServiceForOracle {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		logger.info("====== get connection , using time "
+				+ (new Date().getTime() - date1.getTime()) + " ms");
 		return conn;
 	}
 
@@ -247,9 +255,9 @@ public class DBServiceForOracle {
 		// + "lac, cellid, eventid, id from hw_data_user_tmp"
 		// + " where timestamp between ? and ? ";
 		// + "order by timestamp";
-		String sql = "select /*+ index(hw_data_user_tmp hw_data_user_tmp_index1) */ tmsi,"
+		String sql = "select /*+ index(hw_data_user hw_data_user_index1) */ tmsi,"
 				+ "to_char(timestamp,'yyyy-mm-dd hh24:mi:ss'),lac, cellid, eventid,"
-				+ " id from hw_data_user_tmp where timestamp between "
+				+ " id from hw_data_user where timestamp between "
 				+ "to_date(?,'yyyy-mm-dd hh24:mi:ss') and "
 				+ "to_date(?,'yyyy-mm-dd hh24:mi:ss') order by timestamp";
 		int allNum = 0;
@@ -262,6 +270,24 @@ public class DBServiceForOracle {
 			logger.info("==== select has over, using time = "
 					+ Utility.intervalTime(date1, new Date()) + " s ");
 
+			// Date dd = new Date();
+			// FetchData fd = new FetchData(rs, userDatas);
+			// Thread[] threads = new Thread[10];
+			// for (int i = 0; i < 10; i++) {
+			// threads[i] = new Thread(fd, i + "");
+			// threads[i].start();
+			// }
+			// for (int i = 0; i < 10; i++) {
+			// try {
+			// threads[i].join();
+			// } catch (InterruptedException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// }
+			// System.out.println("time = "
+			// + (new Date().getTime() - dd.getTime()));
+
 			while (rs.next()) {
 				allNum++;
 				String tmsi = rs.getString(1);
@@ -270,20 +296,20 @@ public class DBServiceForOracle {
 				int cellid = rs.getInt(4);
 				int eventid = rs.getInt(5);
 				int id = rs.getInt(6);
-				// not to check now , all id has been used;
-				// filter some unused data ：cellid = unusedId;
-				// boolean unused = false;
-				// for (int i = 0; i < Configuration.unused.length; i++) {
-				// if (cellid == Configuration.unused[i]) {
-				// unused = true;
-				// break;
-				// }
-				// }
-				// if (unused) {
-				// unusedNum++;
-				// continue;
-				// }
-
+				// // not to check now , all id has been used;
+				// // filter some unused data ：cellid = unusedId;
+				// // boolean unused = false;
+				// // for (int i = 0; i < Configuration.unused.length; i++) {
+				// // if (cellid == Configuration.unused[i]) {
+				// // unused = true;
+				// // break;
+				// // }
+				// // }
+				// // if (unused) {
+				// // unusedNum++;
+				// // continue;
+				// // }
+				//
 				// because the data number is usually very large, so we can't do
 				// the duplicate checking, just add directly;
 				UserData ud = new UserData(tmsi, timestamp, lac, cellid,
@@ -295,9 +321,9 @@ public class DBServiceForOracle {
 		} finally {
 			this.close();
 		}
-		logger.info("==== traverse data structure has over : all-> " + allNum
-				+ " , unused->" + unusedNum + " , remaining -> "
-				+ (allNum - unusedNum) + ", time -> "
+		logger.info("==== traverse data structure has over : all-> "
+				+ userDatas.size() + " , unused->" + unusedNum
+				+ " , remaining -> " + (allNum - unusedNum) + ", time -> "
 				+ Utility.intervalTime(date1, new Date()) + " s ");
 		return userDatas;
 	}
@@ -313,7 +339,7 @@ public class DBServiceForOracle {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
 		Date date1 = new Date();
-		String sql = "insert into hw_station_segment_speed_tmp values (?,?,?,?,?,?,?,?)";
+		String sql = "insert into hw_station_segment_speed_5m values (?,?,?,?,?,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			for (int i = 0; i < ss.size(); i++) {
@@ -364,7 +390,7 @@ public class DBServiceForOracle {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
 		Date date1 = new Date();
-		String sql = "insert into hw_road_node_segment_speed_tmp values (?,?,?,?,?,?,?)";
+		String sql = "insert into hw_road_node_segment_speed_5m values (?,?,?,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			for (int i = 0; i < nss.size(); i++) {
@@ -376,7 +402,7 @@ public class DBServiceForOracle {
 				pstm.setInt(4, ns.getMinSpeed());
 				pstm.setInt(5, ns.getAvgSpeed());
 				pstm.setInt(6, ns.getRealNum());
-				pstm.setInt(7, ns.getExpectedNum());
+				// pstm.setInt(7, ns.getExpectedNum());
 				// here use batch to improve insertion efficiency, its effect is
 				// obvious;
 				pstm.addBatch();
@@ -566,5 +592,84 @@ public class DBServiceForOracle {
 	public static void main(String[] args) {
 		new DBServiceForOracle().selectHistoryUserData("2015-02-18 14:00:00",
 				"2015-02-18 15:00:00");
+	}
+
+	public void writeSpecificData(List<UserData> uds) {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(
+					"used_data.txt", true));
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < uds.size(); i++) {
+				UserData ud = uds.get(i);
+				sb.append(ud.getTmsi() + "\t" + ud.getTimestamp() + "\t"
+						+ ud.getLac() + "\t" + ud.getCellid() + "\t"
+						+ ud.getEventid() + "\t" + ud.getId() + "\n");
+			}
+			bw.write(sb.toString() + "\n\n");
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void selectSpecificData() {
+		String start = "2015-02-18 00:00:00";
+		String end = "2015-02-18 00:30:00";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			for (int i = 0; i < 48; i++) {
+				start = sdf
+						.format((sdf.parse(start).getTime() + i * 30 * 60 * 1000));
+				end = sdf
+						.format((sdf.parse(end).getTime() + i * 30 * 60 * 1000));
+				String sql = "select count(*) from hw_data_user_lost where timestamp between to_date()";
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	class FetchData implements Runnable {
+
+		ResultSet rs = null;
+		List<UserData> list = null;
+		int count = 0;
+
+		public FetchData(ResultSet rs, List<UserData> list) {
+			// TODO Auto-generated constructor stub
+			this.rs = rs;
+			this.list = list;
+		}
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				System.out.println("thread start "
+						+ Thread.currentThread().getName());
+				while (rs.next()) {
+					count++;
+					if (count % 1000 == 0)
+						System.out.println(Thread.currentThread().getName()
+								+ " --> " + count);
+					String tmsi = rs.getString(1);
+					Date timestamp = rs.getTimestamp(2);
+					int lac = rs.getInt(3);
+					int cellid = rs.getInt(4);
+					int eventid = rs.getInt(5);
+					int id = rs.getInt(6);
+
+					UserData ud = new UserData(tmsi, timestamp, lac, cellid,
+							eventid, id);
+					list.add(ud);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

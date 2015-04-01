@@ -21,9 +21,10 @@ public class NodeSegment {
 
 	private int avgSpeed = 80; // default is 80;
 	private int maxSpeed = -1;
-	private int minSpeed = 200;
+	private int minSpeed = 100;
 	private int realNum = 0;
-	private int expectedNum = 0; // this variable is INACCURATE
+
+	// private int expectedNum = 0; // this variable is INACCURATE
 
 	/**
 	 * @param id
@@ -116,11 +117,11 @@ public class NodeSegment {
 		this.realNum = realNum;
 	}
 
-	public int getExpectedNum() {
-		return expectedNum;
-	}
-
-	public void setExpectedNum(int expectedNum) {
-		this.expectedNum = expectedNum;
-	}
+	// public int getExpectedNum() {
+	// return expectedNum;
+	// }
+	//
+	// public void setExpectedNum(int expectedNum) {
+	// this.expectedNum = expectedNum;
+	// }
 }

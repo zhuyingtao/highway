@@ -115,6 +115,8 @@ public class SpeedAlgorithm {
 				// Utility.sleep(waitTime);
 			}
 		}
+		// sss.writeToFile();
+
 		logger.info("**** All batches have finished ... count : " + batchNum
 				+ " , time = " + Utility.intervalTime(startDate, new Date()));
 	}
@@ -215,4 +217,5 @@ public class SpeedAlgorithm {
 		String endTime = sdf.format(end);
 		return endTime;
 	}
+
 }

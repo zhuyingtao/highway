@@ -31,10 +31,15 @@
 	### 遗留问题 ：  UserDataPool何时清空
 	
 ===== 2015年3月26日	星期四
-	1. 数据库表空间扩展 
+	1. 数据库表空间扩展  快速删除数据 truncate table
 		http://jingyan.baidu.com/article/3c48dd347c9e74e10be35835.html
-	2. 数据库批量插入，addBatch() ,插入比原来快5- 10倍
+	2. 数据库批量插入，addBatch() ,插入比原来快数十倍
+	3. 修正UserDataPool, List --> HashMap, 加快查找速度 O（n）--> O（1）
+	4. 修正FilterDataPool(), 迭代器与集合同时操作时出现异常的情况
+		http://bbs.csdn.net/topics/370149418
 	
+===== 2015年3月27日	星期五
+	1. 计算0218两批数据的速度
 	
 	
 	

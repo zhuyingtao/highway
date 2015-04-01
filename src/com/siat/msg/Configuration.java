@@ -17,7 +17,7 @@ public class Configuration {
 	// public static String START_TIME = "2014/12/08 00:00:00";
 	public static String START_TIME = "2015/01/21 23:55:00";
 	// 每一批数据的时间间隔（秒）
-	public static final int INTERVAL_TIME = 2 * 60;
+	public static final int INTERVAL_TIME = 5 * 60;
 	// 数据缓存时间长度（秒）
 	public static final int CACHE_TIME = 30 * 60;
 	// 当前数据中没有用到的基站ID

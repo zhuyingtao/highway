@@ -34,10 +34,9 @@ public class Server {
 				Utility.sleep(1);
 			} else if (request == 1) {
 				logger.info("=============== History speed ================");
-				String[] strs = { "00", "01", "02", "03", "04", "05", "06",
-						"07", "08", "09", "10", "11", "12", "13", "14", "15",
-						"16", "17", "18", "19", "20", "21", "22", "23" };
-				for (int j = 0; j < 23; j++) {
+				String[] strs = { "08", "09", "10", "11", "12", "13", "14",
+						"15", "16", "17", "18" };
+				for (int j = 0; j < strs.length - 1; j++) {
 					String startTime = "2015-02-18 " + strs[j] + ":00:00";
 					String endTime = "2015-02-18 " + strs[j + 1] + ":00:00";
 					sa.computeHistorySpeed(startTime, endTime,

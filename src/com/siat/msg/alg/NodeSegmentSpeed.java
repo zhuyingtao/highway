@@ -102,7 +102,7 @@ public class NodeSegmentSpeed {
 			int maxSpeed = -1;
 			int minSpeed = 200;
 			int num = 0; // the car number in this node segment;
-			int expectedNum = 0;
+			// int expectedNum = 0;
 			for (int j = startIndex; j <= endIndex; j++) {
 				StationSegment ss = stations.get(i);
 				// use filter speed;
@@ -113,18 +113,18 @@ public class NodeSegmentSpeed {
 				if (minSpeed > ss.getMinSpeed())
 					minSpeed = ss.getMinSpeed();
 				num += ss.getRealNum();
-				expectedNum += ss.getExpectedNum(); // here , INACCURATE
+				// expectedNum += ss.getExpectedNum(); // here , INACCURATE
 			}
 			int avgSpeed = (int) (sum / length);
-			if (avgSpeed == 0) // set default is 80;
-				avgSpeed = 80;
+			// if (avgSpeed == 0) // set default is 80;
+			// avgSpeed = 80;
 
 			// 4. set these speeds to this Node Segment;
 			ns.setAvgSpeed(avgSpeed);
 			ns.setMaxSpeed(maxSpeed);
 			ns.setMinSpeed(minSpeed);
 			ns.setRealNum(num);
-			ns.setExpectedNum(expectedNum);
+			// ns.setExpectedNum(expectedNum);
 		}
 
 		// 5. after all the segments have been computing, store them into
@@ -162,8 +162,7 @@ public class NodeSegmentSpeed {
 				NodeSegment ns = nodeSegments.get(i);
 				sb.append(ns.getId() + " -- " + ns.getDirection() + " : "
 						+ ns.getMaxSpeed() + " , " + ns.getMinSpeed() + " , "
-						+ ns.getAvgSpeed() + " ( " + ns.getRealNum() + " , "
-						+ ns.getExpectedNum() + " )\n");
+						+ ns.getAvgSpeed() + " ( " + ns.getRealNum() + " )\n");
 			}
 			bw.write(sb.toString() + "\n\n");
 			bw.flush();

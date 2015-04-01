@@ -4,7 +4,7 @@ package com.siat.ds;
  * @ClassName Station
  * @Description 基站信息
  * @author Zhu Yingtao
- * @date 2014年12月16日 下午2:54:05
+ * @date 2015-03-27 16:30:21
  */
 public class Station {
 

@@ -4,8 +4,7 @@
 package com.siat.ds;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 /**
  * @ClassName UserData
@@ -21,6 +20,11 @@ public class UserData {
 	private int cellid; // 基站编码
 	private int eventid; // 事件类型
 	private int id; // 线路ID
+
+	public UserData(String tmsi) {
+		// TODO Auto-generated constructor stub
+		this.tmsi = tmsi;
+	}
 
 	/**
 	 * @param tmsi
@@ -104,8 +108,8 @@ public class UserData {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return this.tmsi + "," + this.timestamp + "," + this.lac + ","
-				+ this.cellid + "," + this.eventid + "," + this.id + "\n";
+		return this.tmsi + " , " + this.timestamp + " , " + this.lac + " , "
+				+ this.cellid + " , " + this.eventid + " , " + this.id;
 	}
 
 	public boolean isLater(UserData ud) {
@@ -121,9 +125,13 @@ public class UserData {
 		String c = "4987986B6F3A9C3A1D7354B175B052F7";
 		System.out.println(a.hashCode() + "  ; " + b.hashCode() + " ; "
 				+ c.hashCode());
-		HashSet<UserData> ud = new HashSet<>();
-		for (int i = 0; i < ud.size(); i++) {
-			
-		}
+		HashMap<String, UserData> map = new HashMap<>();
+		map.put("123", new UserData("123"));
+		map.put("123", new UserData("123"));
+		map.put("322", new UserData("322"));
+		System.out.println(map.containsKey("123"));
+		System.out.println(map.size());
+		map.put("322", new UserData("222"));
+		System.out.println(map);
 	}
 }
