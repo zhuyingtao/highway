@@ -104,7 +104,8 @@ public class NodeSegmentSpeed {
 			int num = 0; // the car number in this node segment;
 			// int expectedNum = 0;
 			for (int j = startIndex; j <= endIndex; j++) {
-				StationSegment ss = stations.get(i);
+				///////////// HERE MADE A BIG MISTAKE,NOT [i], JUST [j] !!!!
+				StationSegment ss = stations.get(j);
 				// use filter speed;
 				sum += ss.getFilterAvgSpeed() * ss.getLength();
 				length += ss.getLength();

@@ -35,6 +35,8 @@ public class StationSegment {
 	// 保存一批次数据中当前路段上每一辆车的速度
 	private List<Integer> speeds = new ArrayList<Integer>();
 
+	private int lastAvgSpeed = 80;
+
 	// 保存不同批次数据计算出来的平均速度（时间+速度）
 	private List<String> avgSpeedStrs = new ArrayList<String>();
 
@@ -114,6 +116,7 @@ public class StationSegment {
 		this.speeds.clear();
 		this.realNum = 0;
 		this.expectedNum = 0;
+		this.lastAvgSpeed = filterAvgSpeed > 100 ? 100 : filterAvgSpeed;
 	}
 
 	public void computeAvgSpeed() {
@@ -178,8 +181,10 @@ public class StationSegment {
 	}
 
 	public int getAvgSpeed() {
-		// if (this.expectedNum < 10)
-		// return 80;
+		if (this.expectedNum < 3)
+			return this.lastAvgSpeed;
+		if (this.avgSpeed > 100)
+			return 100;
 		return this.avgSpeed;
 	}
 
@@ -188,8 +193,10 @@ public class StationSegment {
 	}
 
 	public int getFilterAvgSpeed() {
-		// if (this.expectedNum < 10)
-		// return 80;
+		if (this.expectedNum < 3)
+			return this.lastAvgSpeed;
+		if (this.filterAvgSpeed > 100)
+			return 100;
 		return this.filterAvgSpeed;
 	}
 

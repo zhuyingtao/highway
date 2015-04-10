@@ -15,9 +15,9 @@ public class Configuration {
 
 	// 数据中最早的时间
 	// public static String START_TIME = "2014/12/08 00:00:00";
-	public static String START_TIME = "2015/01/21 23:55:00";
+	public static String START_TIME = null;
 	// 每一批数据的时间间隔（秒）
-	public static final int INTERVAL_TIME = 5 * 60;
+	public static int INTERVAL_TIME = 2 * 60;
 	// 数据缓存时间长度（秒）
 	public static final int CACHE_TIME = 30 * 60;
 	// 当前数据中没有用到的基站ID
@@ -44,4 +44,15 @@ public class Configuration {
 	// whether write the speed results to file;
 	public static final boolean WRITE_TO_FILE = false;
 
+	// interface for the database;
+	public static String URL = "jdbc:oracle:thin:@210.75.252.44:1521:ORCL";
+	public static String USER = "hw";
+	public static String PASSWORD = "hw";
+	
+	public static String USER_URL = null;
+	public static String USER_USER = null;
+	public static String USER_PASSWORD = null;
+	public static String USER_TABLE = null;
+
+	public static String Configuration_Path = "D:/highway/Configuration.ini";
 }

@@ -1,4 +1,5 @@
-INFO	====== get connection , using time 428 ms
+INFO	====== get connection , using time 674 ms
+INFO	====== get connection of User Database , using time 69 ms
 INFO	initial station segments ... 
 INFO	==== begin to select station ... 
 INFO	==== end of select, count = 272 , time = 0
@@ -6,1023 +7,1141 @@ INFO	==== begin to select station segment...
 INFO	==== end of select, count = 340 , time = 0
 INFO	initial node segments ... 
 INFO	==== begin to select node ... 
-INFO	==== end of select, count = 106 , time = 0
+INFO	==== end of select, count = 118 , time = 0
 INFO	==== begin to select node segment ... 
 INFO	==== end of select, count = 140 , time = 0
-INFO	==== set time has been updated, begin to compute, count = 1
-INFO	=============== History speed ================
-INFO	==== begin to select history data : from 2015-02-18 08:00:00, to 2015-02-18 09:00:00
+INFO	==== begin to select history data : from 2015-02-18 17:58:30, to 2015-02-18 18:00:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 183586 , unused->0 , remaining -> 183586, time -> 185 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:05:01.0----2015-02-18 08:00:00.0
-INFO	all data size : 183586, one batch : 0, 13919, distinct = 8186 , same = 5732
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:10:02.0----2015-02-18 08:05:01.0
-INFO	all data size : 183586, one batch : 13919, 27960, distinct = 8133 , same = 5907
-INFO	**** data size : user_data_pool -> 8186 , batch_data -> 8133
-INFO	========= in one batch : new_add = 6008 , matches = 2125 { in_same_segment = 1379 , compute = 719 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 297 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 164 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:15:03.0----2015-02-18 08:10:02.0
-INFO	all data size : 183586, one batch : 27960, 41833, distinct = 8186 , same = 5686
-INFO	**** data size : user_data_pool -> 14194 , batch_data -> 8186
-INFO	========= in one batch : new_add = 5309 , matches = 2877 { in_same_segment = 1749 , compute = 1107 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 45 ms
+INFO	==== traverse data structure has over : all-> 8308 , unused->0 , remaining -> 8308, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:00:30, to 2015-02-18 18:02:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8101 , unused->0 , remaining -> 8101, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 4933 , batch_data -> 8101
+INFO	========= in one batch : new_add = 3492 , matches = 4609 { in_same_segment = 3881 , compute = 373 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 18 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:20:04.0----2015-02-18 08:15:03.0
-INFO	all data size : 183586, one batch : 41833, 55946, distinct = 8375 , same = 5737
-INFO	**** data size : user_data_pool -> 19503 , batch_data -> 8375
-INFO	========= in one batch : new_add = 4929 , matches = 3446 { in_same_segment = 2036 , compute = 1396 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 55 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 22 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:25:05.0----2015-02-18 08:20:04.0
-INFO	all data size : 183586, one batch : 55946, 70160, distinct = 8409 , same = 5804
-INFO	**** data size : user_data_pool -> 24432 , batch_data -> 8409
-INFO	========= in one batch : new_add = 4841 , matches = 3568 { in_same_segment = 2136 , compute = 1416 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 38 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 21 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:30:06.0----2015-02-18 08:25:05.0
-INFO	all data size : 183586, one batch : 70160, 84916, distinct = 8814 , same = 5941
-INFO	**** data size : user_data_pool -> 29273 , batch_data -> 8814
-INFO	========= in one batch : new_add = 4442 , matches = 4372 { in_same_segment = 2537 , compute = 1819 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 22 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:35:07.0----2015-02-18 08:30:06.0
-INFO	all data size : 183586, one batch : 84916, 100811, distinct = 9198 , same = 6696
-INFO	**** data size : user_data_pool -> 33715 , batch_data -> 9198
-INFO	========= in one batch : new_add = 4593 , matches = 4605 { in_same_segment = 2658 , compute = 1923 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 64 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 22 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:40:08.0----2015-02-18 08:35:07.0
-INFO	all data size : 183586, one batch : 100811, 116610, distinct = 8954 , same = 6844
-INFO	**** data size : user_data_pool -> 38308 , batch_data -> 8954
-INFO	========= in one batch : new_add = 4242 , matches = 4712 { in_same_segment = 2753 , compute = 1934 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 23 ms
-INFO	2015-02-18 08:40:00========== removed [7796] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 65 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:45:09.0----2015-02-18 08:40:08.0
-INFO	all data size : 183586, one batch : 116610, 132585, distinct = 9273 , same = 6701
-INFO	**** data size : user_data_pool -> 34754 , batch_data -> 9273
-INFO	========= in one batch : new_add = 4500 , matches = 4773 { in_same_segment = 2679 , compute = 2068 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 54 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 142 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:50:10.0----2015-02-18 08:45:09.0
-INFO	all data size : 183586, one batch : 132585, 148984, distinct = 9553 , same = 6845
-INFO	**** data size : user_data_pool -> 39254 , batch_data -> 9553
-INFO	========= in one batch : new_add = 4369 , matches = 5184 { in_same_segment = 2897 , compute = 2252 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 44 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 08:55:11.0----2015-02-18 08:50:10.0
-INFO	all data size : 183586, one batch : 148984, 166486, distinct = 10041 , same = 7460
-INFO	**** data size : user_data_pool -> 43623 , batch_data -> 10041
-INFO	========= in one batch : new_add = 4465 , matches = 5576 { in_same_segment = 3122 , compute = 2425 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 20 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 49 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 183586, one batch : 166486, 183586, distinct = 10029 , same = 7070
-INFO	**** data size : user_data_pool -> 48088 , batch_data -> 10029
-INFO	========= in one batch : new_add = 4290 , matches = 5739 { in_same_segment = 3185 , compute = 2520 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 25 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 194
-INFO	==== begin to select history data : from 2015-02-18 09:00:00, to 2015-02-18 10:00:00
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:02:30, to 2015-02-18 18:04:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 246276 , unused->0 , remaining -> 246276, time -> 232 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:05:01.0----2015-02-18 09:00:00.0
-INFO	all data size : 246276, one batch : 0, 19019, distinct = 10836 , same = 8182
-INFO	**** data size : user_data_pool -> 52378 , batch_data -> 10836
-INFO	========= in one batch : new_add = 4515 , matches = 6321 { in_same_segment = 3503 , compute = 2797 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 154 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 72 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:10:02.0----2015-02-18 09:05:01.0
-INFO	all data size : 246276, one batch : 19019, 38014, distinct = 10693 , same = 8301
-INFO	**** data size : user_data_pool -> 56893 , batch_data -> 10693
-INFO	========= in one batch : new_add = 4173 , matches = 6520 { in_same_segment = 3630 , compute = 2850 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 214 ms
-INFO	2015-02-18 09:10:00========== removed [21587] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 137 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:15:03.0----2015-02-18 09:10:02.0
-INFO	all data size : 246276, one batch : 38014, 57261, distinct = 10861 , same = 8385
-INFO	**** data size : user_data_pool -> 39479 , batch_data -> 10861
-INFO	========= in one batch : new_add = 5013 , matches = 5848 { in_same_segment = 3170 , compute = 2653 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 35 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 71 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:20:04.0----2015-02-18 09:15:03.0
-INFO	all data size : 246276, one batch : 57261, 77272, distinct = 11081 , same = 8929
-INFO	**** data size : user_data_pool -> 44492 , batch_data -> 11081
-INFO	========= in one batch : new_add = 4879 , matches = 6202 { in_same_segment = 3414 , compute = 2753 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 43 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:25:05.0----2015-02-18 09:20:04.0
-INFO	all data size : 246276, one batch : 77272, 97812, distinct = 11416 , same = 9123
-INFO	**** data size : user_data_pool -> 49371 , batch_data -> 11416
-INFO	========= in one batch : new_add = 4898 , matches = 6518 { in_same_segment = 3528 , compute = 2945 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 24 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 20 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:30:06.0----2015-02-18 09:25:05.0
-INFO	all data size : 246276, one batch : 97812, 118071, distinct = 11413 , same = 8845
-INFO	**** data size : user_data_pool -> 54269 , batch_data -> 11413
-INFO	========= in one batch : new_add = 4390 , matches = 7023 { in_same_segment = 3755 , compute = 3241 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 22 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:35:07.0----2015-02-18 09:30:06.0
-INFO	all data size : 246276, one batch : 118071, 138890, distinct = 11676 , same = 9142
-INFO	**** data size : user_data_pool -> 58659 , batch_data -> 11676
-INFO	========= in one batch : new_add = 4413 , matches = 7263 { in_same_segment = 3971 , compute = 3253 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 26 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 18 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:40:08.0----2015-02-18 09:35:07.0
-INFO	all data size : 246276, one batch : 138890, 159877, distinct = 11696 , same = 9290
-INFO	**** data size : user_data_pool -> 63072 , batch_data -> 11696
-INFO	========= in one batch : new_add = 4369 , matches = 7327 { in_same_segment = 3961 , compute = 3323 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 29 ms
-INFO	2015-02-18 09:40:00========== removed [23856] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 11 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:45:09.0----2015-02-18 09:40:08.0
-INFO	all data size : 246276, one batch : 159877, 181757, distinct = 12191 , same = 9688
-INFO	**** data size : user_data_pool -> 43585 , batch_data -> 12191
-INFO	========= in one batch : new_add = 5393 , matches = 6798 { in_same_segment = 3597 , compute = 3165 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 78 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:50:10.0----2015-02-18 09:45:09.0
-INFO	all data size : 246276, one batch : 181757, 203134, distinct = 12034 , same = 9342
-INFO	**** data size : user_data_pool -> 48978 , batch_data -> 12034
-INFO	========= in one batch : new_add = 5053 , matches = 6981 { in_same_segment = 3711 , compute = 3238 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 40 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 09:55:11.0----2015-02-18 09:50:10.0
-INFO	all data size : 246276, one batch : 203134, 225532, distinct = 12284 , same = 10113
-INFO	**** data size : user_data_pool -> 54031 , batch_data -> 12284
-INFO	========= in one batch : new_add = 4844 , matches = 7440 { in_same_segment = 3867 , compute = 3527 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 72 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 246276, one batch : 225532, 246276, distinct = 11956 , same = 8787
-INFO	**** data size : user_data_pool -> 58875 , batch_data -> 11956
-INFO	========= in one batch : new_add = 4470 , matches = 7486 { in_same_segment = 3925 , compute = 3520 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 35 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 249
-INFO	==== begin to select history data : from 2015-02-18 10:00:00, to 2015-02-18 11:00:00
+INFO	==== traverse data structure has over : all-> 8220 , unused->0 , remaining -> 8220, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 8425 , batch_data -> 8220
+INFO	========= in one batch : new_add = 3193 , matches = 5027 { in_same_segment = 4164 , compute = 453 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 127 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 32 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:04:30, to 2015-02-18 18:06:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 277899 , unused->0 , remaining -> 277899, time -> 252 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:05:01.0----2015-02-18 10:00:00.0
-INFO	all data size : 277899, one batch : 0, 23297, distinct = 13209 , same = 10087
-INFO	**** data size : user_data_pool -> 63345 , batch_data -> 13209
-INFO	========= in one batch : new_add = 4847 , matches = 8362 { in_same_segment = 4311 , compute = 4005 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 71 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 81 ms
-SEVERE	''''''' wait time , sleep = 28.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:10:02.0----2015-02-18 10:05:01.0
-INFO	all data size : 277899, one batch : 23297, 46931, distinct = 13307 , same = 10326
-INFO	**** data size : user_data_pool -> 68192 , batch_data -> 13307
-INFO	========= in one batch : new_add = 4751 , matches = 8556 { in_same_segment = 4568 , compute = 3944 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 93 ms
-INFO	2015-02-18 10:10:00========== removed [25721] dead car !   using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8560 , unused->0 , remaining -> 8560, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 11618 , batch_data -> 8560
+INFO	========= in one batch : new_add = 2821 , matches = 5739 { in_same_segment = 4807 , compute = 489 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 46 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 23 ms
-SEVERE	''''''' wait time , sleep = 28.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:15:03.0----2015-02-18 10:10:02.0
-INFO	all data size : 277899, one batch : 46931, 70564, distinct = 13034 , same = 10598
-INFO	**** data size : user_data_pool -> 47222 , batch_data -> 13034
-INFO	========= in one batch : new_add = 5460 , matches = 7574 { in_same_segment = 3896 , compute = 3634 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 36 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 27 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:20:04.0----2015-02-18 10:15:03.0
-INFO	all data size : 277899, one batch : 70564, 93860, distinct = 12776 , same = 10519
-INFO	**** data size : user_data_pool -> 52682 , batch_data -> 12776
-INFO	========= in one batch : new_add = 5004 , matches = 7772 { in_same_segment = 4062 , compute = 3669 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 61 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 14 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:25:05.0----2015-02-18 10:20:04.0
-INFO	all data size : 277899, one batch : 93860, 117011, distinct = 12858 , same = 10292
-INFO	**** data size : user_data_pool -> 57686 , batch_data -> 12858
-INFO	========= in one batch : new_add = 4798 , matches = 8060 { in_same_segment = 4171 , compute = 3850 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 29 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 11 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:30:06.0----2015-02-18 10:25:05.0
-INFO	all data size : 277899, one batch : 117011, 139594, distinct = 12463 , same = 10119
-INFO	**** data size : user_data_pool -> 62484 , batch_data -> 12463
-INFO	========= in one batch : new_add = 4466 , matches = 7997 { in_same_segment = 4124 , compute = 3834 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 30 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:35:07.0----2015-02-18 10:30:06.0
-INFO	all data size : 277899, one batch : 139594, 162825, distinct = 12769 , same = 10461
-INFO	**** data size : user_data_pool -> 66950 , batch_data -> 12769
-INFO	========= in one batch : new_add = 4556 , matches = 8213 { in_same_segment = 4272 , compute = 3904 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 25 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:40:08.0----2015-02-18 10:35:07.0
-INFO	all data size : 277899, one batch : 162825, 186062, distinct = 12806 , same = 10430
-INFO	**** data size : user_data_pool -> 71506 , batch_data -> 12806
-INFO	========= in one batch : new_add = 4413 , matches = 8393 { in_same_segment = 4366 , compute = 3994 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 44 ms
-INFO	2015-02-18 10:40:00========== removed [28158] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:45:09.0----2015-02-18 10:40:08.0
-INFO	all data size : 277899, one batch : 186062, 209162, distinct = 12681 , same = 10418
-INFO	**** data size : user_data_pool -> 47761 , batch_data -> 12681
-INFO	========= in one batch : new_add = 5253 , matches = 7428 { in_same_segment = 3900 , compute = 3486 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 24 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:50:10.0----2015-02-18 10:45:09.0
-INFO	all data size : 277899, one batch : 209162, 232345, distinct = 12771 , same = 10411
-INFO	**** data size : user_data_pool -> 53014 , batch_data -> 12771
-INFO	========= in one batch : new_add = 5022 , matches = 7749 { in_same_segment = 4142 , compute = 3566 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 74 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 10:55:11.0----2015-02-18 10:50:10.0
-INFO	all data size : 277899, one batch : 232345, 255709, distinct = 12794 , same = 10569
-INFO	**** data size : user_data_pool -> 58036 , batch_data -> 12794
-INFO	========= in one batch : new_add = 4801 , matches = 7993 { in_same_segment = 4261 , compute = 3696 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 35 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 23 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 277899, one batch : 255709, 277899, distinct = 12401 , same = 9788
-INFO	**** data size : user_data_pool -> 62837 , batch_data -> 12401
-INFO	========= in one batch : new_add = 4280 , matches = 8121 { in_same_segment = 4314 , compute = 3769 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 35 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 11 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 274
-INFO	==== begin to select history data : from 2015-02-18 11:00:00, to 2015-02-18 12:00:00
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:06:30, to 2015-02-18 18:08:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 240274 , unused->0 , remaining -> 240274, time -> 219 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:05:01.0----2015-02-18 11:00:00.0
-INFO	all data size : 240274, one batch : 0, 23316, distinct = 12789 , same = 10526
-INFO	**** data size : user_data_pool -> 67117 , batch_data -> 12789
-INFO	========= in one batch : new_add = 4338 , matches = 8451 { in_same_segment = 4593 , compute = 3822 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 101 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 44 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:10:02.0----2015-02-18 11:05:01.0
-INFO	all data size : 240274, one batch : 23316, 46045, distinct = 12625 , same = 10103
-INFO	**** data size : user_data_pool -> 71455 , batch_data -> 12625
-INFO	========= in one batch : new_add = 4291 , matches = 8334 { in_same_segment = 4579 , compute = 3722 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 448 ms
-INFO	2015-02-18 11:10:00========== removed [28460] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 53 ms
-SEVERE	''''''' wait time , sleep = 28.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:15:03.0----2015-02-18 11:10:02.0
-INFO	all data size : 240274, one batch : 46045, 68027, distinct = 12276 , same = 9705
-INFO	**** data size : user_data_pool -> 47286 , batch_data -> 12276
-INFO	========= in one batch : new_add = 5056 , matches = 7220 { in_same_segment = 3914 , compute = 3269 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 39 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 11 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:20:04.0----2015-02-18 11:15:03.0
-INFO	all data size : 240274, one batch : 68027, 89985, distinct = 12293 , same = 9664
-INFO	**** data size : user_data_pool -> 52342 , batch_data -> 12293
-INFO	========= in one batch : new_add = 4863 , matches = 7430 { in_same_segment = 3982 , compute = 3403 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 52 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 47 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:25:05.0----2015-02-18 11:20:04.0
-INFO	all data size : 240274, one batch : 89985, 111787, distinct = 12036 , same = 9765
-INFO	**** data size : user_data_pool -> 57205 , batch_data -> 12036
-INFO	========= in one batch : new_add = 4532 , matches = 7504 { in_same_segment = 4183 , compute = 3280 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 36 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:30:06.0----2015-02-18 11:25:05.0
-INFO	all data size : 240274, one batch : 111787, 133372, distinct = 11955 , same = 9629
-INFO	**** data size : user_data_pool -> 61737 , batch_data -> 11955
-INFO	========= in one batch : new_add = 4312 , matches = 7643 { in_same_segment = 4155 , compute = 3457 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 71 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 19 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:35:07.0----2015-02-18 11:30:06.0
-INFO	all data size : 240274, one batch : 133372, 154933, distinct = 11872 , same = 9688
-INFO	**** data size : user_data_pool -> 66049 , batch_data -> 11872
-INFO	========= in one batch : new_add = 3955 , matches = 7917 { in_same_segment = 4529 , compute = 3351 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 21 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:40:08.0----2015-02-18 11:35:07.0
-INFO	all data size : 240274, one batch : 154933, 176326, distinct = 11798 , same = 9594
-INFO	**** data size : user_data_pool -> 70004 , batch_data -> 11798
-INFO	========= in one batch : new_add = 3944 , matches = 7854 { in_same_segment = 4358 , compute = 3466 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 30 ms
-INFO	2015-02-18 11:40:00========== removed [28917] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 26 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:45:09.0----2015-02-18 11:40:08.0
-INFO	all data size : 240274, one batch : 176326, 197475, distinct = 11469 , same = 9679
-INFO	**** data size : user_data_pool -> 45031 , batch_data -> 11469
-INFO	========= in one batch : new_add = 4756 , matches = 6713 { in_same_segment = 3732 , compute = 2950 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 118 ms
+INFO	==== traverse data structure has over : all-> 8271 , unused->0 , remaining -> 8271, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 14439 , batch_data -> 8271
+INFO	========= in one batch : new_add = 2553 , matches = 5718 { in_same_segment = 4744 , compute = 545 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 80 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 27 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:50:10.0----2015-02-18 11:45:09.0
-INFO	all data size : 240274, one batch : 197475, 217852, distinct = 11256 , same = 9120
-INFO	**** data size : user_data_pool -> 49787 , batch_data -> 11256
-INFO	========= in one batch : new_add = 4458 , matches = 6798 { in_same_segment = 3932 , compute = 2835 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 47 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 11:55:11.0----2015-02-18 11:50:10.0
-INFO	all data size : 240274, one batch : 217852, 237517, distinct = 10978 , same = 8686
-INFO	**** data size : user_data_pool -> 54245 , batch_data -> 10978
-INFO	========= in one batch : new_add = 4093 , matches = 6885 { in_same_segment = 3916 , compute = 2938 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 73 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 61 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 240274, one batch : 237517, 240274, distinct = 2066 , same = 690
-INFO	**** data size : user_data_pool -> 58338 , batch_data -> 2066
-INFO	========= in one batch : new_add = 577 , matches = 1489 { in_same_segment = 949 , compute = 499 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 38 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 24 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 236
-INFO	==== begin to select history data : from 2015-02-18 12:00:00, to 2015-02-18 13:00:00
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:08:30, to 2015-02-18 18:10:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 224420 , unused->0 , remaining -> 224420, time -> 208 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:05:01.0----2015-02-18 12:00:00.0
-INFO	all data size : 224420, one batch : 0, 16921, distinct = 9611 , same = 7309
-INFO	**** data size : user_data_pool -> 58915 , batch_data -> 9611
-INFO	========= in one batch : new_add = 3893 , matches = 5718 { in_same_segment = 3308 , compute = 2406 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 92 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 30 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:10:02.0----2015-02-18 12:05:01.0
-INFO	all data size : 224420, one batch : 16921, 36358, distinct = 10817 , same = 8619
-INFO	**** data size : user_data_pool -> 62808 , batch_data -> 10817
-INFO	========= in one batch : new_add = 4061 , matches = 6756 { in_same_segment = 3972 , compute = 2769 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 25 ms
-INFO	2015-02-18 12:10:00========== removed [29391] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 27 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:15:03.0----2015-02-18 12:10:02.0
-INFO	all data size : 224420, one batch : 36358, 55345, distinct = 10580 , same = 8406
-INFO	**** data size : user_data_pool -> 37478 , batch_data -> 10580
-INFO	========= in one batch : new_add = 4960 , matches = 5620 { in_same_segment = 3300 , compute = 2289 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 35 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 14 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:20:04.0----2015-02-18 12:15:03.0
-INFO	all data size : 224420, one batch : 55345, 74590, distinct = 10566 , same = 8678
-INFO	**** data size : user_data_pool -> 42438 , batch_data -> 10566
-INFO	========= in one batch : new_add = 4741 , matches = 5825 { in_same_segment = 3457 , compute = 2334 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 44 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 11 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:25:05.0----2015-02-18 12:20:04.0
-INFO	all data size : 224420, one batch : 74590, 93899, distinct = 10645 , same = 8663
-INFO	**** data size : user_data_pool -> 47179 , batch_data -> 10645
-INFO	========= in one batch : new_add = 4562 , matches = 6083 { in_same_segment = 3749 , compute = 2308 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 28 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:30:06.0----2015-02-18 12:25:05.0
-INFO	all data size : 224420, one batch : 93899, 112827, distinct = 10594 , same = 8333
-INFO	**** data size : user_data_pool -> 51741 , batch_data -> 10594
-INFO	========= in one batch : new_add = 4136 , matches = 6458 { in_same_segment = 3870 , compute = 2556 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 84 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 40 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:35:07.0----2015-02-18 12:30:06.0
-INFO	all data size : 224420, one batch : 112827, 131805, distinct = 10453 , same = 8524
-INFO	**** data size : user_data_pool -> 55877 , batch_data -> 10453
-INFO	========= in one batch : new_add = 3943 , matches = 6510 { in_same_segment = 3965 , compute = 2513 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 57 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 35 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:40:08.0----2015-02-18 12:35:07.0
-INFO	all data size : 224420, one batch : 131805, 150376, distinct = 10335 , same = 8235
-INFO	**** data size : user_data_pool -> 59820 , batch_data -> 10335
-INFO	========= in one batch : new_add = 3890 , matches = 6445 { in_same_segment = 4016 , compute = 2396 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 54 ms
-INFO	2015-02-18 12:40:00========== removed [23437] dead car !   using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9023 , unused->0 , remaining -> 9023, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 16992 , batch_data -> 9023
+INFO	========= in one batch : new_add = 2478 , matches = 6545 { in_same_segment = 5519 , compute = 606 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 49 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 41 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:45:09.0----2015-02-18 12:40:08.0
-INFO	all data size : 224420, one batch : 150376, 168875, distinct = 10436 , same = 8062
-INFO	**** data size : user_data_pool -> 40273 , batch_data -> 10436
-INFO	========= in one batch : new_add = 4635 , matches = 5801 { in_same_segment = 3487 , compute = 2292 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 36 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 10 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:50:10.0----2015-02-18 12:45:09.0
-INFO	all data size : 224420, one batch : 168875, 187271, distinct = 10184 , same = 8211
-INFO	**** data size : user_data_pool -> 44908 , batch_data -> 10184
-INFO	========= in one batch : new_add = 4393 , matches = 5791 { in_same_segment = 3599 , compute = 2175 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 29 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 91 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 12:55:11.0----2015-02-18 12:50:10.0
-INFO	all data size : 224420, one batch : 187271, 206394, distinct = 10413 , same = 8709
-INFO	**** data size : user_data_pool -> 49301 , batch_data -> 10413
-INFO	========= in one batch : new_add = 4177 , matches = 6236 { in_same_segment = 3822 , compute = 2390 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 36 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:10:30, to 2015-02-18 18:12:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8451 , unused->0 , remaining -> 8451, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 19470 , batch_data -> 8451
+INFO	========= in one batch : new_add = 2403 , matches = 6048 { in_same_segment = 5087 , compute = 557 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:12:30, to 2015-02-18 18:14:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8512 , unused->0 , remaining -> 8512, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 21873 , batch_data -> 8512
+INFO	========= in one batch : new_add = 2294 , matches = 6218 { in_same_segment = 5218 , compute = 596 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 44 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 224420, one batch : 206394, 224420, distinct = 10134 , same = 7891
-INFO	**** data size : user_data_pool -> 53478 , batch_data -> 10134
-INFO	========= in one batch : new_add = 3940 , matches = 6194 { in_same_segment = 3768 , compute = 2398 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 19 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 21 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 226
-INFO	==== begin to select history data : from 2015-02-18 13:00:00, to 2015-02-18 14:00:00
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:14:30, to 2015-02-18 18:16:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 217695 , unused->0 , remaining -> 217695, time -> 193 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:05:01.0----2015-02-18 13:00:00.0
-INFO	all data size : 217695, one batch : 0, 19102, distinct = 10703 , same = 8398
-INFO	**** data size : user_data_pool -> 57418 , batch_data -> 10703
-INFO	========= in one batch : new_add = 4117 , matches = 6586 { in_same_segment = 4103 , compute = 2459 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 34 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 33 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:10:02.0----2015-02-18 13:05:01.0
-INFO	all data size : 217695, one batch : 19102, 37633, distinct = 10327 , same = 8203
-INFO	**** data size : user_data_pool -> 61535 , batch_data -> 10327
-INFO	========= in one batch : new_add = 3906 , matches = 6421 { in_same_segment = 3991 , compute = 2397 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 27 ms
-INFO	2015-02-18 13:10:00========== removed [25437] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:15:03.0----2015-02-18 13:10:02.0
-INFO	all data size : 217695, one batch : 37633, 56174, distinct = 10471 , same = 8069
-INFO	**** data size : user_data_pool -> 40004 , batch_data -> 10471
-INFO	========= in one batch : new_add = 4641 , matches = 5830 { in_same_segment = 3509 , compute = 2296 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 45 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 24 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:20:04.0----2015-02-18 13:15:03.0
-INFO	all data size : 217695, one batch : 56174, 74162, distinct = 10130 , same = 7857
-INFO	**** data size : user_data_pool -> 44645 , batch_data -> 10130
-INFO	========= in one batch : new_add = 4379 , matches = 5751 { in_same_segment = 3549 , compute = 2179 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 49 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:25:05.0----2015-02-18 13:20:04.0
-INFO	all data size : 217695, one batch : 74162, 92284, distinct = 10200 , same = 7921
-INFO	**** data size : user_data_pool -> 49024 , batch_data -> 10200
-INFO	========= in one batch : new_add = 4321 , matches = 5879 { in_same_segment = 3633 , compute = 2226 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 63 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:30:06.0----2015-02-18 13:25:05.0
-INFO	all data size : 217695, one batch : 92284, 111125, distinct = 10294 , same = 8546
-INFO	**** data size : user_data_pool -> 53345 , batch_data -> 10294
-INFO	========= in one batch : new_add = 4074 , matches = 6220 { in_same_segment = 3829 , compute = 2367 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 40 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 36 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:35:07.0----2015-02-18 13:30:06.0
-INFO	all data size : 217695, one batch : 111125, 129892, distinct = 10310 , same = 8456
-INFO	**** data size : user_data_pool -> 57419 , batch_data -> 10310
-INFO	========= in one batch : new_add = 3953 , matches = 6357 { in_same_segment = 3947 , compute = 2387 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 54 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:40:08.0----2015-02-18 13:35:07.0
-INFO	all data size : 217695, one batch : 129892, 148099, distinct = 10103 , same = 8103
-INFO	**** data size : user_data_pool -> 61372 , batch_data -> 10103
-INFO	========= in one batch : new_add = 3800 , matches = 6303 { in_same_segment = 3938 , compute = 2345 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 25 ms
-INFO	2015-02-18 13:40:00========== removed [25387] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:45:09.0----2015-02-18 13:40:08.0
-INFO	all data size : 217695, one batch : 148099, 166080, distinct = 10056 , same = 7924
-INFO	**** data size : user_data_pool -> 39785 , batch_data -> 10056
-INFO	========= in one batch : new_add = 4527 , matches = 5529 { in_same_segment = 3353 , compute = 2155 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 53 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:50:10.0----2015-02-18 13:45:09.0
-INFO	all data size : 217695, one batch : 166080, 183302, distinct = 9821 , same = 7400
-INFO	**** data size : user_data_pool -> 44312 , batch_data -> 9821
-INFO	========= in one batch : new_add = 4254 , matches = 5567 { in_same_segment = 3444 , compute = 2095 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 26 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 14 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 13:55:11.0----2015-02-18 13:50:10.0
-INFO	all data size : 217695, one batch : 183302, 200673, distinct = 9789 , same = 7581
-INFO	**** data size : user_data_pool -> 48566 , batch_data -> 9789
-INFO	========= in one batch : new_add = 4056 , matches = 5733 { in_same_segment = 3543 , compute = 2155 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 37 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 10 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 217695, one batch : 200673, 217695, distinct = 9602 , same = 7419
-INFO	**** data size : user_data_pool -> 52622 , batch_data -> 9602
-INFO	========= in one batch : new_add = 3851 , matches = 5751 { in_same_segment = 3511 , compute = 2217 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 27 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 202
-INFO	==== begin to select history data : from 2015-02-18 14:00:00, to 2015-02-18 15:00:00
+INFO	==== traverse data structure has over : all-> 8548 , unused->0 , remaining -> 8548, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 24167 , batch_data -> 8548
+INFO	========= in one batch : new_add = 2111 , matches = 6437 { in_same_segment = 5342 , compute = 630 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 93 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:16:30, to 2015-02-18 18:18:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 215243 , unused->0 , remaining -> 215243, time -> 192 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:05:01.0----2015-02-18 14:00:00.0
-INFO	all data size : 215243, one batch : 0, 17564, distinct = 10119 , same = 7444
-INFO	**** data size : user_data_pool -> 56473 , batch_data -> 10119
-INFO	========= in one batch : new_add = 3972 , matches = 6147 { in_same_segment = 3861 , compute = 2259 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 43 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 80 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:10:02.0----2015-02-18 14:05:01.0
-INFO	all data size : 215243, one batch : 17564, 35284, distinct = 10122 , same = 7597
-INFO	**** data size : user_data_pool -> 60445 , batch_data -> 10122
-INFO	========= in one batch : new_add = 3943 , matches = 6179 { in_same_segment = 3883 , compute = 2259 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 42 ms
-INFO	2015-02-18 14:10:00========== removed [25579] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 28 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:15:03.0----2015-02-18 14:10:02.0
-INFO	all data size : 215243, one batch : 35284, 52700, distinct = 9870 , same = 7545
-INFO	**** data size : user_data_pool -> 38809 , batch_data -> 9870
-INFO	========= in one batch : new_add = 4433 , matches = 5437 { in_same_segment = 3299 , compute = 2112 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 110 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:20:04.0----2015-02-18 14:15:03.0
-INFO	all data size : 215243, one batch : 52700, 70199, distinct = 9952 , same = 7546
-INFO	**** data size : user_data_pool -> 43242 , batch_data -> 9952
-INFO	========= in one batch : new_add = 4275 , matches = 5677 { in_same_segment = 3571 , compute = 2082 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 17 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 51 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:25:05.0----2015-02-18 14:20:04.0
-INFO	all data size : 215243, one batch : 70199, 87719, distinct = 9770 , same = 7749
-INFO	**** data size : user_data_pool -> 47517 , batch_data -> 9770
-INFO	========= in one batch : new_add = 4073 , matches = 5697 { in_same_segment = 3602 , compute = 2065 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 30 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:30:06.0----2015-02-18 14:25:05.0
-INFO	all data size : 215243, one batch : 87719, 105492, distinct = 9734 , same = 8038
-INFO	**** data size : user_data_pool -> 51590 , batch_data -> 9734
-INFO	========= in one batch : new_add = 3828 , matches = 5906 { in_same_segment = 3754 , compute = 2132 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 20 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 14 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:35:07.0----2015-02-18 14:30:06.0
-INFO	all data size : 215243, one batch : 105492, 123839, distinct = 10274 , same = 8072
-INFO	**** data size : user_data_pool -> 55418 , batch_data -> 10274
-INFO	========= in one batch : new_add = 4024 , matches = 6250 { in_same_segment = 3987 , compute = 2243 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 14 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:40:08.0----2015-02-18 14:35:07.0
-INFO	all data size : 215243, one batch : 123839, 142461, distinct = 10310 , same = 8311
-INFO	**** data size : user_data_pool -> 59442 , batch_data -> 10310
-INFO	========= in one batch : new_add = 3915 , matches = 6395 { in_same_segment = 4195 , compute = 2170 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 83 ms
-INFO	2015-02-18 14:40:00========== removed [24704] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 39 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:45:09.0----2015-02-18 14:40:08.0
-INFO	all data size : 215243, one batch : 142461, 161417, distinct = 10278 , same = 8677
-INFO	**** data size : user_data_pool -> 38653 , batch_data -> 10278
-INFO	========= in one batch : new_add = 4699 , matches = 5579 { in_same_segment = 3614 , compute = 1937 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 19 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 21 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:50:10.0----2015-02-18 14:45:09.0
-INFO	all data size : 215243, one batch : 161417, 179863, distinct = 10136 , same = 8309
-INFO	**** data size : user_data_pool -> 43352 , batch_data -> 10136
-INFO	========= in one batch : new_add = 4267 , matches = 5869 { in_same_segment = 3822 , compute = 2026 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 29 ms
+INFO	==== traverse data structure has over : all-> 8597 , unused->0 , remaining -> 8597, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 26278 , batch_data -> 8597
+INFO	========= in one batch : new_add = 2181 , matches = 6416 { in_same_segment = 5348 , compute = 662 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 77 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:18:30, to 2015-02-18 18:20:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8294 , unused->0 , remaining -> 8294, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 28459 , batch_data -> 8294
+INFO	========= in one batch : new_add = 2026 , matches = 6268 { in_same_segment = 5270 , compute = 624 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 46 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:20:30, to 2015-02-18 18:22:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 1322 , unused->0 , remaining -> 1322, time -> 1 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 30485 , batch_data -> 1322
+INFO	========= in one batch : new_add = 290 , matches = 1032 { in_same_segment = 833 , compute = 113 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 78 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 14:55:11.0----2015-02-18 14:50:10.0
-INFO	all data size : 215243, one batch : 179863, 198173, distinct = 10058 , same = 8251
-INFO	**** data size : user_data_pool -> 47619 , batch_data -> 10058
-INFO	========= in one batch : new_add = 4130 , matches = 5928 { in_same_segment = 3894 , compute = 2014 }
+INFO	**** One batch has finished ... time = 1.0 s 
+SEVERE	''''''' wait time , sleep = 7.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:22:30, to 2015-02-18 18:24:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 536 , unused->0 , remaining -> 536, time -> 0 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 30775 , batch_data -> 536
+INFO	========= in one batch : new_add = 86 , matches = 450 { in_same_segment = 289 , compute = 59 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 0.0 s 
+SEVERE	''''''' wait time , sleep = 8.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:24:30, to 2015-02-18 18:26:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 4158 , unused->0 , remaining -> 4158, time -> 2 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 30861 , batch_data -> 4158
+INFO	========= in one batch : new_add = 1159 , matches = 2999 { in_same_segment = 2378 , compute = 366 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 62 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 3.0 s 
+SEVERE	''''''' wait time , sleep = 5.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:26:30, to 2015-02-18 18:28:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9104 , unused->0 , remaining -> 9104, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 32020 , batch_data -> 9104
+INFO	========= in one batch : new_add = 2175 , matches = 6929 { in_same_segment = 5757 , compute = 715 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:28:30, to 2015-02-18 18:30:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9695 , unused->0 , remaining -> 9695, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 34195 , batch_data -> 9695
+INFO	========= in one batch : new_add = 2216 , matches = 7479 { in_same_segment = 6312 , compute = 714 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 78 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 8.0 s 
+SEVERE	''''''' wait time , sleep = 0.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:30:30, to 2015-02-18 18:32:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 10131 , unused->0 , remaining -> 10131, time -> 8 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 36411 , batch_data -> 10131
+INFO	========= in one batch : new_add = 2233 , matches = 7898 { in_same_segment = 6705 , compute = 711 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	2015-02-18 18:32:30========== removed [3568] dead car !   using time = 0 s 
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 8.0 s 
+SEVERE	''''''' wait time , sleep = 0.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:32:30, to 2015-02-18 18:34:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9733 , unused->0 , remaining -> 9733, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 35076 , batch_data -> 9733
+INFO	========= in one batch : new_add = 2087 , matches = 7646 { in_same_segment = 6417 , compute = 725 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:34:30, to 2015-02-18 18:36:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9285 , unused->0 , remaining -> 9285, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 37163 , batch_data -> 9285
+INFO	========= in one batch : new_add = 1968 , matches = 7317 { in_same_segment = 6124 , compute = 732 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:36:30, to 2015-02-18 18:38:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8946 , unused->0 , remaining -> 8946, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 39131 , batch_data -> 8946
+INFO	========= in one batch : new_add = 1918 , matches = 7028 { in_same_segment = 5784 , compute = 797 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 46 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 47 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:38:30, to 2015-02-18 18:40:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9696 , unused->0 , remaining -> 9696, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 41049 , batch_data -> 9696
+INFO	========= in one batch : new_add = 1952 , matches = 7744 { in_same_segment = 6500 , compute = 770 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 48 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:40:30, to 2015-02-18 18:42:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9862 , unused->0 , remaining -> 9862, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 43001 , batch_data -> 9862
+INFO	========= in one batch : new_add = 1895 , matches = 7967 { in_same_segment = 6704 , compute = 789 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:42:30, to 2015-02-18 18:44:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9351 , unused->0 , remaining -> 9351, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 44896 , batch_data -> 9351
+INFO	========= in one batch : new_add = 1667 , matches = 7684 { in_same_segment = 6496 , compute = 756 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 0 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:44:30, to 2015-02-18 18:46:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9686 , unused->0 , remaining -> 9686, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 46563 , batch_data -> 9686
+INFO	========= in one batch : new_add = 1643 , matches = 8043 { in_same_segment = 6800 , compute = 773 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:46:30, to 2015-02-18 18:48:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9799 , unused->0 , remaining -> 9799, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 48206 , batch_data -> 9799
+INFO	========= in one batch : new_add = 1725 , matches = 8074 { in_same_segment = 6794 , compute = 791 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 32 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:48:30, to 2015-02-18 18:50:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9707 , unused->0 , remaining -> 9707, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 49931 , batch_data -> 9707
+INFO	========= in one batch : new_add = 1644 , matches = 8063 { in_same_segment = 6848 , compute = 780 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 32 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:50:30, to 2015-02-18 18:52:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9599 , unused->0 , remaining -> 9599, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 51575 , batch_data -> 9599
+INFO	========= in one batch : new_add = 1549 , matches = 8050 { in_same_segment = 6853 , compute = 765 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 63 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:52:30, to 2015-02-18 18:54:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9759 , unused->0 , remaining -> 9759, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 53124 , batch_data -> 9759
+INFO	========= in one batch : new_add = 1559 , matches = 8200 { in_same_segment = 6986 , compute = 781 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 79 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 47 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:54:30, to 2015-02-18 18:56:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9745 , unused->0 , remaining -> 9745, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 54683 , batch_data -> 9745
+INFO	========= in one batch : new_add = 1478 , matches = 8267 { in_same_segment = 7031 , compute = 793 }
 INFO	 ==== insert StationSpeed into databases, count = 340, time = 16 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 215243, one batch : 198173, 215243, distinct = 9639 , same = 7430
-INFO	**** data size : user_data_pool -> 51749 , batch_data -> 9639
-INFO	========= in one batch : new_add = 3670 , matches = 5969 { in_same_segment = 3963 , compute = 1977 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 21 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 14 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 201
-INFO	==== begin to select history data : from 2015-02-18 15:00:00, to 2015-02-18 16:00:00
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 8.0 s 
+SEVERE	''''''' wait time , sleep = 0.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:56:30, to 2015-02-18 18:58:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 224844 , unused->0 , remaining -> 224844, time -> 193 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:05:01.0----2015-02-18 15:00:00.0
-INFO	all data size : 224844, one batch : 0, 19183, distinct = 10346 , same = 8836
-INFO	**** data size : user_data_pool -> 55419 , batch_data -> 10346
-INFO	========= in one batch : new_add = 3973 , matches = 6373 { in_same_segment = 4261 , compute = 2089 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 87 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 24 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:10:02.0----2015-02-18 15:05:01.0
-INFO	all data size : 224844, one batch : 19183, 38164, distinct = 10200 , same = 8780
-INFO	**** data size : user_data_pool -> 59392 , batch_data -> 10200
-INFO	========= in one batch : new_add = 3773 , matches = 6427 { in_same_segment = 4345 , compute = 2063 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 49 ms
-INFO	2015-02-18 15:10:00========== removed [23987] dead car !   using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9693 , unused->0 , remaining -> 9693, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 56161 , batch_data -> 9693
+INFO	========= in one batch : new_add = 1456 , matches = 8237 { in_same_segment = 6988 , compute = 810 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 18:58:30, to 2015-02-18 19:00:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8736 , unused->0 , remaining -> 8736, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 57617 , batch_data -> 8736
+INFO	========= in one batch : new_add = 1243 , matches = 7493 { in_same_segment = 6318 , compute = 769 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:00:30, to 2015-02-18 19:02:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9284 , unused->0 , remaining -> 9284, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 58860 , batch_data -> 9284
+INFO	========= in one batch : new_add = 1394 , matches = 7890 { in_same_segment = 6734 , compute = 790 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	2015-02-18 19:02:30========== removed [20087] dead car !   using time = 0 s 
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:15:03.0----2015-02-18 15:10:02.0
-INFO	all data size : 224844, one batch : 38164, 57083, distinct = 10119 , same = 8799
-INFO	**** data size : user_data_pool -> 39178 , batch_data -> 10119
-INFO	========= in one batch : new_add = 4565 , matches = 5554 { in_same_segment = 3725 , compute = 1808 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 30 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 36 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:20:04.0----2015-02-18 15:15:03.0
-INFO	all data size : 224844, one batch : 57083, 75906, distinct = 10253 , same = 8569
-INFO	**** data size : user_data_pool -> 43743 , batch_data -> 10253
-INFO	========= in one batch : new_add = 4334 , matches = 5919 { in_same_segment = 4001 , compute = 1890 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 33 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:25:05.0----2015-02-18 15:20:04.0
-INFO	all data size : 224844, one batch : 75906, 93978, distinct = 9819 , same = 8252
-INFO	**** data size : user_data_pool -> 48077 , batch_data -> 9819
-INFO	========= in one batch : new_add = 3959 , matches = 5860 { in_same_segment = 4018 , compute = 1818 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 43 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:30:06.0----2015-02-18 15:25:05.0
-INFO	all data size : 224844, one batch : 93978, 112325, distinct = 10079 , same = 8267
-INFO	**** data size : user_data_pool -> 52036 , batch_data -> 10079
-INFO	========= in one batch : new_add = 3755 , matches = 6324 { in_same_segment = 4368 , compute = 1926 }
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:02:30, to 2015-02-18 19:04:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8892 , unused->0 , remaining -> 8892, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 40167 , batch_data -> 8892
+INFO	========= in one batch : new_add = 1727 , matches = 7165 { in_same_segment = 6054 , compute = 712 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 62 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:04:30, to 2015-02-18 19:06:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8753 , unused->0 , remaining -> 8753, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 41894 , batch_data -> 8753
+INFO	========= in one batch : new_add = 1727 , matches = 7026 { in_same_segment = 5991 , compute = 663 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 93 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:06:30, to 2015-02-18 19:08:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9262 , unused->0 , remaining -> 9262, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 43621 , batch_data -> 9262
+INFO	========= in one batch : new_add = 1634 , matches = 7628 { in_same_segment = 6569 , compute = 709 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:08:30, to 2015-02-18 19:10:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8803 , unused->0 , remaining -> 8803, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 45255 , batch_data -> 8803
+INFO	========= in one batch : new_add = 1514 , matches = 7289 { in_same_segment = 6263 , compute = 646 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:10:30, to 2015-02-18 19:12:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8375 , unused->0 , remaining -> 8375, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 46769 , batch_data -> 8375
+INFO	========= in one batch : new_add = 1408 , matches = 6967 { in_same_segment = 5969 , compute = 683 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 78 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:12:30, to 2015-02-18 19:14:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8475 , unused->0 , remaining -> 8475, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 48177 , batch_data -> 8475
+INFO	========= in one batch : new_add = 1526 , matches = 6949 { in_same_segment = 5941 , compute = 699 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:14:30, to 2015-02-18 19:16:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8280 , unused->0 , remaining -> 8280, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 49703 , batch_data -> 8280
+INFO	========= in one batch : new_add = 1350 , matches = 6930 { in_same_segment = 6006 , compute = 642 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 62 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 32 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:16:30, to 2015-02-18 19:18:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8405 , unused->0 , remaining -> 8405, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 51053 , batch_data -> 8405
+INFO	========= in one batch : new_add = 1439 , matches = 6966 { in_same_segment = 5963 , compute = 660 }
 INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:35:07.0----2015-02-18 15:30:06.0
-INFO	all data size : 224844, one batch : 112325, 130961, distinct = 10076 , same = 8559
-INFO	**** data size : user_data_pool -> 55791 , batch_data -> 10076
-INFO	========= in one batch : new_add = 3732 , matches = 6344 { in_same_segment = 4380 , compute = 1938 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 60 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 19 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:40:08.0----2015-02-18 15:35:07.0
-INFO	all data size : 224844, one batch : 130961, 149261, distinct = 9889 , same = 8410
-INFO	**** data size : user_data_pool -> 59523 , batch_data -> 9889
-INFO	========= in one batch : new_add = 3445 , matches = 6444 { in_same_segment = 4600 , compute = 1826 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 57 ms
-INFO	2015-02-18 15:40:00========== removed [24496] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 58 ms
-SEVERE	''''''' wait time , sleep = 29.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:45:09.0----2015-02-18 15:40:08.0
-INFO	all data size : 224844, one batch : 149261, 168359, distinct = 10001 , same = 9096
-INFO	**** data size : user_data_pool -> 38472 , batch_data -> 10001
-INFO	========= in one batch : new_add = 4494 , matches = 5507 { in_same_segment = 3947 , compute = 1541 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 22 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:50:10.0----2015-02-18 15:45:09.0
-INFO	all data size : 224844, one batch : 168359, 187165, distinct = 10003 , same = 8802
-INFO	**** data size : user_data_pool -> 42966 , batch_data -> 10003
-INFO	========= in one batch : new_add = 4286 , matches = 5717 { in_same_segment = 4041 , compute = 1658 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 45 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 22 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 15:55:11.0----2015-02-18 15:50:10.0
-INFO	all data size : 224844, one batch : 187165, 206425, distinct = 10409 , same = 8850
-INFO	**** data size : user_data_pool -> 47252 , batch_data -> 10409
-INFO	========= in one batch : new_add = 4241 , matches = 6168 { in_same_segment = 4421 , compute = 1729 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 43 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 224844, one batch : 206425, 224844, distinct = 9955 , same = 8463
-INFO	**** data size : user_data_pool -> 51493 , batch_data -> 9955
-INFO	========= in one batch : new_add = 3721 , matches = 6234 { in_same_segment = 4478 , compute = 1740 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 34 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 203
-INFO	==== begin to select history data : from 2015-02-18 16:00:00, to 2015-02-18 17:00:00
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:18:30, to 2015-02-18 19:20:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 225441 , unused->0 , remaining -> 225441, time -> 203 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:05:01.0----2015-02-18 16:00:00.0
-INFO	all data size : 225441, one batch : 0, 20282, distinct = 10743 , same = 9538
-INFO	**** data size : user_data_pool -> 55214 , batch_data -> 10743
-INFO	========= in one batch : new_add = 4056 , matches = 6687 { in_same_segment = 4822 , compute = 1846 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 27 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:10:02.0----2015-02-18 16:05:01.0
-INFO	all data size : 225441, one batch : 20282, 39220, distinct = 9847 , same = 9090
-INFO	**** data size : user_data_pool -> 59270 , batch_data -> 9847
-INFO	========= in one batch : new_add = 3374 , matches = 6473 { in_same_segment = 4761 , compute = 1694 }
+INFO	==== traverse data structure has over : all-> 8221 , unused->0 , remaining -> 8221, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 52492 , batch_data -> 8221
+INFO	========= in one batch : new_add = 1352 , matches = 6869 { in_same_segment = 5912 , compute = 624 }
 INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
-INFO	2015-02-18 16:10:00========== removed [23796] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 19 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:15:03.0----2015-02-18 16:10:02.0
-INFO	all data size : 225441, one batch : 39220, 57629, distinct = 9663 , same = 8745
-INFO	**** data size : user_data_pool -> 38848 , batch_data -> 9663
-INFO	========= in one batch : new_add = 4226 , matches = 5437 { in_same_segment = 3949 , compute = 1469 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 34 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 30 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:20:04.0----2015-02-18 16:15:03.0
-INFO	all data size : 225441, one batch : 57629, 76207, distinct = 9780 , same = 8797
-INFO	**** data size : user_data_pool -> 43074 , batch_data -> 9780
-INFO	========= in one batch : new_add = 4021 , matches = 5759 { in_same_segment = 4206 , compute = 1528 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 24 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:25:05.0----2015-02-18 16:20:04.0
-INFO	all data size : 225441, one batch : 76207, 95277, distinct = 9860 , same = 9209
-INFO	**** data size : user_data_pool -> 47095 , batch_data -> 9860
-INFO	========= in one batch : new_add = 3921 , matches = 5939 { in_same_segment = 4442 , compute = 1477 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 36 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 61 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:30:06.0----2015-02-18 16:25:05.0
-INFO	all data size : 225441, one batch : 95277, 113795, distinct = 9867 , same = 8650
-INFO	**** data size : user_data_pool -> 51016 , batch_data -> 9867
-INFO	========= in one batch : new_add = 3748 , matches = 6119 { in_same_segment = 4505 , compute = 1585 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 23 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 56 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:35:07.0----2015-02-18 16:30:06.0
-INFO	all data size : 225441, one batch : 113795, 133435, distinct = 10457 , same = 9182
-INFO	**** data size : user_data_pool -> 54764 , batch_data -> 10457
-INFO	========= in one batch : new_add = 3859 , matches = 6598 { in_same_segment = 5048 , compute = 1522 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:40:08.0----2015-02-18 16:35:07.0
-INFO	all data size : 225441, one batch : 133435, 152253, distinct = 10230 , same = 8587
-INFO	**** data size : user_data_pool -> 58623 , batch_data -> 10230
-INFO	========= in one batch : new_add = 3526 , matches = 6704 { in_same_segment = 5120 , compute = 1559 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
-INFO	2015-02-18 16:40:00========== removed [24000] dead car !   using time = 0 s 
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:45:09.0----2015-02-18 16:40:08.0
-INFO	all data size : 225441, one batch : 152253, 170918, distinct = 9859 , same = 8805
-INFO	**** data size : user_data_pool -> 38149 , batch_data -> 9859
-INFO	========= in one batch : new_add = 4210 , matches = 5649 { in_same_segment = 4324 , compute = 1303 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 26 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:50:10.0----2015-02-18 16:45:09.0
-INFO	all data size : 225441, one batch : 170918, 189085, distinct = 9556 , same = 8610
-INFO	**** data size : user_data_pool -> 42359 , batch_data -> 9556
-INFO	========= in one batch : new_add = 3901 , matches = 5655 { in_same_segment = 4317 , compute = 1320 }
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:20:30, to 2015-02-18 19:22:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8301 , unused->0 , remaining -> 8301, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 53844 , batch_data -> 8301
+INFO	========= in one batch : new_add = 1353 , matches = 6948 { in_same_segment = 5976 , compute = 664 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 78 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:22:30, to 2015-02-18 19:24:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8785 , unused->0 , remaining -> 8785, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 55197 , batch_data -> 8785
+INFO	========= in one batch : new_add = 1348 , matches = 7437 { in_same_segment = 6384 , compute = 687 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 33 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 62 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:24:30, to 2015-02-18 19:26:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8478 , unused->0 , remaining -> 8478, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 56545 , batch_data -> 8478
+INFO	========= in one batch : new_add = 1322 , matches = 7156 { in_same_segment = 6061 , compute = 705 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 80 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:26:30, to 2015-02-18 19:28:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8453 , unused->0 , remaining -> 8453, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 57867 , batch_data -> 8453
+INFO	========= in one batch : new_add = 1346 , matches = 7107 { in_same_segment = 6018 , compute = 692 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 0 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:28:30, to 2015-02-18 19:30:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8492 , unused->0 , remaining -> 8492, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 59213 , batch_data -> 8492
+INFO	========= in one batch : new_add = 1277 , matches = 7215 { in_same_segment = 6168 , compute = 661 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:30:30, to 2015-02-18 19:32:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8672 , unused->0 , remaining -> 8672, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 60490 , batch_data -> 8672
+INFO	========= in one batch : new_add = 1202 , matches = 7470 { in_same_segment = 6404 , compute = 696 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	2015-02-18 19:32:30========== removed [24138] dead car !   using time = 0 s 
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:32:30, to 2015-02-18 19:34:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8405 , unused->0 , remaining -> 8405, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 37554 , batch_data -> 8405
+INFO	========= in one batch : new_add = 1627 , matches = 6778 { in_same_segment = 5826 , compute = 619 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 94 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:34:30, to 2015-02-18 19:36:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8677 , unused->0 , remaining -> 8677, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 39181 , batch_data -> 8677
+INFO	========= in one batch : new_add = 1594 , matches = 7083 { in_same_segment = 6161 , compute = 585 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:36:30, to 2015-02-18 19:38:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8471 , unused->0 , remaining -> 8471, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 40775 , batch_data -> 8471
+INFO	========= in one batch : new_add = 1579 , matches = 6892 { in_same_segment = 5943 , compute = 597 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:38:30, to 2015-02-18 19:40:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8097 , unused->0 , remaining -> 8097, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 42354 , batch_data -> 8097
+INFO	========= in one batch : new_add = 1505 , matches = 6592 { in_same_segment = 5678 , compute = 586 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:40:30, to 2015-02-18 19:42:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8830 , unused->0 , remaining -> 8830, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 43859 , batch_data -> 8830
+INFO	========= in one batch : new_add = 1620 , matches = 7210 { in_same_segment = 6202 , compute = 678 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:42:30, to 2015-02-18 19:44:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 9148 , unused->0 , remaining -> 9148, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 45479 , batch_data -> 9148
+INFO	========= in one batch : new_add = 1600 , matches = 7548 { in_same_segment = 6513 , compute = 682 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:44:30, to 2015-02-18 19:46:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8595 , unused->0 , remaining -> 8595, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 47079 , batch_data -> 8595
+INFO	========= in one batch : new_add = 1465 , matches = 7130 { in_same_segment = 6120 , compute = 651 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:46:30, to 2015-02-18 19:48:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8915 , unused->0 , remaining -> 8915, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 48544 , batch_data -> 8915
+INFO	========= in one batch : new_add = 1444 , matches = 7471 { in_same_segment = 6381 , compute = 712 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 62 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:48:30, to 2015-02-18 19:50:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8748 , unused->0 , remaining -> 8748, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 49988 , batch_data -> 8748
+INFO	========= in one batch : new_add = 1443 , matches = 7305 { in_same_segment = 6234 , compute = 677 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 0 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:50:30, to 2015-02-18 19:52:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8828 , unused->0 , remaining -> 8828, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 51431 , batch_data -> 8828
+INFO	========= in one batch : new_add = 1396 , matches = 7432 { in_same_segment = 6412 , compute = 640 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 32 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:52:30, to 2015-02-18 19:54:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8883 , unused->0 , remaining -> 8883, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 52827 , batch_data -> 8883
+INFO	========= in one batch : new_add = 1307 , matches = 7576 { in_same_segment = 6511 , compute = 679 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 63 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:54:30, to 2015-02-18 19:56:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8609 , unused->0 , remaining -> 8609, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 54134 , batch_data -> 8609
+INFO	========= in one batch : new_add = 1250 , matches = 7359 { in_same_segment = 6336 , compute = 658 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:56:30, to 2015-02-18 19:58:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8711 , unused->0 , remaining -> 8711, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 55384 , batch_data -> 8711
+INFO	========= in one batch : new_add = 1259 , matches = 7452 { in_same_segment = 6449 , compute = 658 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 95 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 19:58:30, to 2015-02-18 20:00:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8784 , unused->0 , remaining -> 8784, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 56643 , batch_data -> 8784
+INFO	========= in one batch : new_add = 1198 , matches = 7586 { in_same_segment = 6515 , compute = 703 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:00:30, to 2015-02-18 20:02:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8634 , unused->0 , remaining -> 8634, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 57841 , batch_data -> 8634
+INFO	========= in one batch : new_add = 1202 , matches = 7432 { in_same_segment = 6422 , compute = 657 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	2015-02-18 20:02:30========== removed [22464] dead car !   using time = 0 s 
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:02:30, to 2015-02-18 20:04:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8559 , unused->0 , remaining -> 8559, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 36579 , batch_data -> 8559
+INFO	========= in one batch : new_add = 1695 , matches = 6864 { in_same_segment = 5925 , compute = 589 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:04:30, to 2015-02-18 20:06:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8689 , unused->0 , remaining -> 8689, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 38274 , batch_data -> 8689
+INFO	========= in one batch : new_add = 1632 , matches = 7057 { in_same_segment = 6113 , compute = 607 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:06:30, to 2015-02-18 20:08:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8585 , unused->0 , remaining -> 8585, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 39906 , batch_data -> 8585
+INFO	========= in one batch : new_add = 1602 , matches = 6983 { in_same_segment = 6067 , compute = 574 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:08:30, to 2015-02-18 20:10:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8333 , unused->0 , remaining -> 8333, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 41508 , batch_data -> 8333
+INFO	========= in one batch : new_add = 1566 , matches = 6767 { in_same_segment = 5884 , compute = 552 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 0 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:10:30, to 2015-02-18 20:12:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8041 , unused->0 , remaining -> 8041, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 43074 , batch_data -> 8041
+INFO	========= in one batch : new_add = 1395 , matches = 6646 { in_same_segment = 5787 , compute = 559 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:12:30, to 2015-02-18 20:14:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8256 , unused->0 , remaining -> 8256, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 44469 , batch_data -> 8256
+INFO	========= in one batch : new_add = 1335 , matches = 6921 { in_same_segment = 6045 , compute = 586 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:14:30, to 2015-02-18 20:16:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8432 , unused->0 , remaining -> 8432, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 45804 , batch_data -> 8432
+INFO	========= in one batch : new_add = 1343 , matches = 7089 { in_same_segment = 6168 , compute = 578 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:16:30, to 2015-02-18 20:18:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8500 , unused->0 , remaining -> 8500, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 47147 , batch_data -> 8500
+INFO	========= in one batch : new_add = 1336 , matches = 7164 { in_same_segment = 6276 , compute = 558 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:18:30, to 2015-02-18 20:20:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8660 , unused->0 , remaining -> 8660, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 48483 , batch_data -> 8660
+INFO	========= in one batch : new_add = 1337 , matches = 7323 { in_same_segment = 6389 , compute = 583 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 94 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:20:30, to 2015-02-18 20:22:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8490 , unused->0 , remaining -> 8490, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 49820 , batch_data -> 8490
+INFO	========= in one batch : new_add = 1331 , matches = 7159 { in_same_segment = 6234 , compute = 566 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:22:30, to 2015-02-18 20:24:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8164 , unused->0 , remaining -> 8164, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 51151 , batch_data -> 8164
+INFO	========= in one batch : new_add = 1250 , matches = 6914 { in_same_segment = 5972 , compute = 594 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 0 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:24:30, to 2015-02-18 20:26:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8119 , unused->0 , remaining -> 8119, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 52401 , batch_data -> 8119
+INFO	========= in one batch : new_add = 1200 , matches = 6919 { in_same_segment = 5949 , compute = 610 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 79 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:26:30, to 2015-02-18 20:28:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8621 , unused->0 , remaining -> 8621, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 53601 , batch_data -> 8621
+INFO	========= in one batch : new_add = 1261 , matches = 7360 { in_same_segment = 6367 , compute = 626 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:28:30, to 2015-02-18 20:30:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7913 , unused->0 , remaining -> 7913, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 54862 , batch_data -> 7913
+INFO	========= in one batch : new_add = 1212 , matches = 6701 { in_same_segment = 5771 , compute = 583 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 5.0 s 
+SEVERE	''''''' wait time , sleep = 3.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:30:30, to 2015-02-18 20:32:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7804 , unused->0 , remaining -> 7804, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 56074 , batch_data -> 7804
+INFO	========= in one batch : new_add = 1215 , matches = 6589 { in_same_segment = 5764 , compute = 543 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	2015-02-18 20:32:30========== removed [22263] dead car !   using time = 0 s 
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:32:30, to 2015-02-18 20:34:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7991 , unused->0 , remaining -> 7991, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 35026 , batch_data -> 7991
+INFO	========= in one batch : new_add = 1566 , matches = 6425 { in_same_segment = 5568 , compute = 521 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:34:30, to 2015-02-18 20:36:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8209 , unused->0 , remaining -> 8209, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 36592 , batch_data -> 8209
+INFO	========= in one batch : new_add = 1548 , matches = 6661 { in_same_segment = 5762 , compute = 586 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 16 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 63 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:36:30, to 2015-02-18 20:38:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7993 , unused->0 , remaining -> 7993, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 38140 , batch_data -> 7993
+INFO	========= in one batch : new_add = 1557 , matches = 6436 { in_same_segment = 5567 , compute = 604 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 46 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:38:30, to 2015-02-18 20:40:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8138 , unused->0 , remaining -> 8138, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 39697 , batch_data -> 8138
+INFO	========= in one batch : new_add = 1498 , matches = 6640 { in_same_segment = 5794 , compute = 580 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:40:30, to 2015-02-18 20:42:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8350 , unused->0 , remaining -> 8350, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 41195 , batch_data -> 8350
+INFO	========= in one batch : new_add = 1456 , matches = 6894 { in_same_segment = 5980 , compute = 553 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:42:30, to 2015-02-18 20:44:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8294 , unused->0 , remaining -> 8294, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 42651 , batch_data -> 8294
+INFO	========= in one batch : new_add = 1385 , matches = 6909 { in_same_segment = 5995 , compute = 603 }
 INFO	 ==== insert StationSpeed into databases, count = 340, time = 16 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 16:55:11.0----2015-02-18 16:50:10.0
-INFO	all data size : 225441, one batch : 189085, 207657, distinct = 9739 , same = 8832
-INFO	**** data size : user_data_pool -> 46260 , batch_data -> 9739
-INFO	========= in one batch : new_add = 3766 , matches = 5973 { in_same_segment = 4622 , compute = 1334 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 40 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 225441, one batch : 207657, 225441, distinct = 8885 , same = 8898
-INFO	**** data size : user_data_pool -> 50026 , batch_data -> 8885
-INFO	========= in one batch : new_add = 3124 , matches = 5761 { in_same_segment = 4449 , compute = 1296 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 213
-INFO	==== begin to select history data : from 2015-02-18 17:00:00, to 2015-02-18 18:00:00
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:44:30, to 2015-02-18 20:46:30
 INFO	==== select has over, using time = 0 s 
-INFO	==== traverse data structure has over : all-> 230455 , unused->0 , remaining -> 230455, time -> 193 s 
-INFO	**** All batches begin to compute ... 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:05:01.0----2015-02-18 17:00:00.0
-INFO	all data size : 230455, one batch : 0, 18234, distinct = 9245 , same = 8988
-INFO	**** data size : user_data_pool -> 53150 , batch_data -> 9245
-INFO	========= in one batch : new_add = 3292 , matches = 5953 { in_same_segment = 4634 , compute = 1296 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 59 ms
+INFO	==== traverse data structure has over : all-> 7945 , unused->0 , remaining -> 7945, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 44036 , batch_data -> 7945
+INFO	========= in one batch : new_add = 1340 , matches = 6605 { in_same_segment = 5765 , compute = 541 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 33 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:10:02.0----2015-02-18 17:05:01.0
-INFO	all data size : 230455, one batch : 18234, 37126, distinct = 9377 , same = 9514
-INFO	**** data size : user_data_pool -> 56442 , batch_data -> 9377
-INFO	========= in one batch : new_add = 3219 , matches = 6158 { in_same_segment = 4824 , compute = 1314 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 26 ms
-INFO	2015-02-18 17:10:00========== removed [23685] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 19 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:15:03.0----2015-02-18 17:10:02.0
-INFO	all data size : 230455, one batch : 37126, 55754, distinct = 9425 , same = 9202
-INFO	**** data size : user_data_pool -> 35976 , batch_data -> 9425
-INFO	========= in one batch : new_add = 4064 , matches = 5361 { in_same_segment = 4196 , compute = 1142 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 51 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 22 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:20:04.0----2015-02-18 17:15:03.0
-INFO	all data size : 230455, one batch : 55754, 74175, distinct = 9406 , same = 9014
-INFO	**** data size : user_data_pool -> 40040 , batch_data -> 9406
-INFO	========= in one batch : new_add = 3900 , matches = 5506 { in_same_segment = 4284 , compute = 1207 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 22 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:25:05.0----2015-02-18 17:20:04.0
-INFO	all data size : 230455, one batch : 74175, 93111, distinct = 9547 , same = 9388
-INFO	**** data size : user_data_pool -> 43940 , batch_data -> 9547
-INFO	========= in one batch : new_add = 3786 , matches = 5761 { in_same_segment = 4571 , compute = 1180 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 17 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:30:06.0----2015-02-18 17:25:05.0
-INFO	all data size : 230455, one batch : 93111, 112921, distinct = 9878 , same = 9931
-INFO	**** data size : user_data_pool -> 47726 , batch_data -> 9878
-INFO	========= in one batch : new_add = 3724 , matches = 6154 { in_same_segment = 4890 , compute = 1237 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 26 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:35:07.0----2015-02-18 17:30:06.0
-INFO	all data size : 230455, one batch : 112921, 131899, distinct = 9432 , same = 9545
-INFO	**** data size : user_data_pool -> 51450 , batch_data -> 9432
-INFO	========= in one batch : new_add = 3382 , matches = 6050 { in_same_segment = 4820 , compute = 1213 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 27 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 12 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:40:08.0----2015-02-18 17:35:07.0
-INFO	all data size : 230455, one batch : 131899, 151025, distinct = 9840 , same = 9285
-INFO	**** data size : user_data_pool -> 54832 , batch_data -> 9840
-INFO	========= in one batch : new_add = 3471 , matches = 6369 { in_same_segment = 5122 , compute = 1228 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 15 ms
-INFO	2015-02-18 17:40:00========== removed [21856] dead car !   using time = 0 s 
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 13 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:45:09.0----2015-02-18 17:40:08.0
-INFO	all data size : 230455, one batch : 151025, 170773, distinct = 9856 , same = 9891
-INFO	**** data size : user_data_pool -> 36447 , batch_data -> 9856
-INFO	========= in one batch : new_add = 4358 , matches = 5498 { in_same_segment = 4483 , compute = 1000 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 24 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:46:30, to 2015-02-18 20:48:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 8131 , unused->0 , remaining -> 8131, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 45376 , batch_data -> 8131
+INFO	========= in one batch : new_add = 1350 , matches = 6781 { in_same_segment = 5819 , compute = 606 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 63 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:48:30, to 2015-02-18 20:50:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7916 , unused->0 , remaining -> 7916, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 46726 , batch_data -> 7916
+INFO	========= in one batch : new_add = 1328 , matches = 6588 { in_same_segment = 5747 , compute = 548 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 32 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:50:30, to 2015-02-18 20:52:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7933 , unused->0 , remaining -> 7933, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 48054 , batch_data -> 7933
+INFO	========= in one batch : new_add = 1291 , matches = 6642 { in_same_segment = 5777 , compute = 580 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 33 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:52:30, to 2015-02-18 20:54:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7810 , unused->0 , remaining -> 7810, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 49345 , batch_data -> 7810
+INFO	========= in one batch : new_add = 1244 , matches = 6566 { in_same_segment = 5742 , compute = 577 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
 INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 14 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:50:10.0----2015-02-18 17:45:09.0
-INFO	all data size : 230455, one batch : 170773, 190806, distinct = 9923 , same = 10109
-INFO	**** data size : user_data_pool -> 40805 , batch_data -> 9923
-INFO	========= in one batch : new_add = 3995 , matches = 5928 { in_same_segment = 4710 , compute = 1202 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 96 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 18 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	batch time : 2015-02-18 17:55:11.0----2015-02-18 17:50:10.0
-INFO	all data size : 230455, one batch : 190806, 210784, distinct = 10165 , same = 9812
-INFO	**** data size : user_data_pool -> 44800 , batch_data -> 10165
-INFO	========= in one batch : new_add = 3937 , matches = 6228 { in_same_segment = 5009 , compute = 1200 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 17 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 30 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	==== set time is 2015-03-24 02:42:27 , equals configuration , count = 1
-INFO	all data size : 230455, one batch : 210784, 230455, distinct = 9765 , same = 9905
-INFO	**** data size : user_data_pool -> 48737 , batch_data -> 9765
-INFO	========= in one batch : new_add = 3560 , matches = 6205 { in_same_segment = 4980 , compute = 1204 }
-INFO	 ==== insert StationSpeed into databases, count = 340, time = 21 ms
-INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 18 ms
-SEVERE	''''''' wait time , sleep = 30.0 s 
-INFO	**** All batches have finished ... count : 12 , time = 202
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:54:30, to 2015-02-18 20:56:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7789 , unused->0 , remaining -> 7789, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 50589 , batch_data -> 7789
+INFO	========= in one batch : new_add = 1224 , matches = 6565 { in_same_segment = 5697 , compute = 582 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:56:30, to 2015-02-18 20:58:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7731 , unused->0 , remaining -> 7731, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 51813 , batch_data -> 7731
+INFO	========= in one batch : new_add = 1264 , matches = 6467 { in_same_segment = 5604 , compute = 600 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 20:58:30, to 2015-02-18 21:00:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7672 , unused->0 , remaining -> 7672, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 53077 , batch_data -> 7672
+INFO	========= in one batch : new_add = 1186 , matches = 6486 { in_same_segment = 5665 , compute = 562 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:00:30, to 2015-02-18 21:02:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7672 , unused->0 , remaining -> 7672, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 54263 , batch_data -> 7672
+INFO	========= in one batch : new_add = 1142 , matches = 6530 { in_same_segment = 5722 , compute = 530 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	2015-02-18 21:02:30========== removed [21677] dead car !   using time = 0 s 
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:02:30, to 2015-02-18 21:04:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7677 , unused->0 , remaining -> 7677, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 33728 , batch_data -> 7677
+INFO	========= in one batch : new_add = 1480 , matches = 6197 { in_same_segment = 5429 , compute = 472 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 26 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 0 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:04:30, to 2015-02-18 21:06:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7762 , unused->0 , remaining -> 7762, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 35208 , batch_data -> 7762
+INFO	========= in one batch : new_add = 1469 , matches = 6293 { in_same_segment = 5486 , compute = 509 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:06:30, to 2015-02-18 21:08:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7432 , unused->0 , remaining -> 7432, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 36677 , batch_data -> 7432
+INFO	========= in one batch : new_add = 1400 , matches = 6032 { in_same_segment = 5189 , compute = 523 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:08:30, to 2015-02-18 21:10:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7286 , unused->0 , remaining -> 7286, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 38077 , batch_data -> 7286
+INFO	========= in one batch : new_add = 1260 , matches = 6026 { in_same_segment = 5217 , compute = 549 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:10:30, to 2015-02-18 21:12:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7091 , unused->0 , remaining -> 7091, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 39337 , batch_data -> 7091
+INFO	========= in one batch : new_add = 1254 , matches = 5837 { in_same_segment = 5066 , compute = 565 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 62 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 5.0 s 
+SEVERE	''''''' wait time , sleep = 3.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:12:30, to 2015-02-18 21:14:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7290 , unused->0 , remaining -> 7290, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 40591 , batch_data -> 7290
+INFO	========= in one batch : new_add = 1309 , matches = 5981 { in_same_segment = 5247 , compute = 524 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:14:30, to 2015-02-18 21:16:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7208 , unused->0 , remaining -> 7208, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 41900 , batch_data -> 7208
+INFO	========= in one batch : new_add = 1216 , matches = 5992 { in_same_segment = 5204 , compute = 543 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:16:30, to 2015-02-18 21:18:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7146 , unused->0 , remaining -> 7146, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 43116 , batch_data -> 7146
+INFO	========= in one batch : new_add = 1274 , matches = 5872 { in_same_segment = 5088 , compute = 520 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:18:30, to 2015-02-18 21:20:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7218 , unused->0 , remaining -> 7218, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 44390 , batch_data -> 7218
+INFO	========= in one batch : new_add = 1181 , matches = 6037 { in_same_segment = 5199 , compute = 560 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:20:30, to 2015-02-18 21:22:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 6870 , unused->0 , remaining -> 6870, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 45571 , batch_data -> 6870
+INFO	========= in one batch : new_add = 1153 , matches = 5717 { in_same_segment = 4991 , compute = 516 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:22:30, to 2015-02-18 21:24:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7024 , unused->0 , remaining -> 7024, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 46724 , batch_data -> 7024
+INFO	========= in one batch : new_add = 1234 , matches = 5790 { in_same_segment = 5066 , compute = 507 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 14 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:24:30, to 2015-02-18 21:26:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 6990 , unused->0 , remaining -> 6990, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 47958 , batch_data -> 6990
+INFO	========= in one batch : new_add = 1158 , matches = 5832 { in_same_segment = 5020 , compute = 576 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 46 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:26:30, to 2015-02-18 21:28:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7438 , unused->0 , remaining -> 7438, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 49116 , batch_data -> 7438
+INFO	========= in one batch : new_add = 1180 , matches = 6258 { in_same_segment = 5405 , compute = 563 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 17 ms
+INFO	**** One batch has finished ... time = 5.0 s 
+SEVERE	''''''' wait time , sleep = 3.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:28:30, to 2015-02-18 21:30:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7194 , unused->0 , remaining -> 7194, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 50296 , batch_data -> 7194
+INFO	========= in one batch : new_add = 1140 , matches = 6054 { in_same_segment = 5262 , compute = 503 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:30:30, to 2015-02-18 21:32:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7562 , unused->0 , remaining -> 7562, time -> 7 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 51436 , batch_data -> 7562
+INFO	========= in one batch : new_add = 1175 , matches = 6387 { in_same_segment = 5576 , compute = 556 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	2015-02-18 21:32:30========== removed [21307] dead car !   using time = 0 s 
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 7.0 s 
+SEVERE	''''''' wait time , sleep = 1.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:32:30, to 2015-02-18 21:34:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7705 , unused->0 , remaining -> 7705, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 31304 , batch_data -> 7705
+INFO	========= in one batch : new_add = 1502 , matches = 6203 { in_same_segment = 5423 , compute = 503 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 31 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:34:30, to 2015-02-18 21:36:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7191 , unused->0 , remaining -> 7191, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 32806 , batch_data -> 7191
+INFO	========= in one batch : new_add = 1361 , matches = 5830 { in_same_segment = 5113 , compute = 489 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 48 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 16 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:36:30, to 2015-02-18 21:38:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7072 , unused->0 , remaining -> 7072, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 34167 , batch_data -> 7072
+INFO	========= in one batch : new_add = 1368 , matches = 5704 { in_same_segment = 4923 , compute = 522 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 5.0 s 
+SEVERE	''''''' wait time , sleep = 3.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:38:30, to 2015-02-18 21:40:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 7068 , unused->0 , remaining -> 7068, time -> 6 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 35535 , batch_data -> 7068
+INFO	========= in one batch : new_add = 1331 , matches = 5737 { in_same_segment = 5004 , compute = 508 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 6.0 s 
+SEVERE	''''''' wait time , sleep = 2.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:40:30, to 2015-02-18 21:42:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 6970 , unused->0 , remaining -> 6970, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 36866 , batch_data -> 6970
+INFO	========= in one batch : new_add = 1232 , matches = 5738 { in_same_segment = 5025 , compute = 487 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 32 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 31 ms
+INFO	**** One batch has finished ... time = 5.0 s 
+SEVERE	''''''' wait time , sleep = 3.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:42:30, to 2015-02-18 21:44:30
+INFO	==== select has over, using time = 0 s 
+INFO	==== traverse data structure has over : all-> 6733 , unused->0 , remaining -> 6733, time -> 5 s 
+INFO	**** One batch begin to compute ... 
+INFO	**** data size : user_data_pool -> 38098 , batch_data -> 6733
+INFO	========= in one batch : new_add = 1244 , matches = 5489 { in_same_segment = 4778 , compute = 446 }
+INFO	 ==== insert StationSpeed into databases, count = 340, time = 47 ms
+INFO	 ==== insert NodeSegmentSpeed into databases, count = 140 , time = 15 ms
+INFO	**** One batch has finished ... time = 5.0 s 
+SEVERE	''''''' wait time , sleep = 3.0 s 
+INFO	==== begin to select history data : from 2015-02-18 21:44:30, to 2015-02-18 21:46:30
+INFO	==== select has over, using time = 0 s 

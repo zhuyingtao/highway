@@ -1,6 +1,9 @@
 package com.siat.msg.db;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -35,9 +38,9 @@ import com.siat.msg.util.Utility;
 public class DBServiceForOracle extends Object {
 
 	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@210.75.252.44:1521:ORCL";
-	String user = "hw";
-	String password = "hw";
+	String url = null;
+	String user = null;
+	String password = null;
 
 	static Connection conn = null;
 	PreparedStatement pstm = null;
@@ -48,29 +51,27 @@ public class DBServiceForOracle extends Object {
 	 * 
 	 */
 	public DBServiceForOracle() {
-		// TODO Auto-generated constructor stub
 		if (logger == null)
 			logger = DataLogger.getLogger();
+		this.initDatabase();
 		if (conn == null)
 			conn = this.getConnection();
 	}
 
 	/**
 	 * @Title: getConnect
-	 * @Description: 连接数据库
+	 * @Description: get the connection of database;
+	 * @return: the reference of the connection;
 	 */
 	private Connection getConnection() {
-		// TODO Auto-generated method stub
 		Date date1 = new Date();
 		Connection conn = null;
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, user, password);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		logger.info("====== get connection , using time "
@@ -80,17 +81,12 @@ public class DBServiceForOracle extends Object {
 
 	/**
 	 * @Title: executeSQL
-	 * @Description: 执行SQL脚本文件
+	 * @Description: execute some SQL code;
 	 * @param sqlPath
 	 */
 	public void executeSQL() {
-		// TODO Auto-generated method stub
 		try {
 			Statement stm = conn.createStatement();
-			// String sql = "CREATE TABLE section_speeds(id NUMBER(10));";
-			// + "(id NUMBER,name VARCHAR2(50),time DATE,"
-			// + "direction NUMBER,max_speed NUMBER,min_speed NUMBER,"
-			// + "avg_speed NUMBER,num NUMBER);";
 
 			ResultSet rs = stm.executeQuery("select * from hw_road_node");
 			while (rs.next()) {
@@ -250,15 +246,12 @@ public class DBServiceForOracle extends Object {
 				+ ", to " + end);
 		List<UserData> userDatas = new ArrayList<>();
 		// there are two kinds of method to send date type;
-		// String sql =
-		// "select tmsi,to_char(timestamp,'yyyy-mm-dd hh24:mi:ss'), "
-		// + "lac, cellid, eventid, id from hw_data_user_tmp"
-		// + " where timestamp between ? and ? ";
-		// + "order by timestamp";
-		String sql = "select /*+ index(hw_data_user hw_data_user_index1) */ tmsi,"
+		// here use the index /*+ index(hw_data_user hw_data_user_index1) */
+		String sql = "select tmsi,"
 				+ "to_char(timestamp,'yyyy-mm-dd hh24:mi:ss'),lac, cellid, eventid,"
-				+ " id from hw_data_user where timestamp between "
-				+ "to_date(?,'yyyy-mm-dd hh24:mi:ss') and "
+				+ " id from "
+				+ Configuration.USER_TABLE
+				+ " where timestamp between to_date(?,'yyyy-mm-dd hh24:mi:ss') and "
 				+ "to_date(?,'yyyy-mm-dd hh24:mi:ss') order by timestamp";
 		int allNum = 0;
 		int unusedNum = 0;
@@ -339,7 +332,8 @@ public class DBServiceForOracle extends Object {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
 		Date date1 = new Date();
-		String sql = "insert into hw_station_segment_speed_5m values (?,?,?,?,?,?,?,?)";
+		String sql = "insert into hw_station_segment_speed (id,time,filter_speed)"
+				+ " values (?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			for (int i = 0; i < ss.size(); i++) {
@@ -347,12 +341,12 @@ public class DBServiceForOracle extends Object {
 				pstm.setInt(1, rs.id);
 				pstm.setTimestamp(2,
 						Timestamp.valueOf(timeStamp.replace('/', '-')));
-				pstm.setInt(3, rs.getMaxSpeed());
-				pstm.setInt(4, rs.getMinSpeed());
-				pstm.setInt(5, rs.getAvgSpeed());
-				pstm.setInt(6, rs.getFilterAvgSpeed());
-				pstm.setInt(7, rs.getRealNum());
-				pstm.setInt(8, rs.getExpectedNum());
+				// pstm.setInt(3, rs.getMaxSpeed());
+				// pstm.setInt(4, rs.getMinSpeed());
+				// pstm.setInt(5, rs.getAvgSpeed());
+				pstm.setInt(3, rs.getFilterAvgSpeed());
+				// pstm.setInt(7, rs.getRealNum());
+				// pstm.setInt(8, rs.getExpectedNum());
 				// here use batch to improve insertion efficiency, its effect is
 				// obvious;
 				pstm.addBatch();
@@ -390,7 +384,8 @@ public class DBServiceForOracle extends Object {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
 		Date date1 = new Date();
-		String sql = "insert into hw_road_node_segment_speed_5m values (?,?,?,?,?,?)";
+		String sql = "insert into hw_road_node_segment_speed (id,time,avg_speed)"
+				+ " values (?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			for (int i = 0; i < nss.size(); i++) {
@@ -398,10 +393,10 @@ public class DBServiceForOracle extends Object {
 				pstm.setInt(1, ns.getId());
 				pstm.setTimestamp(2,
 						Timestamp.valueOf(timeStamp.replace('/', '-')));
-				pstm.setInt(3, ns.getMaxSpeed());
-				pstm.setInt(4, ns.getMinSpeed());
-				pstm.setInt(5, ns.getAvgSpeed());
-				pstm.setInt(6, ns.getRealNum());
+				// pstm.setInt(3, ns.getMaxSpeed());
+				// pstm.setInt(4, ns.getMinSpeed());
+				pstm.setInt(3, ns.getAvgSpeed());
+				// pstm.setInt(6, ns.getRealNum());
 				// pstm.setInt(7, ns.getExpectedNum());
 				// here use batch to improve insertion efficiency, its effect is
 				// obvious;
@@ -529,12 +524,13 @@ public class DBServiceForOracle extends Object {
 	}
 
 	public void updateTime(String time) {
-		String sql = "update hw_para_time_set set updatetime = ? where settime = ?";
+		String sql = "update hw_para_time_set set updatetime = ? ";
+		// + "where settime = ?";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setTimestamp(1, Timestamp.valueOf(time.replace('/', '-')));
-			pstm.setTimestamp(2,
-					Timestamp.valueOf(Configuration.setTime.replace('/', '-')));
+			// pstm.setTimestamp(2,
+			// Timestamp.valueOf(Configuration.setTime.replace('/', '-')));
 			pstm.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -627,7 +623,6 @@ public class DBServiceForOracle extends Object {
 				String sql = "select count(*) from hw_data_user_lost where timestamp between to_date()";
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -670,6 +665,33 @@ public class DBServiceForOracle extends Object {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void initDatabase() {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(
+					Configuration.Configuration_Path));
+			this.url = br.readLine().split("=")[1].trim();
+			this.user = br.readLine().split("=")[1].trim();
+			this.password = br.readLine().split("=")[1].trim();
+
+			Configuration.USER_URL = br.readLine().split("=")[1].trim();
+			Configuration.USER_USER = br.readLine().split("=")[1].trim();
+			Configuration.USER_PASSWORD = br.readLine().split("=")[1].trim();
+			Configuration.USER_TABLE = br.readLine().split("=")[1].trim();
+			Configuration.START_TIME = br.readLine().split("=")[1].trim();
+			Configuration.INTERVAL_TIME = Integer.parseInt(br.readLine().split(
+					"=")[1].trim());
+			Configuration.rate = Integer.parseInt(br.readLine().split("=")[1]
+					.trim());
+			br.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

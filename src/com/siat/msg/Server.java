@@ -34,24 +34,19 @@ public class Server {
 				Utility.sleep(1);
 			} else if (request == 1) {
 				logger.info("=============== History speed ================");
-				String[] strs = { "08", "09", "10", "11", "12", "13", "14",
-						"15", "16", "17", "18" };
-				for (int j = 0; j < strs.length - 1; j++) {
-					String startTime = "2015-02-18 " + strs[j] + ":00:00";
-					String endTime = "2015-02-18 " + strs[j + 1] + ":00:00";
-					sa.computeHistorySpeed(startTime, endTime,
-							Configuration.rate);
-				}
-				break;
-				// sa.computeHistorySpeed(Configuration.startTime,
-				// Configuration.endTime, Configuration.rate);
+				// String[] strs = { "08", "09", "10", "11", "12", "13", "14",
+				// "15", "16", "17", "18" };
+				// for (int j = 0; j < strs.length - 1; j++) {
+				// String startTime = "2015-02-18 " + strs[j] + ":00:00";
+				// String endTime = "2015-02-18 " + strs[j + 1] + ":00:00";
+				// sa.computeHistorySpeed(startTime, endTime,
+				// Configuration.rate);
+				// }
+				// break;
+				sa.computeHistorySpeed(Configuration.startTime,
+						Configuration.endTime, Configuration.rate);
 			} else if (request == 2) {
-				// logger.severe("==================== Number : " + i +
-				// " start");
-				// sa.computeAvgSpeed(Configuration.INTERVAL_TIME);
-				// logger.severe("=================== Number : " + i +
-				// " end \n\n");
-				// i++;
+				sa.computeRealSpeed();
 			}
 		}
 	}
@@ -64,7 +59,8 @@ public class Server {
 	// 2, means real_time_speed request;
 	public int checkRequest() {
 		int flag = 0;
-		flag = db.checkRequest();
+		// flag = db.checkRequest();
+		flag = 2;
 		return flag;
 	}
 

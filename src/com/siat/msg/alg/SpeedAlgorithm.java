@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import com.siat.ds.UserData;
 import com.siat.msg.Configuration;
+import com.siat.msg.db.DBServiceForData;
 import com.siat.msg.db.DBServiceForOracle;
 import com.siat.msg.util.DataLogger;
 import com.siat.msg.util.Utility;
@@ -22,6 +23,7 @@ import com.siat.msg.util.Utility;
 public class SpeedAlgorithm {
 
 	private DBServiceForOracle db = null;
+	private DBServiceForData userDb = null;
 	public StationSegmentSpeed sss = null;
 	public NodeSegmentSpeed nss = null;
 
@@ -38,6 +40,7 @@ public class SpeedAlgorithm {
 		this.nss = new NodeSegmentSpeed();
 		this.logger = DataLogger.getLogger();
 		this.db = new DBServiceForOracle();
+		this.userDb = new DBServiceForData();
 		this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	}
 
@@ -78,6 +81,7 @@ public class SpeedAlgorithm {
 
 		int startIndex = 0;
 		int batchNum = 0;
+
 		while (startIndex < allData.size()) {
 			Date date1 = new Date();
 			// before every computing, check whether the request has been
@@ -112,7 +116,7 @@ public class SpeedAlgorithm {
 				// computing time is not enough;
 				double waitTime = batchInterval - time;
 				logger.severe("''''''' wait time , sleep = " + waitTime + " s ");
-				// Utility.sleep(waitTime);
+				Utility.sleep(waitTime);
 			}
 		}
 		// sss.writeToFile();
@@ -122,7 +126,63 @@ public class SpeedAlgorithm {
 	}
 
 	public void computeRealSpeed() {
+		Date now = new Date();
+		String startTime = null;
+		String endTime = null;
+		if (Configuration.START_TIME.equals("null")) {
+			endTime = sdf.format(now);
+			startTime = sdf.format(new Date(now.getTime()
+					- Configuration.INTERVAL_TIME * 1000));
+		} else {
+			endTime = Configuration.START_TIME;
+			try {
+				startTime = sdf.format(new Date(sdf.parse(endTime).getTime()
+						- Configuration.INTERVAL_TIME * 1000));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
+		// set the interval computing time of every batch, if it is not enough,
+		// then just wait; if it is exceed, then give a warning;
+		int batchInterval = Configuration.INTERVAL_TIME/Configuration.rate;
+
+		// begin to enter the real time cycle;
+		while (true) {
+			Date startDate = new Date(); // used for recording computing time;
+			this.timeStamp = endTime;
+			// 1. get all the history data from databases into memory according
+			// to the startTime and endTime;
+			List<UserData> allData = this
+					.getHistoryUserData(startTime, endTime);
+			// 2. compute the average speed of every batch;
+			logger.info("**** One batch begin to compute ... ");
+
+			boolean firstCompute = sss.computeAvgSpeed(allData, timeStamp);
+			if (!firstCompute)
+				nss.computeAvgSpeed(sss.getStationSegments(), timeStamp);
+
+			// clear all the speeds of the station segments for next batch;
+			sss.clearSpeeds();
+
+			// check the computing time;
+			double time = Utility.intervalTime(startDate, new Date()); // s
+			logger.info("**** One batch has finished ... time = " + time
+					+ " s ");
+			if (time > batchInterval) {
+				// computing time is exceed;
+				logger.severe("'''''''' over time , stand = " + batchInterval
+						+ " s , real = " + time + " s");
+			} else {
+				// computing time is not enough;
+				double waitTime = batchInterval - time;
+				logger.severe("''''''' wait time , sleep = " + waitTime + " s ");
+				Utility.sleep(waitTime);
+			}
+			startTime = endTime;
+			endTime = this.updateTime(startTime);
+		}
 	}
 
 	/**
@@ -133,7 +193,8 @@ public class SpeedAlgorithm {
 	 * @return the list of history data;
 	 */
 	public List<UserData> getHistoryUserData(String startTime, String endTime) {
-		List<UserData> userDatas = db.selectHistoryUserData(startTime, endTime);
+		List<UserData> userDatas = userDb.selectHistoryUserData(startTime,
+				endTime);
 		return userDatas;
 	}
 
@@ -217,5 +278,4 @@ public class SpeedAlgorithm {
 		String endTime = sdf.format(end);
 		return endTime;
 	}
-
 }
