@@ -48,11 +48,16 @@ public class Configuration {
 	public static String URL = "jdbc:oracle:thin:@210.75.252.44:1521:ORCL";
 	public static String USER = "hw";
 	public static String PASSWORD = "hw";
-	
+
 	public static String USER_URL = null;
 	public static String USER_USER = null;
 	public static String USER_PASSWORD = null;
 	public static String USER_TABLE = null;
 
 	public static String Configuration_Path = "D:/highway/Configuration.ini";
+	// public static String Configuration_Path = "Configuration.ini";
+
+	public static final int DEFAULT_SPEED = 90;
+	public static final int LIMIT_SEGMENT_SPEED = 110;
+
 }

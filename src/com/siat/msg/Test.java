@@ -147,6 +147,7 @@ public class Test {
 		// System.out.println(Timestamp.valueOf("2014/02/01 11:11:11".replace('/',
 		// '-')));
 //		getDayData("2015-02-18 00:00:00", "2015-02-19 00:00:01");
-		transform();
+//		transform();
+		System.out.println((5/10*10));
 	}
 }

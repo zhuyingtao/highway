@@ -1,53 +1,55 @@
 package com.siat.ds;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
+import com.siat.msg.Configuration;
 import com.siat.msg.util.DataLogger;
 
 /**
  * @ClassName RoadSegment
- * @Description 基站与基站之间的路段 (Station and Station)
+ * @Description the segment between Station and Station;
  * @author Zhu Yingtao
  * @date 2014年12月16日 下午2:54:15
  */
 public class StationSegment {
 
-	public int id; // 自定义编号
-	public int startStation;
-	public int endStation;
+	// an array stored the confidence level of specific sample number; the index
+	// represents the sample number;
+	private static double[] confidenceLevel = null;
 
+	public int id; // custom id for station segments;
 	private int direction;
-	List<Integer> startIds;
-	List<Integer> endIds;
 
-	private double length; // 路段的长度
-	// 存在相同经纬度，不同cellid的基站
+	private double length; // the length of the segment;
+	// Here use a list to store the start stations as there may be different
+	// stations in same position, so do the ends;
 	ArrayList<Station> starts;
 	ArrayList<Station> ends;
+	// the IDs of the start stations or the end stations;
+	List<Integer> startIds;
 
-	private int avgSpeed = 80; // set default is 80;
-	private int filterAvgSpeed = 80;
+	List<Integer> endIds;
+	// a series info by computing;
+	private int avgSpeed = Configuration.DEFAULT_SPEED; // set default is 80;
+	private int filterAvgSpeed = Configuration.DEFAULT_SPEED;
 	private int maxSpeed = -1;
 	private int minSpeed = 100;
 	private int realNum = 0; // the real number in this station segment;
 	private int expectedNum = 0; // the expected number in this station segment;
-	// 保存一批次数据中当前路段上每一辆车的速度
+
+	// a list stored all speeds related to this segment in this batch;
 	private List<Integer> speeds = new ArrayList<Integer>();
 
-	private int lastAvgSpeed = 80;
+	private int lastAvgSpeed = Configuration.DEFAULT_SPEED;
 
-	// 保存不同批次数据计算出来的平均速度（时间+速度）
+	// a list stored all speeds of all batches, just for testing; (time + speed)
 	private List<String> avgSpeedStrs = new ArrayList<String>();
-
-	public StationSegment(int id, double length, List<Integer> startIds,
-			List<Integer> endIds, int direction) {
-		this.id = id;
-		this.setLength(length);
-		this.startIds = startIds;
-		this.endIds = endIds;
-		this.setDirection(direction);
-	}
+	// a list contains the history speed for last 30 minutes
+	private double historyAvgSpeed;
+	private Queue<Integer> historySpeeds;
 
 	public StationSegment(int id, ArrayList<Station> starts,
 			ArrayList<Station> ends) {
@@ -62,46 +64,33 @@ public class StationSegment {
 		this.setLength(length);
 	}
 
-	/**
-	 * @Title: initStarts
-	 * @Description: After select data from database, the StationSegment and
-	 *               Station are still unlinked (because the StationSegment only
-	 *               selected the Station id, not object), this method is used
-	 *               to linked them;
-	 * @param stations
-	 */
-	public void initStarts(List<Station> stations) {
-		this.starts = new ArrayList<>();
-		for (int i = 0; i < this.startIds.size(); i++) {
-			int id = startIds.get(i);
-			for (int j = 0; j < stations.size(); j++) {
-				if (stations.get(j).getCellId() == id) {
-					this.starts.add(stations.get(j));
-					break;
-				}
-			}
+	public StationSegment(int id, double length, List<Integer> startIds,
+			List<Integer> endIds, int direction) {
+		this.id = id;
+		this.setLength(length);
+		this.startIds = startIds;
+		this.endIds = endIds;
+		this.setDirection(direction);
+		this.initHistorySpeed();
+		if (confidenceLevel == null) {
+			this.initConfidenceLevel();
 		}
-	}
-
-	public void initEnds(List<Station> stations) {
-		this.ends = new ArrayList<>();
-		for (int i = 0; i < this.endIds.size(); i++) {
-			int id = endIds.get(i);
-			for (int j = 0; j < stations.size(); j++) {
-				if (stations.get(j).getCellId() == id) {
-					this.ends.add(stations.get(j));
-					break;
-				}
-			}
-		}
-	}
-
-	public void addReal() {
-		this.realNum++;
 	}
 
 	public void addExpected() {
 		this.expectedNum++;
+	}
+
+	public double addIntoHistory(int speed) {
+		int size = historySpeeds.size();
+		int head = historySpeeds.poll();
+		historySpeeds.add(speed);
+		// return the new historyAvgSpeed;
+		return (historyAvgSpeed * size - head + speed) / size;
+	}
+
+	public void addReal() {
+		this.realNum++;
 	}
 
 	public void addSpeed(int speed) {
@@ -181,10 +170,11 @@ public class StationSegment {
 	}
 
 	public int getAvgSpeed() {
-		if (this.expectedNum < 3)
-			return this.lastAvgSpeed;
-		if (this.avgSpeed > 100)
-			return 100;
+		// if (this.expectedNum < 3)
+		// return this.lastAvgSpeed;
+		// if (this.avgSpeed > 100)
+		// return 100;
+		this.avgSpeed = this.optimizeSpeed(avgSpeed);
 		return this.avgSpeed;
 	}
 
@@ -192,12 +182,31 @@ public class StationSegment {
 		return avgSpeedStrs;
 	}
 
+	/**
+	 * @return the direction
+	 */
+	public int getDirection() {
+		return direction;
+	}
+
+	public int getExpectedNum() {
+		return this.expectedNum;
+	}
+
 	public int getFilterAvgSpeed() {
-		if (this.expectedNum < 3)
-			return this.lastAvgSpeed;
-		if (this.filterAvgSpeed > 100)
-			return 100;
+		// if (this.expectedNum < 3)
+		// return this.lastAvgSpeed;
+		// if (this.filterAvgSpeed > 100)
+		// return 100;
+		this.filterAvgSpeed = this.optimizeSpeed(this.filterAvgSpeed);
 		return this.filterAvgSpeed;
+	}
+
+	/**
+	 * @return the length
+	 */
+	public double getLength() {
+		return length;
 	}
 
 	public int getMaxSpeed() {
@@ -210,10 +219,10 @@ public class StationSegment {
 
 	/**
 	 * @Title: getQualifiedData
-	 * @Description: 根据正态分布，剔除无效数据
+	 * @Description: get the qualified data based on the Gaussian distribution;
 	 * @param avgSpeed
 	 * @param aveSpeed
-	 * @return
+	 * @return a list of the qualified data
 	 */
 	public List<Integer> getQualifiedData() {
 		List<Integer> qualifiedSpeeds = new ArrayList<Integer>();
@@ -236,10 +245,6 @@ public class StationSegment {
 		return this.realNum;
 	}
 
-	public int getExpectedNum() {
-		return this.expectedNum;
-	}
-
 	public List<Integer> getSpeeds() {
 		return speeds;
 	}
@@ -252,30 +257,111 @@ public class StationSegment {
 		return sb.deleteCharAt(sb.length() - 1).toString();
 	}
 
-	public void setAvgSpeedStrs(List<String> avgSpeedStrs) {
-		this.avgSpeedStrs = avgSpeedStrs;
+	public void initConfidenceLevel() {
+		confidenceLevel = new double[50];
+		for (int i = 0; i < 50; i++) {
+			// NOTE : integer to double !!
+			confidenceLevel[i] = (i / 5 * 5 + 5) * 1.0 / 50;
+		}
 	}
 
 	/**
-	 * @Title: variance
-	 * @Description: 计算方差
+	 * @Title: initEnds
+	 * @Description: just same as the method 'initStarts()' above;
+	 * @param stations
+	 */
+	public void initEnds(List<Station> stations) {
+		this.ends = new ArrayList<>();
+		for (int i = 0; i < this.endIds.size(); i++) {
+			int id = endIds.get(i);
+			for (int j = 0; j < stations.size(); j++) {
+				if (stations.get(j).getCellId() == id) {
+					this.ends.add(stations.get(j));
+					break;
+				}
+			}
+		}
+	}
+
+	public void initHistorySpeed() {
+		historySpeeds = new LinkedList<Integer>();
+		// contain some last speeds, initializing with the default speed;
+		for (int i = 0; i < 7; i++) {
+			historySpeeds.add(Configuration.DEFAULT_SPEED);
+		}
+		historyAvgSpeed = Configuration.DEFAULT_SPEED;
+	}
+
+	/**
+	 * @Title: initStarts
+	 * @Description: After select data from database, the StationSegment and
+	 *               Station are still unlinked (because the StationSegment only
+	 *               selected the Station id, not object), this method is used
+	 *               to linked them;
+	 * @param stations
+	 */
+	public void initStarts(List<Station> stations) {
+		this.starts = new ArrayList<>();
+		for (int i = 0; i < this.startIds.size(); i++) {
+			int id = startIds.get(i);
+			for (int j = 0; j < stations.size(); j++) {
+				if (stations.get(j).getCellId() == id) {
+					this.starts.add(stations.get(j));
+					break;
+				}
+			}
+		}
+	}
+
+	/**
+	 * @Title: optimizeSpeed
+	 * @Description: this method does some optimization for the average speed.
+	 *               We do confidence examination and segment limit examination
+	 *               here, if the speed beyond the limit, then it should be
+	 *               changed.
 	 * @param speed
-	 * @param aveSpeed
 	 * @return
 	 */
-	public double variance(List<Integer> speed, double aveSpeed) {
-		double sum = 0;
-		for (int i = 0; i < speed.size(); i++)
-			sum += Math.pow((speed.get(i) - aveSpeed), 2);
-		sum = sum / speed.size();
-		return sum;
+	public int optimizeSpeed(int speed) {
+		int num = this.expectedNum;
+		double avg = this.historyAvgSpeed;
+		if (num == 0) {
+			// if the sample number is 0, then just use the last average speed;
+			speed = this.lastAvgSpeed;
+		} else if (num >= confidenceLevel.length) {
+			// if the sample number is large enough, then we consider the
+			// average speed believable;
+		} else {
+			// if the sample number is not large enough, then we should do some
+			// optimization;
+			double diff = Math.abs((speed - avg) * 1.0 / avg);
+			if (diff > confidenceLevel[num]) {
+				// if the difference beyond the confidence level's limit, then
+				// change(increase or decrease) the speed to adapt to the
+				// limitation;
+				int lower = (int) (avg * (1 - confidenceLevel[num]));
+				int upper = (int) (avg * (1 + confidenceLevel[num]));
+				DataLogger.getLogger().fine(
+						"----- optimize speed ---> diff : " + diff
+								+ ", stand = " + confidenceLevel[num]
+								+ ", speed = " + speed + ", avg = " + avg);
+				if (speed < lower)
+					speed = lower;
+				else if (speed > upper)
+					speed = upper;
+
+			}
+		}
+		// if the speed beyond the limit of the segment, then change it to the
+		// limit speed;
+		if (speed > Configuration.LIMIT_SEGMENT_SPEED)
+			speed = Configuration.LIMIT_SEGMENT_SPEED;
+		this.historyAvgSpeed = this.addIntoHistory(speed);
+		return speed;
 	}
 
-	/**
-	 * @return the direction
-	 */
-	public int getDirection() {
-		return direction;
+	public void setAvgSpeedStrs(List<String> avgSpeedStrs) {
+		this.avgSpeedStrs = avgSpeedStrs;
 	}
 
 	/**
@@ -287,17 +373,25 @@ public class StationSegment {
 	}
 
 	/**
-	 * @return the length
-	 */
-	public double getLength() {
-		return length;
-	}
-
-	/**
 	 * @param length
 	 *            the length to set
 	 */
 	public void setLength(double length) {
 		this.length = length;
+	}
+
+	/**
+	 * @Title: variance
+	 * @Description: compute the variance of all the speeds in the speed list;
+	 * @param speed
+	 * @param aveSpeed
+	 * @return the variance
+	 */
+	public double variance(List<Integer> speed, double aveSpeed) {
+		double sum = 0;
+		for (int i = 0; i < speed.size(); i++)
+			sum += Math.pow((speed.get(i) - aveSpeed), 2);
+		sum = sum / speed.size();
+		return sum;
 	}
 }

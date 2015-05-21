@@ -64,6 +64,15 @@ public class DBServiceForOracle extends Object {
 	 * @return: the reference of the connection;
 	 */
 	private Connection getConnection() {
+		// the connection may be not null but has closed;
+		try {
+			if (conn != null && (!conn.isClosed()))
+				return conn;
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		Date date1 = new Date();
 		Connection conn = null;
 		try {
@@ -256,6 +265,7 @@ public class DBServiceForOracle extends Object {
 		int allNum = 0;
 		int unusedNum = 0;
 		try {
+			conn = this.getConnection();
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, start);
 			pstm.setString(2, end);
@@ -332,9 +342,10 @@ public class DBServiceForOracle extends Object {
 		// before this insertion, we should check whether the data of same time
 		// has ever been inserted;
 		Date date1 = new Date();
-		String sql = "insert into hw_station_segment_speed (id,time,filter_speed)"
-				+ " values (?,?,?)";
+		String sql = "insert into hw_station_segment_speed (id,time,filter_speed,expected_num)"
+				+ " values (?,?,?,?)";
 		try {
+			conn = this.getConnection();
 			pstm = conn.prepareStatement(sql);
 			for (int i = 0; i < ss.size(); i++) {
 				StationSegment rs = ss.get(i);
@@ -346,7 +357,7 @@ public class DBServiceForOracle extends Object {
 				// pstm.setInt(5, rs.getAvgSpeed());
 				pstm.setInt(3, rs.getFilterAvgSpeed());
 				// pstm.setInt(7, rs.getRealNum());
-				// pstm.setInt(8, rs.getExpectedNum());
+				pstm.setInt(4, rs.getExpectedNum());
 				// here use batch to improve insertion efficiency, its effect is
 				// obvious;
 				pstm.addBatch();
@@ -387,6 +398,7 @@ public class DBServiceForOracle extends Object {
 		String sql = "insert into hw_road_node_segment_speed (id,time,avg_speed)"
 				+ " values (?,?,?)";
 		try {
+			conn = this.getConnection();
 			pstm = conn.prepareStatement(sql);
 			for (int i = 0; i < nss.size(); i++) {
 				NodeSegment ns = nss.get(i);
@@ -491,6 +503,7 @@ public class DBServiceForOracle extends Object {
 		try {
 			// count the record number,if it > 1, then may be something error;
 			int count = 0;
+			conn = this.getConnection();
 			pstm = conn.prepareStatement(sql);
 			rs = pstm.executeQuery();
 			while (rs.next()) {
@@ -527,6 +540,7 @@ public class DBServiceForOracle extends Object {
 		String sql = "update hw_para_time_set set updatetime = ? ";
 		// + "where settime = ?";
 		try {
+			conn = this.getConnection();
 			pstm = conn.prepareStatement(sql);
 			pstm.setTimestamp(1, Timestamp.valueOf(time.replace('/', '-')));
 			// pstm.setTimestamp(2,
@@ -544,6 +558,7 @@ public class DBServiceForOracle extends Object {
 			String setTime, String updateTime) {
 		String sql = "insert into hw_para_time_set values(?,?,?,?,?)";
 		try {
+			conn = this.getConnection();
 			pstm = conn.prepareStatement(sql);
 			pstm.setTimestamp(1, Timestamp.valueOf(startTime.replace('/', '-')));
 			pstm.setTimestamp(2, Timestamp.valueOf(endTime.replace('/', '-')));
@@ -586,8 +601,6 @@ public class DBServiceForOracle extends Object {
 	}
 
 	public static void main(String[] args) {
-		new DBServiceForOracle().selectHistoryUserData("2015-02-18 14:00:00",
-				"2015-02-18 15:00:00");
 	}
 
 	public void writeSpecificData(List<UserData> uds) {

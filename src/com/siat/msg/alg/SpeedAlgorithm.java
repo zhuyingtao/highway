@@ -146,7 +146,7 @@ public class SpeedAlgorithm {
 
 		// set the interval computing time of every batch, if it is not enough,
 		// then just wait; if it is exceed, then give a warning;
-		int batchInterval = Configuration.INTERVAL_TIME/Configuration.rate;
+		int batchInterval = Configuration.INTERVAL_TIME / Configuration.rate;
 
 		// begin to enter the real time cycle;
 		while (true) {
@@ -211,7 +211,7 @@ public class SpeedAlgorithm {
 		// find the end index of one batch based on interval time;
 		endIndex = startIndex + 1;
 		int newAdd = 0; // count the distinct data number;
-		int same = 0; // count the same data number
+		int same = 0; // count the same data number;
 		while (endIndex < allData.size()) {
 			UserData end = allData.get(endIndex);
 			long interval = Utility.intervalTime(start.getTimestamp(),
