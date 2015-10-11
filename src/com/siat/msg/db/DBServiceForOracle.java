@@ -601,6 +601,7 @@ public class DBServiceForOracle extends Object {
 	}
 
 	public static void main(String[] args) {
+		new DBServiceForOracle();
 	}
 
 	public void writeSpecificData(List<UserData> uds) {

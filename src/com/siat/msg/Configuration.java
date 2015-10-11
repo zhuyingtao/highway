@@ -30,10 +30,10 @@ public class Configuration {
 	public static int[] unused = { 15851, 34361 };
 
 	// used for computing history speed;
-	public static String startTime = "2015/01/22 07:00:00";
-	public static String endTime = "2015/01/22 12:00:00";
+	public static String startTime = "2015-01-22 07:00:00";
+	public static String endTime = "2015-01-22 12:00:00";
 	// the time of request coming;
-	public static String setTime = "2015/01/22 07:00:00";
+	public static String setTime = "2015-01-22 07:00:00";
 	// the rate of computing, the default value is 1 (based on INTERVAL_TIME);
 	public static int rate = 1;
 
@@ -54,8 +54,8 @@ public class Configuration {
 	public static String USER_PASSWORD = null;
 	public static String USER_TABLE = null;
 
-	public static String Configuration_Path = "D:/highway/Configuration.ini";
-	// public static String Configuration_Path = "Configuration.ini";
+	// public static String Configuration_Path = "D:/highway/Configuration.ini";
+	public static String Configuration_Path = "Configuration.ini";
 
 	public static final int DEFAULT_SPEED = 90;
 	public static final int LIMIT_SEGMENT_SPEED = 110;

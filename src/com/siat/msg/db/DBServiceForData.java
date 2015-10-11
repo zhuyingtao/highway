@@ -17,7 +17,7 @@ import com.siat.msg.util.Utility;
 
 /**
  * @ClassName DBServiceForData
- * @Description TODO
+ * @Description This class is used for operating the remote database;
  * @author Zhu Yingtao
  * @date 2015年4月9日 下午8:30:00
  */
@@ -76,14 +76,17 @@ public class DBServiceForData {
 				+ "to_char(timestamp,'yyyy-mm-dd hh24:mi:ss'),lac, cellid, eventid,"
 				+ " id from "
 				+ this.table
-				+ " where timestamp between to_date(?,'yyyy-mm-dd hh24:mi:ss') and "
-				+ "to_date(?,'yyyy-mm-dd hh24:mi:ss') order by timestamp";
+				+ " where (timestamp between to_date(?,'yyyy-mm-dd hh24:mi:ss') and "
+				+ "to_date(?,'yyyy-mm-dd hh24:mi:ss')) and "
+				+ "(recordtime = ? or recordtime = ?) order by timestamp";
 		int allNum = 0;
 		int unusedNum = 0;
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, start);
 			pstm.setString(2, end);
+			pstm.setString(3, start.split(" ")[0].replace("-", ""));
+			pstm.setString(4, end.split(" ")[0].replace("-", ""));
 			rs = pstm.executeQuery();
 			logger.info("==== select has over, using time = "
 					+ Utility.intervalTime(date1, new Date()) + " s ");
