@@ -5,6 +5,8 @@ import com.siat.msg.Configuration;
 import com.siat.msg.util.DataLogger;
 import com.siat.msg.util.Utility;
 
+import java.io.*;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,7 +71,6 @@ public class DBServiceForOracle extends Object {
     }
 
     /**
-     * @param sqlPath
      * @Title: executeSQL
      * @Description: execute some SQL code;
      */
@@ -314,7 +315,6 @@ public class DBServiceForOracle extends Object {
     /**
      * @param ss
      * @param timeStamp
-     * @param direction
      * @Title: insertStationSpeeds
      * @Description: insert station speeds into database;
      */
@@ -366,7 +366,7 @@ public class DBServiceForOracle extends Object {
     }
 
     /**
-     * @param ns
+     * @param nss
      * @param timeStamp
      * @Title: insertNodeSpeeds
      * @Description: insert node speeds into database;

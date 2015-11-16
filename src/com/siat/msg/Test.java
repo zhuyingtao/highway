@@ -3,6 +3,7 @@
  */
 package com.siat.msg;
 
+import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

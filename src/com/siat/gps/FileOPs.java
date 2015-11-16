@@ -1,5 +1,6 @@
 package com.siat.gps;
 
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +21,12 @@ public class FileOPs {
         ArrayList<GpsData> gpsData = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
-            String line = br.readLine();
+            String line = null;
+            try {
+                line = br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             while (line != null) {
                 String[] tokens = line.split(",");
                 int altitude = Integer.parseInt(tokens[0]);
