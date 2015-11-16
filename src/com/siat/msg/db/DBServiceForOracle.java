@@ -30,9 +30,6 @@ public class DBServiceForOracle extends Object {
     ResultSet rs = null;
     Logger logger = null;
 
-    /**
-     *
-     */
     public DBServiceForOracle() {
         if (logger == null)
             logger = DataLogger.getLogger();

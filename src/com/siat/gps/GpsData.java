@@ -45,14 +45,12 @@ public class GpsData {
 
     @Override
     public boolean equals(Object obj) {
-        // TODO Auto-generated method stub
         GpsData data = (GpsData) obj;
         return this.plateNumber.equals(data.plateNumber);
     }
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return this.plateNumber + "\t" + this.gisX + "\t" + this.gisY;
     }
 

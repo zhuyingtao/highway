@@ -29,7 +29,6 @@ public class Car implements Comparable<Car> {
     }
 
     public Car(String number, Date date) {
-        // TODO Auto-generated constructor stub
         this.number = number;
         this.date = date;
     }
@@ -39,26 +38,18 @@ public class Car implements Comparable<Car> {
     // compare().If you override the method equals() as below,it won't work.
     @Override
     public boolean equals(Object obj) {
-        // TODO Auto-generated method stub
         if (this.number.equals(((Car) obj).number))
             return true;
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
-        // TODO Auto-generated method stub
         return this.number.hashCode();
     }
 
     @Override
     public int compareTo(Car o) {
-        // TODO Auto-generated method stub
         return this.date.before(o.date) ? -1 : 1;
     }
 
@@ -76,7 +67,6 @@ public class Car implements Comparable<Car> {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         // return this.number + " " + this.date;
         return this.number + " " + this.roadNodeId;
     }

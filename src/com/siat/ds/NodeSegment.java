@@ -10,11 +10,12 @@ import java.util.List;
  */
 public class NodeSegment {
     public int id;
-    String sectionName;
+    public String sectionName;
+    public int direction; // 1 is forward; 2 is reverse;
+    public double length;
+
     public int startNodeId;
     public int endNodeId;
-    public int direction; // 1 is forward; 2 is reverse;
-    double length;
 
     public Node startNode;
     public Node endNode;
@@ -26,12 +27,6 @@ public class NodeSegment {
 
     // private int expectedNum = 0; // this variable is INACCURATE
 
-    /**
-     * @param id
-     * @param startNodeId
-     * @param endNodeId
-     * @param direction
-     */
     public NodeSegment(int id, int startNodeId, int endNodeId, int direction,
                        double length) {
         this.id = id;

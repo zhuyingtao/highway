@@ -22,11 +22,7 @@ public class DBService {
     PreparedStatement pstm = null;
     Logger logger = null;
 
-    /**
-     *
-     */
     public DBService() {
-        // TODO Auto-generated constructor stub
         this.getConnection();
         this.logger = GpsLogger.getLogger();
     }
@@ -36,15 +32,12 @@ public class DBService {
      * @Description: 连接数据库
      */
     private void getConnection() {
-        // TODO Auto-generated method stub
         try {
             Class.forName(driver);
             conn = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -55,7 +48,6 @@ public class DBService {
      * @Description: 执行SQL脚本文件
      */
     public void executeSQL(String sqlPath) {
-        // TODO Auto-generated method stub
         try {
             Statement stm = conn.createStatement();
             // "source" doesn't work here?
@@ -113,7 +105,6 @@ public class DBService {
             }
             logger.info("insert into databases. ==> " + count);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -126,7 +117,6 @@ public class DBService {
      * @Description: 从数据库中获取数据
      */
     public ArrayList<GpsData> selectGpsData(String start, String end) {
-        // TODO Auto-generated method stub
         ArrayList<GpsData> gpsDatas = new ArrayList<>();
         String sql = "select * from gps_data where locateTime >= ? and locateTime < ?";
         try {
@@ -170,7 +160,6 @@ public class DBService {
             logger.info("select from database : all-> " + allNum + ", same-> "
                     + filterNum + " , remaining -> " + (allNum - filterNum));
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return gpsDatas;

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.siat.msg;
 
 import java.util.logging.Level;

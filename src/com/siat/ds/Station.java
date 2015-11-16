@@ -3,7 +3,7 @@ package com.siat.ds;
 /**
  * @author Zhu Yingtao
  * @ClassName Station
- * @Description
+ * @Description the information of Station
  * @date 2015-03-27 16:30:21
  */
 public class Station {
@@ -15,14 +15,7 @@ public class Station {
     private double longitude;
     private double latitude;
     
-    /**
-     * @param cellId
-     * @param lacId
-     * @param longitude
-     * @param latitude
-     */
     public Station(int cellId, int lacId, double longitude, double latitude) {
-        super();
         this.cellId = cellId;
         this.lacId = lacId;
         this.longitude = longitude;

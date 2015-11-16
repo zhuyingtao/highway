@@ -182,9 +182,6 @@ public class StationSegment {
         return avgSpeedStrs;
     }
 
-    /**
-     * @return the direction
-     */
     public int getDirection() {
         return direction;
     }
@@ -202,9 +199,6 @@ public class StationSegment {
         return this.filterAvgSpeed;
     }
 
-    /**
-     * @return the length
-     */
     public double getLength() {
         return length;
     }
@@ -371,9 +365,6 @@ public class StationSegment {
         this.direction = direction;
     }
 
-    /**
-     * @param length the length to set
-     */
     public void setLength(double length) {
         this.length = length;
     }

@@ -112,19 +112,19 @@ public class DBServiceForData {
                 int cellid = rs.getInt(4);
                 int eventid = rs.getInt(5);
                 int id = rs.getInt(6);
-                // // not to check now , all id has been used;
-                // // filter some unused data ：cellid = unusedId;
-                // // boolean unused = false;
-                // // for (int i = 0; i < Configuration.unused.length; i++) {
-                // // if (cellid == Configuration.unused[i]) {
-                // // unused = true;
-                // // break;
-                // // }
-                // // }
-                // // if (unused) {
-                // // unusedNum++;
-                // // continue;
-                // // }
+                // not to check now , all id has been used;
+                // filter some unused data ：cellid = unusedId;
+                // boolean unused = false;
+                // for (int i = 0; i < Configuration.unused.length; i++) {
+                // if (cellid == Configuration.unused[i]) {
+                // unused = true;
+                // break;
+                // }
+                // }
+                // if (unused) {
+                // unusedNum++;
+                // continue;
+                // }
                 //
                 // because the data number is usually very large, so we can't do
                 // the duplicate checking, just add directly;

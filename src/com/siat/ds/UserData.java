@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * @author Zhu Yingtao
  * @ClassName UserData
- * @Description TODO
+ * @Description the information of user data;
  * @date 2014年12月16日 下午2:55:04
  */
 public class UserData {
@@ -23,17 +23,8 @@ public class UserData {
         this.tmsi = tmsi;
     }
 
-    /**
-     * @param tmsi
-     * @param timestamp
-     * @param lac
-     * @param cellid
-     * @param eventid
-     * @param id
-     */
     public UserData(String tmsi, Date timestamp, int lac, int cellid,
                     int eventid, int id) {
-        super();
         this.tmsi = tmsi;
         this.timestamp = timestamp;
         this.lac = lac;
@@ -92,19 +83,16 @@ public class UserData {
 
     @Override
     public boolean equals(Object obj) {
-        // TODO Auto-generated method stub
         return this.tmsi.equals(((UserData) obj).tmsi);
     }
 
     @Override
     public int hashCode() {
-        // TODO Auto-generated method stub
         return this.tmsi.hashCode();
     }
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return this.tmsi + " , " + this.timestamp + " , " + this.lac + " , "
                 + this.cellid + " , " + this.eventid + " , " + this.id;
     }
@@ -117,6 +105,7 @@ public class UserData {
     }
 
     public static void main(String[] args) {
+        // just test the hash map;
         String a = "4987986B6F3A9C3A1D7354B175B052F7";
         String b = "4987D6ECDBEFC89426D9C847921E2462";
         String c = "4987986B6F3A9C3A1D7354B175B052F7";

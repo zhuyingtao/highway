@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.siat.msg;
 
 import com.siat.msg.alg.SpeedAlgorithm;

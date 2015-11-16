@@ -28,9 +28,6 @@ public class DBServiceForMySQL {
     PreparedStatement pstm = null;
     Logger logger = null;
 
-    /**
-     *
-     */
     public DBServiceForMySQL() {
         // TODO Auto-generated constructor stub
         this.getConnection();

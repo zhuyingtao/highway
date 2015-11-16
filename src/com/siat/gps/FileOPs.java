@@ -45,13 +45,10 @@ public class FileOPs {
             }
             br.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return gpsData;
@@ -78,13 +75,7 @@ public class FileOPs {
         }
     }
 
-    /**
-     * @param args
-     * @Title: main
-     * @Description: TODO
-     */
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         FileOPs fos = new FileOPs();
         fos.scanAllFiles("I:/zyt/Desktop/0122-0128");
     }
