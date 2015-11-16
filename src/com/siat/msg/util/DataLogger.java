@@ -1,59 +1,58 @@
 package com.siat.msg.util;
 
+import com.siat.msg.Configuration;
+
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
-import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.siat.msg.Configuration;
-
 /**
- * @ClassName Logger
- * @Description »’÷æº«¬º
  * @author Zhu Yingtao
- * @date 2014ƒÍ12‘¬29»’ œ¬ŒÁ2:39:10
+ * @ClassName Logger
+ * @Description Êó•ÂøóËÆ∞ÂΩï
+ * @date 2014Âπ¥12Êúà29Êó• ‰∏ãÂçà2:39:10
  */
 public class DataLogger {
 
-	public static Logger logger = null;
+    public static Logger logger = null;
 
-	public static Logger getLogger() {
-		if (logger == null) {
-			logger = Logger.getLogger(DataLogger.class.getName());
-			FileHandler fh = null;
-			try {
-				fh = new FileHandler("highway.log");
-				fh.setFormatter(new Formatter() {
-					@Override
-					public String format(LogRecord record) {
-						// TODO Auto-generated method stub
-						return record.getLevel() + "\t" + record.getMessage()
-								+ "\n";
-					}
-				});
-				logger.setLevel(Configuration.logLevel);
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			logger.addHandler(fh);
-		}
-		return logger;
-	}
+    public static Logger getLogger() {
+        if (logger == null) {
+            logger = Logger.getLogger(DataLogger.class.getName());
+            FileHandler fh = null;
+            try {
+                fh = new FileHandler("highway.log");
+                fh.setFormatter(new Formatter() {
+                    @Override
+                    public String format(LogRecord record) {
+                        // TODO Auto-generated method stub
+                        return record.getLevel() + "\t" + record.getMessage()
+                                + "\n";
+                    }
+                });
+                logger.setLevel(Configuration.logLevel);
+            } catch (SecurityException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            logger.addHandler(fh);
+        }
+        return logger;
+    }
 
-	/**
-	 * @Title: main
-	 * @Description: TODO
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+    /**
+     * @param args
+     * @Title: main
+     * @Description: TODO
+     */
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
 }

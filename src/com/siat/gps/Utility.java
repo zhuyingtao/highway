@@ -5,7 +5,7 @@
 // * @Description This class is an utility class. It contains a series methods for
 // *              public use.
 // * @author Zhu Yingtao, Tan Vicky
-// * @date 2014ƒÍ11‘¬6»’ …œŒÁ10:43:14
+// * @date 2014Âπ¥11Êúà6Êó• ‰∏äÂçà10:43:14
 // */
 //public class Utility {
 //
@@ -41,8 +41,8 @@
 //		// return Math.sqrt(x2 + y2);
 //		if (pt1.getX() == pt2.getX() && pt1.getY() == pt2.getY())
 //			return 0;
-//		double lamd1 = pt1.getX() * Math.PI / 180;// æ≠∂»ª°∂»
-//		double fi1 = pt1.getY() * Math.PI / 180; // Œ≥∂»ª°∂»
+//		double lamd1 = pt1.getX() * Math.PI / 180;// ÁªèÂ∫¶ÂºßÂ∫¶
+//		double fi1 = pt1.getY() * Math.PI / 180; // Á∫¨Â∫¶ÂºßÂ∫¶
 //		double lamd2 = pt2.getX() * Math.PI / 180;
 //		double fi2 = pt2.getY() * Math.PI / 180;
 //
@@ -50,20 +50,20 @@
 //				+ Math.cos(fi1) * Math.cos(fi2) * Math.cos(lamd1 - lamd2));
 //		// System.out.println("ddd"+dDistance);
 //
-//		return dDistance * 6371.110; // «ß√◊
+//		return dDistance * 6371.110; // ÂçÉÁ±≥
 //	}
 //
 //	public static double disSquare(Point pt1, Point pt2) {
 //		// return Math.pow((point1.getX() - point2.getX()) * 110 * 0.9227, 2)
 //		// + Math.pow((point1.getY() - point2.getY()) * 110, 2);
-//		double lamd1 = pt1.getX() * Math.PI / 180;// æ≠∂»ª°∂»
-//		double fi1 = pt1.getY() * Math.PI / 180; // Œ≥∂»ª°∂»
+//		double lamd1 = pt1.getX() * Math.PI / 180;// ÁªèÂ∫¶ÂºßÂ∫¶
+//		double fi1 = pt1.getY() * Math.PI / 180; // Á∫¨Â∫¶ÂºßÂ∫¶
 //		double lamd2 = pt2.getX() * Math.PI / 180;
 //		double fi2 = pt2.getY() * Math.PI / 180;
 //
 //		double dDistance = Math.acos(Math.sin(fi1) * Math.sin(fi2)
 //				+ Math.cos(fi1) * Math.cos(fi2) * Math.cos(lamd1 - lamd2));
-//		return Math.pow(dDistance * 6371.110, 2); // «ß√◊
+//		return Math.pow(dDistance * 6371.110, 2); // ÂçÉÁ±≥
 //	}
 //
 //	public static double disSquare(Point point, RoadNode node) {

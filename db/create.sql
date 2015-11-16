@@ -2,13 +2,13 @@
 USE highway;
 
 CREATE TABLE IF NOT EXISTS user_data(
-  tmsi      VARCHAR(4000),
-  timestamp DATETIME,
-  lac       VARCHAR(8),
-  cellid    INT,
-  eventid   VARCHAR(2),
-  id	INT
-  );
+	tmsi      VARCHAR(4000),
+  	timestamp DATETIME,
+  	lac       VARCHAR(8),
+  	cellid    INT,
+  	eventid   VARCHAR(2),
+  	id	INT
+);
 
 CREATE TABLE IF NOT EXISTS cell_station(
 	serialnumber	INT,

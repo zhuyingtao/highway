@@ -5,8 +5,8 @@ delete from road_node;
 delete from cell_station;
 delete from user_data;
 
-load data local infile"data/Çø¼ä.txt" into table section character set utf8;
-load data local infile"data/½Úµã.txt" into table road_node character set utf8;
-load data local infile"data/¸ßËÙ»ùÕ¾ÁÐ±í.txt" into table cell_station;
+load data local infile"data/åŒºé—´.txt" into table section character set utf8;
+load data local infile"data/èŠ‚ç‚¹.txt" into table road_node character set utf8;
+load data local infile"data/é«˜é€ŸåŸºç«™åˆ—è¡¨.txt" into table cell_station;
 
 load data local infile 'I:\\zyt\\Desktop\\highway_data\\tmp_no_res_user_hmh_6.txt' into table user_data fields terminated by ',';

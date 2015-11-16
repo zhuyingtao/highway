@@ -1,29 +1,29 @@
 package com.siat.ds;
 
 /**
- * @ClassName Node
- * @Description ·şÎñÇø½ÚµãĞÅÏ¢
  * @author Zhu Yingtao
- * @date 2014Äê12ÔÂ30ÈÕ ÉÏÎç11:09:26
+ * @ClassName Node
+ * @Description æœåŠ¡åŒºèŠ‚ç‚¹ä¿¡æ¯
+ * @date 2014å¹´12æœˆ30æ—¥ ä¸Šåˆ11:09:26
  */
 public class Node {
 
-	int id;
-	public String name;
-	public int cellId;
-	public int direction;
-	double length;
+    int id;
+    public String name;
+    public int cellId;
+    public int direction;
+    double length;
 
-	/**
-	 * @param id
-	 * @param name
-	 * @param cellId
-	 * @param length
-	 */
-	public Node(int id, int cellId, double length, int direction) {
-		this.id = id;
-		this.cellId = cellId;
-		this.length = length;
-		this.direction = direction;
-	}
+    /**
+     * @param id
+     * @param name
+     * @param cellId
+     * @param length
+     */
+    public Node(int id, int cellId, double length, int direction) {
+        this.id = id;
+        this.cellId = cellId;
+        this.length = length;
+        this.direction = direction;
+    }
 }

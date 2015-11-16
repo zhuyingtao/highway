@@ -20,7 +20,7 @@
 // * @Description This is the main class for computing the car's information and
 // *              return some useful information to the streaming.
 // * @author Zhu Yingtao
-// * @date 2014Äê11ÔÂ7ÈÕ ÏÂÎç3:11:33
+// * @date 2014å¹´11æœˆ7æ—¥ ä¸‹åˆ3:11:33
 // */
 //public class PathAlgorithm implements Serializable {
 //
@@ -39,10 +39,10 @@
 //	private Logger logger = null;
 //	private DBService db = null;
 //	
-//	private int newNum = 0; // ĞÂÌí¼Ó½øÊı¾İ³ØµÄÊıÄ¿
-//	private int matchesNum = 0; // ÓëÊı¾İ³ØÖĞÊı¾İÆ¥ÅäµÄÊıÄ¿
-//	private int sameNum = 0; // ÓëÊı¾İ³ØÖĞÊı¾İ´¦ÓÚÍ¬Ò»Â·¶ÎÊıÄ¿
-//	private int computeNum = 0; // ÓëÊı¾İ³ØÖĞÊı¾İ²»´¦ÓÚÍ¬Ò»Â·¶ÎÊıÄ¿
+//	private int newNum = 0; // æ–°æ·»åŠ è¿›æ•°æ®æ± çš„æ•°ç›®
+//	private int matchesNum = 0; // ä¸æ•°æ®æ± ä¸­æ•°æ®åŒ¹é…çš„æ•°ç›®
+//	private int sameNum = 0; // ä¸æ•°æ®æ± ä¸­æ•°æ®å¤„äºåŒä¸€è·¯æ®µæ•°ç›®
+//	private int computeNum = 0; // ä¸æ•°æ®æ± ä¸­æ•°æ®ä¸å¤„äºåŒä¸€è·¯æ®µæ•°ç›®
 //
 //	List<Car> cars = null;
 //
@@ -66,7 +66,7 @@
 //		Date end = null;
 //		try {
 //			start = sdf.parse(startTimeStr);
-//			end = new Date(start.getTime() + 1000 * intervalTime);// ¼ä¸ô1·ÖÖÓ
+//			end = new Date(start.getTime() + 1000 * intervalTime);// é—´éš”1åˆ†é’Ÿ
 //		} catch (ParseException e1) {
 //			// TODO Auto-generated catch block
 //			e1.printStackTrace();
@@ -80,9 +80,9 @@
 //	}
 //
 //	public void computeAvgSpeed(int intervalTime) {
-//		// 1. ´ÓÊı¾İ¿âÖĞ¸ù¾İÖ¸¶¨Ê±¼ä¼ä¸ôÅúÁ¿µÃµ½Ò»ÅúÊı¾İ
+//		// 1. ä»æ•°æ®åº“ä¸­æ ¹æ®æŒ‡å®šæ—¶é—´é—´éš”æ‰¹é‡å¾—åˆ°ä¸€æ‰¹æ•°æ®
 //		ArrayList<GpsData> nowData = this.getGpsData(intervalTime);
-//		// µÚÒ»ÅúÊı¾İ£¬³õÊ¼»¯userDataPool£¬È»ºó·µ»Ø
+//		// ç¬¬ä¸€æ‰¹æ•°æ®ï¼Œåˆå§‹åŒ–userDataPoolï¼Œç„¶åè¿”å›
 //		if (gpsDataPool == null) {
 //			gpsDataPool = nowData;
 //			return;
@@ -90,16 +90,16 @@
 //		logger.info("data size : gps_data_pool -> " + gpsDataPool.size()
 //				+ " , now_data -> " + nowData.size());
 //
-//		// 2. ÓÃgpsDataPoolÔİ´æÉÏÒ»ÅúµÄÊı¾İ£¬½«×îĞÂÒ»ÅúµÄÊı¾İÓëÉÏÒ»ÅúÊı¾İ±È½Ï
+//		// 2. ç”¨gpsDataPoolæš‚å­˜ä¸Šä¸€æ‰¹çš„æ•°æ®ï¼Œå°†æœ€æ–°ä¸€æ‰¹çš„æ•°æ®ä¸ä¸Šä¸€æ‰¹æ•°æ®æ¯”è¾ƒ
 //		for (int i = 0; i < nowData.size(); i++) {
-//			// Èç¹û³µÁ¾idÆ¥Åä£¬ÔòµÃ³öÊ±¼ä¾àÀë²î£¬Ëã³öÃ¿Ò»Á¾³µµÄÆ½¾ùËÙ¶È£¬È»ºó¸üĞÂgpsDataPoolÖĞµÄÊı¾İ;
-//			// Èç¹ûÃ»ÓĞÆ¥Åä³µÁ¾£¬Ôò½«ĞÂ³µÁ¾Ö±½Ó²åÈëgpsDataPoolÖĞ¡£
+//			// å¦‚æœè½¦è¾†idåŒ¹é…ï¼Œåˆ™å¾—å‡ºæ—¶é—´è·ç¦»å·®ï¼Œç®—å‡ºæ¯ä¸€è¾†è½¦çš„å¹³å‡é€Ÿåº¦ï¼Œç„¶åæ›´æ–°gpsDataPoolä¸­çš„æ•°æ®;
+//			// å¦‚æœæ²¡æœ‰åŒ¹é…è½¦è¾†ï¼Œåˆ™å°†æ–°è½¦è¾†ç›´æ¥æ’å…¥gpsDataPoolä¸­ã€‚
 //			GpsData nowGd = nowData.get(i);
 //			int speed = (int) this.computeOneSpeed(nowGd);
 //			if (speed == -1)
 //				continue;
 //
-//			// 3. ½«¼ÆËã³öµÄ³µÁ¾ËÙ¶È²¹×ãµ½¾­¹ıµÄÃ¿Ò»¸öÂ·¶ÎÇø¼äÖĞ
+//			// 3. å°†è®¡ç®—å‡ºçš„è½¦è¾†é€Ÿåº¦è¡¥è¶³åˆ°ç»è¿‡çš„æ¯ä¸€ä¸ªè·¯æ®µåŒºé—´ä¸­
 //			int large = -1, small = -1;
 //			if (isForward) {
 //				small = lastRSid;
@@ -128,14 +128,14 @@
 //	public double computeOneSpeed(GpsData nowGd) {
 //		double speed = -1;
 //		int index = gpsDataPool.indexOf(nowGd);
-//		// ÓĞ³µÁ¾idÆ¥Åä
+//		// æœ‰è½¦è¾†idåŒ¹é…
 //		if (index >= 0) {
 //			matchesNum++;
 //			GpsData lastUd = gpsDataPool.get(index);
 //			isForward = this.getDirection(nowGd, lastUd);
 //			double distance = this.getDistance(isForward);
 //			double time = this.getIntervalTime(nowGd, lastUd);
-//			// userDataPool¸üĞÂÒªÌáÇ°£¬·ñÔò¿ÉÄÜÒòÌáÇ°returnÎŞ·¨¸üĞÂ
+//			// userDataPoolæ›´æ–°è¦æå‰ï¼Œå¦åˆ™å¯èƒ½å› æå‰returnæ— æ³•æ›´æ–°
 //			gpsDataPool.set(index, nowGd);
 //			if (distance == -1) {
 //				sameNum++;
@@ -143,14 +143,14 @@
 //			}
 //
 //			speed = distance / time;
-//			// ËÙ¶È³¬³öÕı³£·¶Î§£¬Ôò¶ªÆú£¬·µ»Ø-1
+//			// é€Ÿåº¦è¶…å‡ºæ­£å¸¸èŒƒå›´ï¼Œåˆ™ä¸¢å¼ƒï¼Œè¿”å›-1
 //			if (speed < 0 || speed > 150) {
 //				logger.warning("illegal speed : d = " + distance + ", t = "
 //						+ time + ", s = " + speed + "\t , " + nowGd.getCellid()
 //						+ "\t" + lastUd.getCellid());
 //				speed = -1;
 //			}
-//			// Ã»ÓĞ³µÁ¾idÆ¥Åä
+//			// æ²¡æœ‰è½¦è¾†idåŒ¹é…
 //		} else {
 //			newNum++;
 //			gpsDataPool.add(nowGd);
@@ -276,7 +276,7 @@
 //	 */
 //	// ================>TODO: This method should be optimized...
 //	public int getNodeID(GpsData gpsData) {
-//		double a2; // µãµ½Ïß¶ÎÇ°Ò»¸önodeµÄ¾àÀëÆ½·½
+//		double a2; // ç‚¹åˆ°çº¿æ®µå‰ä¸€ä¸ªnodeçš„è·ç¦»å¹³æ–¹
 //		int key;
 //		int roadID;
 //
@@ -284,7 +284,7 @@
 //			return -1;
 //		}
 //
-//		// ÏÈ±È½ÏµÚÒ»¸önode.
+//		// å…ˆæ¯”è¾ƒç¬¬ä¸€ä¸ªnode.
 //		double dis2 = Utility.disSquare(gpsData.point, forwardRS.get(0));
 //		key = forwardRS.get(0).id;
 //		roadID = forwardRS.get(0).roadID;
@@ -512,10 +512,10 @@
 //					minY = roadNode.start.getY();
 //			}
 //		}
-//		boundary[0] = maxX + 0.005; // ×î´ó¾­¶ÈÇøÓò
-//		boundary[1] = minX - 0.005; // ×îĞ¡¾­¶ÈÇøÓò
-//		boundary[2] = maxY + 0.005; // ×î´óÎ³¶ÈÇøÓò
-//		boundary[3] = minY - 0.005; // ×îĞ¡Î³¶ÈÇøÓò
+//		boundary[0] = maxX + 0.005; // æœ€å¤§ç»åº¦åŒºåŸŸ
+//		boundary[1] = minX - 0.005; // æœ€å°ç»åº¦åŒºåŸŸ
+//		boundary[2] = maxY + 0.005; // æœ€å¤§çº¬åº¦åŒºåŸŸ
+//		boundary[3] = minY - 0.005; // æœ€å°çº¬åº¦åŒºåŸŸ
 //		return boundary;
 //	}
 //
@@ -529,9 +529,9 @@
 //	}
 //
 //	public void initialRoadSegments() {
-//		// ÔİÊ±´¦Àí:ÕıÏòÄæÏòÂ·¶Î¶ÔÏóÍêÈ«Ò»Ñù(´Ó0µ½n);
-//		this.forwardRS = StationSegment.readFromFile("data/Â·¶Î.txt");
-//		this.reverseRS = StationSegment.readFromFile("data/Â·¶Î.txt");
+//		// æš‚æ—¶å¤„ç†:æ­£å‘é€†å‘è·¯æ®µå¯¹è±¡å®Œå…¨ä¸€æ ·(ä»0åˆ°n);
+//		this.forwardRS = StationSegment.readFromFile("data/è·¯æ®µ.txt");
+//		this.reverseRS = StationSegment.readFromFile("data/è·¯æ®µ.txt");
 //	}
 //
 //	public void initialRoadSections() {

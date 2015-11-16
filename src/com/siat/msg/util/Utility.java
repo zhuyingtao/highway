@@ -3,40 +3,37 @@ package com.siat.msg.util;
 import java.util.Date;
 
 /**
+ * @author Zhu Yingtao
  * @ClassName Utility
  * @Description TODO
- * @author Zhu Yingtao
- * @date 2015ƒÍ3‘¬19»’ …œŒÁ10:52:19
+ * @date 2015Âπ¥3Êúà19Êó• ‰∏äÂçà10:52:19
  */
 public class Utility {
 
-	/**
-	 * @Title: intervalTime
-	 * @Description: compute the interval second between start and end;
-	 * @param start
-	 *            the start time
-	 * @param end
-	 *            the end time
-	 * @return the interval second
-	 */
-	public static long intervalTime(Date start, Date end) {
-		long d1 = start.getTime();
-		long d2 = end.getTime();
-		return (d2 - d1) / 1000;
-	}
+    /**
+     * @param start the start time
+     * @param end   the end time
+     * @return the interval second
+     * @Title: intervalTime
+     * @Description: compute the interval second between start and end;
+     */
+    public static long intervalTime(Date start, Date end) {
+        long d1 = start.getTime();
+        long d2 = end.getTime();
+        return (d2 - d1) / 1000;
+    }
 
-	/**
-	 * @Title: sleep
-	 * @Description: sleep for some time;
-	 * @param second
-	 *            the specific time (s) want to sleep;
-	 */
-	public static void sleep(double second) {
-		try {
-			Thread.sleep((long) (second * 1000));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    /**
+     * @param second the specific time (s) want to sleep;
+     * @Title: sleep
+     * @Description: sleep for some time;
+     */
+    public static void sleep(double second) {
+        try {
+            Thread.sleep((long) (second * 1000));
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }

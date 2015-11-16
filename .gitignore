@@ -1,4 +1,7 @@
-/bin
-log
-*.iml
+bin/
+.idea/
+log/
 *.log
+*.class
+.classpath
+.project

@@ -1,18 +1,5 @@
 package com.siat.msg.alg;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
 import com.siat.ds.Station;
 import com.siat.ds.StationSegment;
 import com.siat.ds.UserData;
@@ -21,672 +8,679 @@ import com.siat.msg.db.DBServiceForOracle;
 import com.siat.msg.util.DataLogger;
 import com.siat.msg.util.Utility;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
+
 /**
+ * @author Zhu Yingtao
  * @ClassName SpeedAlgorithm
  * @Description TODO
- * @author Zhu Yingtao
- * @date 2014ƒÍ12‘¬16»’ œ¬ŒÁ3:12:33
+ * @date 2014Âπ¥12Êúà16Êó• ‰∏ãÂçà3:12:33
  */
 public class StationSegmentSpeed {
 
-	private DBServiceForOracle db = null;
-	private HashMap<String, UserData> userDataPool = null;
+    private DBServiceForOracle db = null;
+    private HashMap<String, UserData> userDataPool = null;
 
-	private int cachedTime = 0;
+    private int cachedTime = 0;
 
-	private int nowSegmentId = 0;
-	private int lastSegmentId = 0;
+    private int nowSegmentId = 0;
+    private int lastSegmentId = 0;
 
-	private List<StationSegment> stationSegments;
+    private List<StationSegment> stationSegments;
 
-	private Logger logger = null;
+    private Logger logger = null;
 
-	private int newNum = 0; // new adding into the data pool;
-	private int matchesNum = 0; // matches one in the data pool;
-	private int sameNum = 0; // matches one and they are in the same segment;
-	private int computeNum = 0; // matches one and they are not in the same
-								// segment;
+    private int newNum = 0; // new adding into the data pool;
+    private int matchesNum = 0; // matches one in the data pool;
+    private int sameNum = 0; // matches one and they are in the same segment;
+    private int computeNum = 0; // matches one and they are not in the same
+    // segment;
 
-	private SimpleDateFormat sdf = null;
+    private SimpleDateFormat sdf = null;
 
-	public StationSegmentSpeed() {
-		// TODO Auto-generated constructor stub
-		this.db = new DBServiceForOracle();
-		this.logger = DataLogger.getLogger();
-		this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		for (int i = 0; i < bufferDatas.length; i++) {
-			bufferDatas[i] = new StringBuffer();
-		}
-	}
+    public StationSegmentSpeed() {
+        // TODO Auto-generated constructor stub
+        this.db = new DBServiceForOracle();
+        this.logger = DataLogger.getLogger();
+        this.sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < bufferDatas.length; i++) {
+            bufferDatas[i] = new StringBuffer();
+        }
+    }
 
-	int[] segments = { 153, 86, 162, 89, 164, 107, 25, 23, 44, 119 };
+    int[] segments = {153, 86, 162, 89, 164, 107, 25, 23, 44, 119};
 
-	public void addSpeed(int speed, UserData ud) {
-		for (int i = lastSegmentId; i <= nowSegmentId; i++) {
-			StationSegment ss = stationSegments.get(i);
+    public void addSpeed(int speed, UserData ud) {
+        for (int i = lastSegmentId; i <= nowSegmentId; i++) {
+            StationSegment ss = stationSegments.get(i);
 //			for (int j = 0; j < segments.length; j++) {
 //				if ((i + 1) == segments[j])
 //					this.dumpSpecificData(ud, i + 1);
 //			}
-			ss.addSpeed(speed);
-			ss.addExpected();
-			if (i == nowSegmentId)
-				ss.addReal();
-		}
-		computeNum++;
-	}
+            ss.addSpeed(speed);
+            ss.addExpected();
+            if (i == nowSegmentId)
+                ss.addReal();
+        }
+        computeNum++;
+    }
 
-	// clear the flags used for logger;
-	public void clearFlags() {
-		newNum = 0;
-		matchesNum = 0;
-		sameNum = 0;
-		computeNum = 0;
-	}
+    // clear the flags used for logger;
+    public void clearFlags() {
+        newNum = 0;
+        matchesNum = 0;
+        sameNum = 0;
+        computeNum = 0;
+    }
 
-	// clear the speeds in station segments to prepare for next batch;
-	public void clearSpeeds() {
-		for (int i = 0; i < stationSegments.size(); i++) {
-			stationSegments.get(i).clearSpeeds();
-		}
-	}
+    // clear the speeds in station segments to prepare for next batch;
+    public void clearSpeeds() {
+        for (int i = 0; i < stationSegments.size(); i++) {
+            stationSegments.get(i).clearSpeeds();
+        }
+    }
 
-	public void computeAvgSpeed(int intervalTime) {
-		// // 1. ¥” ˝æ›ø‚÷–∏˘æ›÷∏∂® ±º‰º‰∏Ù≈˙¡øµ√µΩ“ª≈˙ ˝æ›
-		// List<UserData> nowData = this.getUserData(intervalTime);
-		// // µ⁄“ª≈˙ ˝æ›£¨≥ı ºªØuserDataPool£¨»ª∫Û∑µªÿ
-		// if (userDataPool == null) {
-		// userDataPool = nowData;
-		// return;
-		// }
-		// logger.info("data size : user_data_pool -> " + userDataPool.size()
-		// + " , now_data -> " + nowData.size());
-		//
-		// // 2. ”√userDataPool‘›¥Ê…œ“ª≈˙µƒ ˝æ›£¨Ω´◊Ó–¬“ª≈˙µƒ ˝æ›”Î…œ“ª≈˙ ˝æ›±»Ωœ
-		// for (int i = 0; i < nowData.size(); i++) {
-		// // »Áπ˚≥µ¡æid∆•≈‰£¨‘Úµ√≥ˆ ±º‰æ‡¿Î≤Ó£¨À„≥ˆ√ø“ª¡æ≥µµƒ∆Ωæ˘ÀŸ∂»£¨
-		// // »ª∫Û∏¸–¬userDataPool÷–µƒ ˝æ›;
-		// // »Áπ˚√ª”–∆•≈‰≥µ¡æ£¨‘ÚΩ´–¬≥µ¡æ÷±Ω”≤Â»ÎuserDataPool÷–°£
-		// int speed = -1;
-		// UserData nowUd = nowData.get(i);
-		// int index = userDataPool.indexOf(nowUd);
-		// if (index >= 0) {
-		// matchesNum++;
-		// UserData lastUd = userDataPool.get(index);
-		// speed = (int) this.computeOneSpeed(nowUd, lastUd);
-		// userDataPool.set(index, nowUd);
-		// } else {
-		// newNum++;
-		// userDataPool.add(nowUd);
-		// }
-		// // if not matches or the speed is illegal,then next data;
-		// if (speed == -1)
-		// continue;
-		//
-		// // 3. Ω´º∆À„≥ˆµƒ≥µ¡æÀŸ∂»≤π◊„µΩæ≠π˝µƒ√ø“ª∏ˆ¬∑∂Œ«¯º‰÷–
-		// int large = -1, small = -1;
-		// if (isForward) {
-		// small = lastSegmentId;
-		// large = nowSegmentId;
-		// } else {
-		// small = nowSegmentId;
-		// large = lastSegmentId;
-		// }
-		// // < or <= ?
-		// for (int j = small; j <= large; j++) {
-		// StationSegment rs = isForward ? (forwardStations.get(j))
-		// : (reverseStations.get(j));
-		// rs.addSpeed(speed);
-		// if (j == nowSegmentId)
-		// rs.addReal();
-		// }
-		// computeNum++;
-		// }
-		// logger.info("========= in one batch : new_add = " + newNum
-		// + " , matches = " + matchesNum + " { in_same_segment = "
-		// + sameNum + " , compute = " + computeNum + " }");
-		// this.clearFlags();
-		//
-		// // 4. º∆À„√ø“ª∏ˆ¬∑∂Œ«¯º‰µƒ∆Ωæ˘ÀŸ∂»£¨∑÷À´œÚ£¨≤¢¥Ú”° ‰≥ˆ
-		// this.computeStationSpeed(forwardStations);
-		// this.computeStationSpeed(reverseStations);
-		// // ¡Ì£∫º∆À„√ø“ª∏ˆ∑˛ŒÒ«¯º‰µƒ∆Ωæ˘ÀŸ∂»£¨∑÷À´œÚ£¨≤¢¥Ú”° ‰≥ˆ
-		// this.nss.computeAvgSpeed(stationSegments, startTimeStr);
-		// this.dumpData(startTimeStr);
-		// this.storeData(startTimeStr);
-		//
-		// // 5. Œ¨ª§UserDataPool,»•≥˝≥§ ±º‰Œ¥≥ˆœ÷µƒ ˝æ›°£
-		// if (cachedTime >= Configuration.CACHE_TIME) {
-		// filterUserDataPool();
-		// cachedTime = 0;
-		// }
-		// cachedTime += intervalTime;
-	}
+    public void computeAvgSpeed(int intervalTime) {
+        // // 1. ‰ªéÊï∞ÊçÆÂ∫ì‰∏≠Ê†πÊçÆÊåáÂÆöÊó∂Èó¥Èó¥ÈöîÊâπÈáèÂæóÂà∞‰∏ÄÊâπÊï∞ÊçÆ
+        // List<UserData> nowData = this.getUserData(intervalTime);
+        // // Á¨¨‰∏ÄÊâπÊï∞ÊçÆÔºåÂàùÂßãÂåñuserDataPoolÔºåÁÑ∂ÂêéËøîÂõû
+        // if (userDataPool == null) {
+        // userDataPool = nowData;
+        // return;
+        // }
+        // logger.info("data size : user_data_pool -> " + userDataPool.size()
+        // + " , now_data -> " + nowData.size());
+        //
+        // // 2. Áî®userDataPoolÊöÇÂ≠ò‰∏ä‰∏ÄÊâπÁöÑÊï∞ÊçÆÔºåÂ∞ÜÊúÄÊñ∞‰∏ÄÊâπÁöÑÊï∞ÊçÆ‰∏é‰∏ä‰∏ÄÊâπÊï∞ÊçÆÊØîËæÉ
+        // for (int i = 0; i < nowData.size(); i++) {
+        // // Â¶ÇÊûúËΩ¶ËæÜidÂåπÈÖçÔºåÂàôÂæóÂá∫Êó∂Èó¥Ë∑ùÁ¶ªÂ∑ÆÔºåÁÆóÂá∫ÊØè‰∏ÄËæÜËΩ¶ÁöÑÂπ≥ÂùáÈÄüÂ∫¶Ôºå
+        // // ÁÑ∂ÂêéÊõ¥Êñ∞userDataPool‰∏≠ÁöÑÊï∞ÊçÆ;
+        // // Â¶ÇÊûúÊ≤°ÊúâÂåπÈÖçËΩ¶ËæÜÔºåÂàôÂ∞ÜÊñ∞ËΩ¶ËæÜÁõ¥Êé•ÊèíÂÖ•userDataPool‰∏≠„ÄÇ
+        // int speed = -1;
+        // UserData nowUd = nowData.get(i);
+        // int index = userDataPool.indexOf(nowUd);
+        // if (index >= 0) {
+        // matchesNum++;
+        // UserData lastUd = userDataPool.get(index);
+        // speed = (int) this.computeOneSpeed(nowUd, lastUd);
+        // userDataPool.set(index, nowUd);
+        // } else {
+        // newNum++;
+        // userDataPool.add(nowUd);
+        // }
+        // // if not matches or the speed is illegal,then next data;
+        // if (speed == -1)
+        // continue;
+        //
+        // // 3. Â∞ÜËÆ°ÁÆóÂá∫ÁöÑËΩ¶ËæÜÈÄüÂ∫¶Ë°•Ë∂≥Âà∞ÁªèËøáÁöÑÊØè‰∏Ä‰∏™Ë∑ØÊÆµÂå∫Èó¥‰∏≠
+        // int large = -1, small = -1;
+        // if (isForward) {
+        // small = lastSegmentId;
+        // large = nowSegmentId;
+        // } else {
+        // small = nowSegmentId;
+        // large = lastSegmentId;
+        // }
+        // // < or <= ?
+        // for (int j = small; j <= large; j++) {
+        // StationSegment rs = isForward ? (forwardStations.get(j))
+        // : (reverseStations.get(j));
+        // rs.addSpeed(speed);
+        // if (j == nowSegmentId)
+        // rs.addReal();
+        // }
+        // computeNum++;
+        // }
+        // logger.info("========= in one batch : new_add = " + newNum
+        // + " , matches = " + matchesNum + " { in_same_segment = "
+        // + sameNum + " , compute = " + computeNum + " }");
+        // this.clearFlags();
+        //
+        // // 4. ËÆ°ÁÆóÊØè‰∏Ä‰∏™Ë∑ØÊÆµÂå∫Èó¥ÁöÑÂπ≥ÂùáÈÄüÂ∫¶ÔºåÂàÜÂèåÂêëÔºåÂπ∂ÊâìÂç∞ËæìÂá∫
+        // this.computeStationSpeed(forwardStations);
+        // this.computeStationSpeed(reverseStations);
+        // // Âè¶ÔºöËÆ°ÁÆóÊØè‰∏Ä‰∏™ÊúçÂä°Âå∫Èó¥ÁöÑÂπ≥ÂùáÈÄüÂ∫¶ÔºåÂàÜÂèåÂêëÔºåÂπ∂ÊâìÂç∞ËæìÂá∫
+        // this.nss.computeAvgSpeed(stationSegments, startTimeStr);
+        // this.dumpData(startTimeStr);
+        // this.storeData(startTimeStr);
+        //
+        // // 5. Áª¥Êä§UserDataPool,ÂéªÈô§ÈïøÊó∂Èó¥Êú™Âá∫Áé∞ÁöÑÊï∞ÊçÆ„ÄÇ
+        // if (cachedTime >= Configuration.CACHE_TIME) {
+        // filterUserDataPool();
+        // cachedTime = 0;
+        // }
+        // cachedTime += intervalTime;
+    }
 
-	/**
-	 * @Title: computeAvgSpeed
-	 * @Description: compute the average speed of every batch;
-	 * @param batchData
-	 */
-	public boolean computeAvgSpeed(List<UserData> batchData, String timeStamp) {
-		// if it is the first batch : initial the userDataPool, then return.
-		// useDataPool is a list that contains the UserData of last batchData or
-		// unused up till now; it will be refreshed in a specific time to keep
-		// size.
-		if (userDataPool == null) {
-			userDataPool = new HashMap<>();
-			for (int i = 0; i < batchData.size(); i++) {
-				UserData ud = batchData.get(i);
-				userDataPool.put(ud.getTmsi(), ud);
-			}
-			return true;
-		}
+    /**
+     * @param batchData
+     * @Title: computeAvgSpeed
+     * @Description: compute the average speed of every batch;
+     */
+    public boolean computeAvgSpeed(List<UserData> batchData, String timeStamp) {
+        // if it is the first batch : initial the userDataPool, then return.
+        // useDataPool is a list that contains the UserData of last batchData or
+        // unused up till now; it will be refreshed in a specific time to keep
+        // size.
+        if (userDataPool == null) {
+            userDataPool = new HashMap<>();
+            for (int i = 0; i < batchData.size(); i++) {
+                UserData ud = batchData.get(i);
+                userDataPool.put(ud.getTmsi(), ud);
+            }
+            return true;
+        }
 
-		logger.info("**** data size : user_data_pool -> " + userDataPool.size()
-				+ " , batch_data -> " + batchData.size());
+        logger.info("**** data size : user_data_pool -> " + userDataPool.size()
+                + " , batch_data -> " + batchData.size());
 
-		// compute every UserData in the batchData with UserDataPool;
-		for (int i = 0; i < batchData.size(); i++) {
-			// if the car data matches, then compute the interval time and
-			// distance, then compute the speed of this car, and update the data
-			// of this car in the UserDataPool;
-			// if not, then just insert the car data into the UserDataPool;
-			int speed = -1;
-			UserData nowUd = batchData.get(i);
-			// int index = userDataPool.indexOf(nowUd);
-			// if (index >= 0) {
-			// matchesNum++;
-			// UserData lastUd = userDataPool.get(index);
-			// speed = (int) this.computeOneSpeed(nowUd, lastUd);
-			// // update when the nowUd is fresher;
-			// if (lastSegmentId == -1
-			// || (nowUd.isLater(lastUd) && nowSegmentId != -1))
-			// userDataPool.set(index, nowUd);
-			// } else {
-			// newNum++;
-			// userDataPool.add(nowUd);
-			// }
+        // compute every UserData in the batchData with UserDataPool;
+        for (int i = 0; i < batchData.size(); i++) {
+            // if the car data matches, then compute the interval time and
+            // distance, then compute the speed of this car, and update the data
+            // of this car in the UserDataPool;
+            // if not, then just insert the car data into the UserDataPool;
+            int speed = -1;
+            UserData nowUd = batchData.get(i);
+            // int index = userDataPool.indexOf(nowUd);
+            // if (index >= 0) {
+            // matchesNum++;
+            // UserData lastUd = userDataPool.get(index);
+            // speed = (int) this.computeOneSpeed(nowUd, lastUd);
+            // // update when the nowUd is fresher;
+            // if (lastSegmentId == -1
+            // || (nowUd.isLater(lastUd) && nowSegmentId != -1))
+            // userDataPool.set(index, nowUd);
+            // } else {
+            // newNum++;
+            // userDataPool.add(nowUd);
+            // }
 
-			String key = nowUd.getTmsi();
-			boolean contain = userDataPool.containsKey(key);
-			if (contain) {
-				matchesNum++;
-				UserData lastUd = userDataPool.get(key);
-				speed = (int) this.computeOneSpeed(nowUd, lastUd);
-				// update when the nowUd is fresher;
-				if (lastSegmentId == -1
-						|| (nowUd.isLater(lastUd) && nowSegmentId != -1))
-					userDataPool.put(key, nowUd);
-			} else {
-				newNum++;
-				userDataPool.put(key, nowUd);
-			}
+            String key = nowUd.getTmsi();
+            boolean contain = userDataPool.containsKey(key);
+            if (contain) {
+                matchesNum++;
+                UserData lastUd = userDataPool.get(key);
+                speed = (int) this.computeOneSpeed(nowUd, lastUd);
+                // update when the nowUd is fresher;
+                if (lastSegmentId == -1
+                        || (nowUd.isLater(lastUd) && nowSegmentId != -1))
+                    userDataPool.put(key, nowUd);
+            } else {
+                newNum++;
+                userDataPool.put(key, nowUd);
+            }
 
-			// if not matches or the speed is illegal,then next data;
-			if (speed == -1)
-				continue;
+            // if not matches or the speed is illegal,then next data;
+            if (speed == -1)
+                continue;
 
-			// add the speed into every Station Segment that related;
-			this.addSpeed(speed, nowUd);
-		}
+            // add the speed into every Station Segment that related;
+            this.addSpeed(speed, nowUd);
+        }
 
-		logger.info("========= in one batch : new_add = " + newNum
-				+ " , matches = " + matchesNum + " { in_same_segment = "
-				+ sameNum + " , compute = " + computeNum + " }");
-		// clear flags for next batch;
-		this.clearFlags();
+        logger.info("========= in one batch : new_add = " + newNum
+                + " , matches = " + matchesNum + " { in_same_segment = "
+                + sameNum + " , compute = " + computeNum + " }");
+        // clear flags for next batch;
+        this.clearFlags();
 
-		// compute every Station Segment's speed;
-		this.computeStationSpeed(stationSegments);
-		// store result into database;
-		if (Configuration.WRITE_TO_DATABASE)
-			this.storeData(timeStamp);
-		// dump result into text;
-		if (Configuration.WRITE_TO_FILE)
-			this.dumpData(timeStamp);
+        // compute every Station Segment's speed;
+        this.computeStationSpeed(stationSegments);
+        // store result into database;
+        if (Configuration.WRITE_TO_DATABASE)
+            this.storeData(timeStamp);
+        // dump result into text;
+        if (Configuration.WRITE_TO_FILE)
+            this.dumpData(timeStamp);
 
-		// maintain the UserDataPool, delete the data which is not used for a
-		// period of time;
-		if (cachedTime >= Configuration.CACHE_TIME) {
-			filterUserDataPool(timeStamp);
-			cachedTime = 0;
-		}
-		cachedTime += Configuration.INTERVAL_TIME;
+        // maintain the UserDataPool, delete the data which is not used for a
+        // period of time;
+        if (cachedTime >= Configuration.CACHE_TIME) {
+            filterUserDataPool(timeStamp);
+            cachedTime = 0;
+        }
+        cachedTime += Configuration.INTERVAL_TIME;
 
-		return false;
-	}
+        return false;
+    }
 
-	// public void computeHistorySpeed(String startTime, String endTime, int
-	// rate) {
-	// Date startDate = new Date(); // used for recording computing time;
-	//
-	// this.startTimeStr = startTime;
-	// // not to clear here;
-	// // this.userDataPool = null;
-	// int startIndex = 0;
-	// int batchNum = 0;
-	// // set the interval computing time of every batch, if it is not enough,
-	// // then just wait; if it is exceed, then give a warning;
-	// int batchInterval = Configuration.INTERVAL_TIME / rate;
-	//
-	// // 1. get all the history data from databases into memory according to
-	// // the startTime and endTime;
-	// List<UserData> allData = this.getHistoryUserData(startTime, endTime);
-	// // 2. compute the average speed of every batch;
-	// logger.info("**** All batches begin to compute ... ");
-	// while (startIndex < allData.size()) {
-	// Date date1 = new Date();
-	//
-	// // before every computing, check whether the request has been
-	// // updated;
-	// boolean updated = this.checkRequest();
-	// if (updated) {
-	// logger.info("New request has coming ... now return ");
-	// return;
-	// }
-	// // if not updated, then begin to compute;
-	// List<UserData> batchData = this
-	// .getOneBatchData(allData, startIndex);
-	// // update the start time, the time must update before write to
-	// // database;
-	// this.startTimeStr = this.updateTime(startTimeStr);
-	// boolean firstCompute = this.computeAvgSpeed(batchData);
-	// if (!firstCompute)
-	// nss.computeAvgSpeed(stationSegments, startTimeStr);
-	// startIndex = endIndex;
-	// batchNum++;
-	//
-	// // clear flags and station segments for next batch;
-	// this.clearFlags();
-	// this.clearSpeeds();
-	//
-	// // check the computing time;
-	// Date date2 = new Date();
-	// double time = (date2.getTime() - date1.getTime()) / 1000.0; // s
-	// if (time > batchInterval) {
-	// // computing time is exceed;
-	// logger.severe("'''''''' over time , stand = " + batchInterval
-	// + " s , real = " + time + " s");
-	// } else {
-	// // computing time is not enough;
-	// double waitTime = batchInterval - time;
-	// logger.severe("''''''' wait time , sleep = " + waitTime + " s ");
-	// // Utility.sleep(waitTime);
-	// }
-	// }
-	// logger.info("**** All batches have finished ... count : " + batchNum
-	// + " , time = " + Utility.intervalTime(startDate, new Date()));
-	// }
+    // public void computeHistorySpeed(String startTime, String endTime, int
+    // rate) {
+    // Date startDate = new Date(); // used for recording computing time;
+    //
+    // this.startTimeStr = startTime;
+    // // not to clear here;
+    // // this.userDataPool = null;
+    // int startIndex = 0;
+    // int batchNum = 0;
+    // // set the interval computing time of every batch, if it is not enough,
+    // // then just wait; if it is exceed, then give a warning;
+    // int batchInterval = Configuration.INTERVAL_TIME / rate;
+    //
+    // // 1. get all the history data from databases into memory according to
+    // // the startTime and endTime;
+    // List<UserData> allData = this.getHistoryUserData(startTime, endTime);
+    // // 2. compute the average speed of every batch;
+    // logger.info("**** All batches begin to compute ... ");
+    // while (startIndex < allData.size()) {
+    // Date date1 = new Date();
+    //
+    // // before every computing, check whether the request has been
+    // // updated;
+    // boolean updated = this.checkRequest();
+    // if (updated) {
+    // logger.info("New request has coming ... now return ");
+    // return;
+    // }
+    // // if not updated, then begin to compute;
+    // List<UserData> batchData = this
+    // .getOneBatchData(allData, startIndex);
+    // // update the start time, the time must update before write to
+    // // database;
+    // this.startTimeStr = this.updateTime(startTimeStr);
+    // boolean firstCompute = this.computeAvgSpeed(batchData);
+    // if (!firstCompute)
+    // nss.computeAvgSpeed(stationSegments, startTimeStr);
+    // startIndex = endIndex;
+    // batchNum++;
+    //
+    // // clear flags and station segments for next batch;
+    // this.clearFlags();
+    // this.clearSpeeds();
+    //
+    // // check the computing time;
+    // Date date2 = new Date();
+    // double time = (date2.getTime() - date1.getTime()) / 1000.0; // s
+    // if (time > batchInterval) {
+    // // computing time is exceed;
+    // logger.severe("'''''''' over time , stand = " + batchInterval
+    // + " s , real = " + time + " s");
+    // } else {
+    // // computing time is not enough;
+    // double waitTime = batchInterval - time;
+    // logger.severe("''''''' wait time , sleep = " + waitTime + " s ");
+    // // Utility.sleep(waitTime);
+    // }
+    // }
+    // logger.info("**** All batches have finished ... count : " + batchNum
+    // + " , time = " + Utility.intervalTime(startDate, new Date()));
+    // }
 
-	/**
-	 * @Title: computeOneSpeed
-	 * @Description: compute one car's speed according to the user data;
-	 * @param nowUd
-	 * @param lastUd
-	 * @return
-	 */
-	public int computeOneSpeed(UserData nowUd, UserData lastUd) {
-		int speed = -1;
-		this.getSegmentId(nowUd, lastUd);
-		double time = this.getIntervalTime(nowUd, lastUd);
-		double distance = this.getDistance();
+    /**
+     * @param nowUd
+     * @param lastUd
+     * @return
+     * @Title: computeOneSpeed
+     * @Description: compute one car's speed according to the user data;
+     */
+    public int computeOneSpeed(UserData nowUd, UserData lastUd) {
+        int speed = -1;
+        this.getSegmentId(nowUd, lastUd);
+        double time = this.getIntervalTime(nowUd, lastUd);
+        double distance = this.getDistance();
 
-		if (distance == -1) {
-			sameNum++;
-		} else {
-			speed = (int) (distance / time);
-			// if the speed is too large and negative, then it is illegal;
-			if (speed < 0 || speed > 250) {
-				logger.fine("illegal speed : d = " + distance + ", t = " + time
-						+ ", s = " + speed + "\t , " + nowUd.getCellid() + "\t"
-						+ lastUd.getCellid());
-				speed = -1;
-			}
-		}
-		return speed;
-	}
+        if (distance == -1) {
+            sameNum++;
+        } else {
+            speed = (int) (distance / time);
+            // if the speed is too large and negative, then it is illegal;
+            if (speed < 0 || speed > 250) {
+                logger.fine("illegal speed : d = " + distance + ", t = " + time
+                        + ", s = " + speed + "\t , " + nowUd.getCellid() + "\t"
+                        + lastUd.getCellid());
+                speed = -1;
+            }
+        }
+        return speed;
+    }
 
-	/**
-	 * @Title: computeStationSpeed
-	 * @Description: compute every station segment's speed;
-	 * @param list
-	 */
-	public void computeStationSpeed(List<StationSegment> list) {
-		for (int i = 0; i < list.size(); i++) {
-			StationSegment rs = list.get(i);
-			rs.computeAvgSpeed();
-			rs.computeFilterAvgSpeed();
-		}
-	}
+    /**
+     * @param list
+     * @Title: computeStationSpeed
+     * @Description: compute every station segment's speed;
+     */
+    public void computeStationSpeed(List<StationSegment> list) {
+        for (int i = 0; i < list.size(); i++) {
+            StationSegment rs = list.get(i);
+            rs.computeAvgSpeed();
+            rs.computeFilterAvgSpeed();
+        }
+    }
 
-	/**
-	 * @Title: dumpData
-	 * @Description: write the speed data to file directly, so it is easier to
-	 *               examine the result;
-	 */
-	public void dumpData(String timeStamp) {
-		BufferedWriter bw = null;
-		try {
-			bw = new BufferedWriter(new FileWriter("station_speeds.txt", true));
+    /**
+     * @Title: dumpData
+     * @Description: write the speed data to file directly, so it is easier to
+     * examine the result;
+     */
+    public void dumpData(String timeStamp) {
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter("station_speeds.txt", true));
 
-			bw.write("=======Time : " + timeStamp + " =====\n");
-			StringBuffer str = new StringBuffer();
-			str.append("id\t\tdir\t\tmax\t\tmin\t\tavg\t\tfilter\t\tnum\n");
-			// write out all the node segments information;
-			for (int i = 0; i < stationSegments.size(); i++) {
-				StationSegment rs = stationSegments.get(i);
-				str.append(rs.id + " -- " + rs.getDirection() + " : "
-						+ rs.getMaxSpeed() + " , " + rs.getMinSpeed() + " , "
-						+ rs.getAvgSpeed() + " , " + rs.getFilterAvgSpeed()
-						+ " , (" + rs.getRealNum() + ")\n");
-			}
-			bw.write(str.toString() + "\n\n");
-			bw.flush();
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+            bw.write("=======Time : " + timeStamp + " =====\n");
+            StringBuffer str = new StringBuffer();
+            str.append("id\t\tdir\t\tmax\t\tmin\t\tavg\t\tfilter\t\tnum\n");
+            // write out all the node segments information;
+            for (int i = 0; i < stationSegments.size(); i++) {
+                StationSegment rs = stationSegments.get(i);
+                str.append(rs.id + " -- " + rs.getDirection() + " : "
+                        + rs.getMaxSpeed() + " , " + rs.getMinSpeed() + " , "
+                        + rs.getAvgSpeed() + " , " + rs.getFilterAvgSpeed()
+                        + " , (" + rs.getRealNum() + ")\n");
+            }
+            bw.write(str.toString() + "\n\n");
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * @Title: filterUserDataPool
-	 * @Description: filter the dead data (not used for a long time) in the user
-	 *               data pool;
-	 */
-	public void filterUserDataPool(String timeStamp) {
-		Date endTime = null;
-		Date nowTime = new Date();
-		int removedNum = 0;
-		try {
-			endTime = sdf.parse(timeStamp);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+    /**
+     * @Title: filterUserDataPool
+     * @Description: filter the dead data (not used for a long time) in the user
+     * data pool;
+     */
+    public void filterUserDataPool(String timeStamp) {
+        Date endTime = null;
+        Date nowTime = new Date();
+        int removedNum = 0;
+        try {
+            endTime = sdf.parse(timeStamp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-		// as I use the hash map to store the user data pool, I can't traverse
-		// the structure directly; so I use the method below:
-		Set<String> keySet = userDataPool.keySet();
-		Iterator<String> keys = keySet.iterator();
-		List<String> removedKey = new ArrayList<>();
-		while (keys.hasNext()) {
-			String key = keys.next();
-			UserData ud = userDataPool.get(key);
-			Date startTime = ud.getTimestamp();
-			double interval = Math
-					.abs(Utility.intervalTime(startTime, endTime));
-			if (interval >= Configuration.CACHE_TIME) {
-				// ///////// can't remove here!!!!!!!!
-				// userDataPool.remove(key);
-				removedKey.add(key);
-				removedNum++;
-				logger.fine("remove dead data --> " + ud.getTmsi() + " @ "
-						+ endTime + " - " + startTime);
-			}
-		}
-		// remove should be here;
-		for (int i = 0; i < removedKey.size(); i++) {
-			userDataPool.remove(removedKey.get(i));
-		}
-		// for (int i = 0; i < userDataPool.size(); i++) {
-		// UserData ud = userDataPool.get();
-		// Date udDate = ud.getTimestamp();
-		// double interval = Math.abs(nowDate.getTime() - udDate.getTime()) /
-		// 1000;
-		// if (interval >= Configuration.CACHE_TIME) {
-		// userDataPool.remove(i);
-		// removedNum++;
-		// logger.info("remove dead data --> " + ud.getTmsi() + " @ "
-		// + nowDate + " - " + udDate);
-		// }
-		// }
-		logger.info(timeStamp + "========== removed [" + removedNum
-				+ "] dead car !   using time = "
-				+ Utility.intervalTime(nowTime, new Date()) + " s ");
-	}
+        // as I use the hash map to store the user data pool, I can't traverse
+        // the structure directly; so I use the method below:
+        Set<String> keySet = userDataPool.keySet();
+        Iterator<String> keys = keySet.iterator();
+        List<String> removedKey = new ArrayList<>();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            UserData ud = userDataPool.get(key);
+            Date startTime = ud.getTimestamp();
+            double interval = Math
+                    .abs(Utility.intervalTime(startTime, endTime));
+            if (interval >= Configuration.CACHE_TIME) {
+                // ///////// can't remove here!!!!!!!!
+                // userDataPool.remove(key);
+                removedKey.add(key);
+                removedNum++;
+                logger.fine("remove dead data --> " + ud.getTmsi() + " @ "
+                        + endTime + " - " + startTime);
+            }
+        }
+        // remove should be here;
+        for (int i = 0; i < removedKey.size(); i++) {
+            userDataPool.remove(removedKey.get(i));
+        }
+        // for (int i = 0; i < userDataPool.size(); i++) {
+        // UserData ud = userDataPool.get();
+        // Date udDate = ud.getTimestamp();
+        // double interval = Math.abs(nowDate.getTime() - udDate.getTime()) /
+        // 1000;
+        // if (interval >= Configuration.CACHE_TIME) {
+        // userDataPool.remove(i);
+        // removedNum++;
+        // logger.info("remove dead data --> " + ud.getTmsi() + " @ "
+        // + nowDate + " - " + udDate);
+        // }
+        // }
+        logger.info(timeStamp + "========== removed [" + removedNum
+                + "] dead car !   using time = "
+                + Utility.intervalTime(nowTime, new Date()) + " s ");
+    }
 
-	/**
-	 * @Title: getSegmentId
-	 * @Description: determine the direction that the car runs in now. As the
-	 *               station segment is in ascending order, so we can find the
-	 *               station segment the car of now and last belongs to , then
-	 *               based on the id to determine the direction.
-	 * @param nowUd
-	 * @param lastUd
-	 * @return
-	 */
-	public boolean getSegmentId(UserData nowUd, UserData lastUd) {
-		int nowId = nowUd.getCellid();
-		int lastId = lastUd.getCellid();
-		// the boundary of forward and reverse;
-		int boundary = stationSegments.size() / 2;
-		nowSegmentId = -1;
-		lastSegmentId = -1;
+    /**
+     * @param nowUd
+     * @param lastUd
+     * @return
+     * @Title: getSegmentId
+     * @Description: determine the direction that the car runs in now. As the
+     * station segment is in ascending order, so we can find the
+     * station segment the car of now and last belongs to , then
+     * based on the id to determine the direction.
+     */
+    public boolean getSegmentId(UserData nowUd, UserData lastUd) {
+        int nowId = nowUd.getCellid();
+        int lastId = lastUd.getCellid();
+        // the boundary of forward and reverse;
+        int boundary = stationSegments.size() / 2;
+        nowSegmentId = -1;
+        lastSegmentId = -1;
 
-		for (int i = 0; i < boundary; i++) {
-			StationSegment ss = stationSegments.get(i);
-			// a segment may contains more than one station (same location);
-			if (ss.contains(nowId))
-				nowSegmentId = i;
-			if (ss.contains(lastId))
-				lastSegmentId = i;
-			// the two segmentId have both been found, then break;
-			if (nowSegmentId != -1 && lastSegmentId != -1)
-				break;
-		}
-		if (nowSegmentId == -1 || lastSegmentId == -1) {
-			logger.fine("===== road segment fault ! now_seg = " + nowSegmentId
-					+ ", now_id = " + nowId + " , last_seg = " + lastSegmentId
-					+ " , last_id = " + lastId);
-			return false;
-		}
+        for (int i = 0; i < boundary; i++) {
+            StationSegment ss = stationSegments.get(i);
+            // a segment may contains more than one station (same location);
+            if (ss.contains(nowId))
+                nowSegmentId = i;
+            if (ss.contains(lastId))
+                lastSegmentId = i;
+            // the two segmentId have both been found, then break;
+            if (nowSegmentId != -1 && lastSegmentId != -1)
+                break;
+        }
+        if (nowSegmentId == -1 || lastSegmentId == -1) {
+            logger.fine("===== road segment fault ! now_seg = " + nowSegmentId
+                    + ", now_id = " + nowId + " , last_seg = " + lastSegmentId
+                    + " , last_id = " + lastId);
+            return false;
+        }
 
-		if (nowSegmentId >= lastSegmentId) {
-			return true;
-		} else {
-			// this is in reverse direction, then we do some changes, so that
-			// the nowSegmentId always after the lastSegmentId;
-			logger.fine("<<<<< ---- change segment id now = " + nowSegmentId
-					+ " , last = " + lastSegmentId);
-			// here must reset these value, or they won't enter the cycle;
-			nowSegmentId = -1;
-			lastSegmentId = -1;
-			for (int i = boundary; i < stationSegments.size(); i++) {
-				StationSegment rs = stationSegments.get(i);
-				if (rs.contains(nowId))
-					nowSegmentId = i;
-				if (rs.contains(lastId))
-					lastSegmentId = i;
-				if (nowSegmentId != -1 && lastSegmentId != -1)
-					break;
-			}
-			logger.fine(">>>>> now = " + nowSegmentId + " , last = "
-					+ lastSegmentId);
-			return false;
-		}
-	}
+        if (nowSegmentId >= lastSegmentId) {
+            return true;
+        } else {
+            // this is in reverse direction, then we do some changes, so that
+            // the nowSegmentId always after the lastSegmentId;
+            logger.fine("<<<<< ---- change segment id now = " + nowSegmentId
+                    + " , last = " + lastSegmentId);
+            // here must reset these value, or they won't enter the cycle;
+            nowSegmentId = -1;
+            lastSegmentId = -1;
+            for (int i = boundary; i < stationSegments.size(); i++) {
+                StationSegment rs = stationSegments.get(i);
+                if (rs.contains(nowId))
+                    nowSegmentId = i;
+                if (rs.contains(lastId))
+                    lastSegmentId = i;
+                if (nowSegmentId != -1 && lastSegmentId != -1)
+                    break;
+            }
+            logger.fine(">>>>> now = " + nowSegmentId + " , last = "
+                    + lastSegmentId);
+            return false;
+        }
+    }
 
-	/**
-	 * @Title: getDistance
-	 * @Description: get the distance of two related user data;
-	 * @return
-	 */
-	public double getDistance() {
-		double distance = 0;
-		// one of the two data is illegal;
-		if (nowSegmentId == -1 || lastSegmentId == -1)
-			return -1;
-		// the two data is in same segment (or may be in two contiguous
-		// segments)£¨then return -1;
-		if (nowSegmentId == lastSegmentId)
-			return -1;
-		// the two data is in different segment;
-		for (int i = lastSegmentId; i < nowSegmentId; i++) {
-			distance += stationSegments.get(i).getLength();
-		}
-		return distance;
-	}
+    /**
+     * @return
+     * @Title: getDistance
+     * @Description: get the distance of two related user data;
+     */
+    public double getDistance() {
+        double distance = 0;
+        // one of the two data is illegal;
+        if (nowSegmentId == -1 || lastSegmentId == -1)
+            return -1;
+        // the two data is in same segment (or may be in two contiguous
+        // segments)Ôºåthen return -1;
+        if (nowSegmentId == lastSegmentId)
+            return -1;
+        // the two data is in different segment;
+        for (int i = lastSegmentId; i < nowSegmentId; i++) {
+            distance += stationSegments.get(i).getLength();
+        }
+        return distance;
+    }
 
-	/**
-	 * @Title: getIntervalTime
-	 * @Description: get the interval time (hour) of last data and now data.
-	 * @param nowUd
-	 * @param lastUd
-	 * @return the interval hour;
-	 */
-	public double getIntervalTime(UserData nowUd, UserData lastUd) {
-		// mostly, the nowUd time is later than lastUd; but there are still some
-		// exceptions(if the selected data is not in order) that nowUd time is
-		// earlier, so we use the absolute value to keep the interval time is
-		// always positive;
-		return (Math.abs(nowUd.getTimestamp().getTime()
-				- lastUd.getTimestamp().getTime()))
-				/ (1000.0 * 60 * 60);
-	}
+    /**
+     * @param nowUd
+     * @param lastUd
+     * @return the interval hour;
+     * @Title: getIntervalTime
+     * @Description: get the interval time (hour) of last data and now data.
+     */
+    public double getIntervalTime(UserData nowUd, UserData lastUd) {
+        // mostly, the nowUd time is later than lastUd; but there are still some
+        // exceptions(if the selected data is not in order) that nowUd time is
+        // earlier, so we use the absolute value to keep the interval time is
+        // always positive;
+        return (Math.abs(nowUd.getTimestamp().getTime()
+                - lastUd.getTimestamp().getTime()))
+                / (1000.0 * 60 * 60);
+    }
 
-	/**
-	 * @Title: getUserData
-	 * @Description: get REAL TIME data from databases;
-	 * @param intervalTime
-	 */
-	String startTimeStr = null;
+    /**
+     * @Title: getUserData
+     * @Description: get REAL TIME data from databases;
+     * @param intervalTime
+     */
+    String startTimeStr = null;
 
-	public List<UserData> getUserData(int intervalTime) {
-		Date start = null;
-		Date end = null;
-		try {
-			start = sdf.parse(startTimeStr);
-			end = new Date(start.getTime() + 1000 * intervalTime);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-		String startStr = sdf.format(start);
-		String endStr = sdf.format(end);
-		List<UserData> userDatas = db.selectUserData(startStr, endStr);
+    public List<UserData> getUserData(int intervalTime) {
+        Date start = null;
+        Date end = null;
+        try {
+            start = sdf.parse(startTimeStr);
+            end = new Date(start.getTime() + 1000 * intervalTime);
+        } catch (ParseException e1) {
+            e1.printStackTrace();
+        }
+        String startStr = sdf.format(start);
+        String endStr = sdf.format(end);
+        List<UserData> userDatas = db.selectUserData(startStr, endStr);
 
-		this.startTimeStr = endStr;
-		return userDatas;
-	}
+        this.startTimeStr = endStr;
+        return userDatas;
+    }
 
-	/**
-	 * @Title: initialStationSegments
-	 * @Description: initial the station segments and the stations;
-	 * @return
-	 */
-	public List<StationSegment> initialStationSegments() {
-		logger.info("initial station segments ... ");
-		List<Station> stations = db.selectStation();
-		List<StationSegment> segments = db.selectStationSegment();
-		for (int i = 0; i < segments.size(); i++) {
-			StationSegment ss = segments.get(i);
-			ss.initStarts(stations);
-			ss.initEnds(stations);
-		}
-		this.stationSegments = segments;
-		return segments;
-	}
+    /**
+     * @return
+     * @Title: initialStationSegments
+     * @Description: initial the station segments and the stations;
+     */
+    public List<StationSegment> initialStationSegments() {
+        logger.info("initial station segments ... ");
+        List<Station> stations = db.selectStation();
+        List<StationSegment> segments = db.selectStationSegment();
+        for (int i = 0; i < segments.size(); i++) {
+            StationSegment ss = segments.get(i);
+            ss.initStarts(stations);
+            ss.initEnds(stations);
+        }
+        this.stationSegments = segments;
+        return segments;
+    }
 
-	/**
-	 * @Title: storeData
-	 * @Description: store the speed data into the database;
-	 * @param timeStamp
-	 */
-	public void storeData(String timeStamp) {
-		db.insertStationSpeeds(stationSegments, timeStamp);
-		// update the value in certain database to inform that new data has been
-		// inserted into database;
-		db.updateTime(timeStamp);
-	}
+    /**
+     * @param timeStamp
+     * @Title: storeData
+     * @Description: store the speed data into the database;
+     */
+    public void storeData(String timeStamp) {
+        db.insertStationSpeeds(stationSegments, timeStamp);
+        // update the value in certain database to inform that new data has been
+        // inserted into database;
+        db.updateTime(timeStamp);
+    }
 
-	public List<StationSegment> getStationSegments() {
-		return stationSegments;
-	}
+    public List<StationSegment> getStationSegments() {
+        return stationSegments;
+    }
 
-	public void setStationSegments(List<StationSegment> stationSegments) {
-		this.stationSegments = stationSegments;
-	}
+    public void setStationSegments(List<StationSegment> stationSegments) {
+        this.stationSegments = stationSegments;
+    }
 
-	StringBuffer[] bufferDatas = new StringBuffer[10];
+    StringBuffer[] bufferDatas = new StringBuffer[10];
 
-	public void dumpSpecificData(UserData ud, int segmentId) {
-		try {
-			if (segmentId == 153
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 09:04:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 09:06:00"))))) {
-				bufferDatas[0].append(ud.toString() + "\n");
-			} else if (segmentId == 86
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 09:52:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 09:54:00"))))) {
-				bufferDatas[1].append(ud.toString() + "\n");
-			} else if (segmentId == 162
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 10:26:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 10:28:00"))))) {
-				bufferDatas[2].append(ud.toString() + "\n");
-			} else if (segmentId == 89
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 10:30:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 10:32:00"))))) {
-				bufferDatas[3].append(ud.toString() + "\n");
-			} else if (segmentId == 164
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 10:36:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 10:38:00"))))) {
-				bufferDatas[4].append(ud.toString() + "\n");
-			} else if (segmentId == 170
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 10:46:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 10:48:00"))))) {
-				bufferDatas[5].append(ud.toString() + "\n");
-			} else if (segmentId == 25
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 12:14:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 12:16:00"))))) {
-				bufferDatas[6].append(ud.toString() + "\n");
-			} else if (segmentId == 23
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 13:16:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 13:18:00"))))) {
-				bufferDatas[7].append(ud.toString() + "\n");
-			} else if (segmentId == 44
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 15:14:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 15:16:00"))))) {
-				bufferDatas[8].append(ud.toString() + "\n");
-			} else if (segmentId == 119
-					&& (ud.getTimestamp().after(
-							sdf.parse("2015-02-18 17:10:00")) && (ud
-							.getTimestamp().before(sdf
-							.parse("2015-02-18 17:12:00"))))) {
-				bufferDatas[9].append(ud.toString() + "\n");
-			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void writeToFile(){
-		try {
-			BufferedWriter bw=new  BufferedWriter(new FileWriter("part-data.txt",true));
-			for (int i = 0; i < bufferDatas.length; i++) {
-				bw.write(bufferDatas[i].toString()+"\n\n");
-				bw.flush();
-			}
-			bw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    public void dumpSpecificData(UserData ud, int segmentId) {
+        try {
+            if (segmentId == 153
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 09:04:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 09:06:00"))))) {
+                bufferDatas[0].append(ud.toString() + "\n");
+            } else if (segmentId == 86
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 09:52:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 09:54:00"))))) {
+                bufferDatas[1].append(ud.toString() + "\n");
+            } else if (segmentId == 162
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 10:26:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 10:28:00"))))) {
+                bufferDatas[2].append(ud.toString() + "\n");
+            } else if (segmentId == 89
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 10:30:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 10:32:00"))))) {
+                bufferDatas[3].append(ud.toString() + "\n");
+            } else if (segmentId == 164
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 10:36:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 10:38:00"))))) {
+                bufferDatas[4].append(ud.toString() + "\n");
+            } else if (segmentId == 170
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 10:46:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 10:48:00"))))) {
+                bufferDatas[5].append(ud.toString() + "\n");
+            } else if (segmentId == 25
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 12:14:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 12:16:00"))))) {
+                bufferDatas[6].append(ud.toString() + "\n");
+            } else if (segmentId == 23
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 13:16:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 13:18:00"))))) {
+                bufferDatas[7].append(ud.toString() + "\n");
+            } else if (segmentId == 44
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 15:14:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 15:16:00"))))) {
+                bufferDatas[8].append(ud.toString() + "\n");
+            } else if (segmentId == 119
+                    && (ud.getTimestamp().after(
+                    sdf.parse("2015-02-18 17:10:00")) && (ud
+                    .getTimestamp().before(sdf
+                            .parse("2015-02-18 17:12:00"))))) {
+                bufferDatas[9].append(ud.toString() + "\n");
+            }
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void writeToFile() {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("part-data.txt", true));
+            for (int i = 0; i < bufferDatas.length; i++) {
+                bw.write(bufferDatas[i].toString() + "\n\n");
+                bw.flush();
+            }
+            bw.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }
